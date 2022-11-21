@@ -61,6 +61,8 @@ dependencies:
   json_annotation: ^4.0.1
   format: ^1.2.0
   intl: ^0.17.0
+  email_validator: ^2.1.17
+  flutter_pw_validator: ^1.4.2
 
 dev_dependencies:
   flutter_test:

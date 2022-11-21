@@ -113,7 +113,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 0, 137, 250)
+                              color: const Color.fromARGB(255, 0, 137, 250)
                                   .withOpacity(0.6),
                               borderRadius: BorderRadius.circular(50)),
                           child: IconButton(

@@ -1,15 +1,15 @@
-import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
+import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
 import 'package:crm_mobile/customer/pages/user/profile_Screen.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,11 +19,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   Future<UserCredential> signInWithGoogle() async {
     GoogleSignIn _googleSignIn = GoogleSignIn();
-    // await _googleSignIn.disconnect();
+    await _googleSignIn
+        .disconnect()
+        .catchError((e) {})
+        .onError((error, stackTrace) => null);
     _googleSignIn.isSignedIn().then((value) async {
-      await _googleSignIn.signOut();
+      await _googleSignIn.signOut().onError((error, stackTrace) => null);
       await FirebaseAuth.instance.signOut();
     });
     GoogleSignInAccount? googleUser = await new GoogleSignIn().signIn();
@@ -95,12 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   loginWithGoogle() {
-    signInWithGoogle().then((value) async {
+    signInWithGoogle().then((Uservalue) async {
       userProviders
-          .fetchUserLoginWithGoogle(value.user!.email.toString())
+          .fetchUserLoginWithGoogle(Uservalue.user!.email.toString())
           .then((value) async {
-        if (value.status == 'USER_INVALID') {
-          user = value;
+        if (value.status == 'ACCOUNT_NOTFOUND') {
+          user = UserObj(emailAddress: Uservalue.user!.email);
           await Fluttertoast.showToast(
               msg: "You Are New User",
               toastLength: Toast.LENGTH_SHORT,
@@ -109,11 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: Color.fromARGB(255, 23, 252, 2),
               textColor: Colors.white,
               fontSize: 16.0);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
+          Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ProfileScreen(
                     user: user,
                   )));
-        } else if (value.id == null) {
+        } else if (value.status == 'USER_INVALID' || value.id == null) {
           await Fluttertoast.showToast(
               msg: "Login failed",
               toastLength: Toast.LENGTH_SHORT,
@@ -144,23 +148,16 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  test() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-
+  loginByPhoneNumber(String phone) async {
     await auth.verifyPhoneNumber(
-      phoneNumber: '+84387961788',
+      phoneNumber: '+84$phone',
+      timeout: const Duration(seconds: 120),
       codeSent: (String verificationId, int? resendToken) async {
-        // Update the UI - wait for the user to enter the SMS code
-        String smsCode = '';
-
-        // Create a PhoneAuthCredential with the code
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
-
-        // Sign the user in (or link) with the credential
-        await auth.signInWithCredential(credential).then((value) {
-          print(value.user!.uid);
-        });
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => verifyOTP(
+                  phone: phone,
+                  verificationId: verificationId,
+                )));
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
       verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
@@ -174,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    test();
     super.initState();
   }
 
@@ -184,13 +180,41 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  String? validatePhone(String value) {
+    RegExp regExp = RegExp(r'(^(?:[+0]9)?[0-9]{10}$)');
+    if (value.isEmpty) {
+      return 'Please enter phone number';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid phone number';
+    }
+    return (regExp.hasMatch(value)) ? null : "Invalid mobile";
+  }
+
+  bool _switchValue = true;
+  String? errorphone;
   @override
   Widget build(BuildContext context) {
     final _emailController = TextEditingController();
     final _passwordController = TextEditingController();
+    final _phoneController = TextEditingController();
+
     //final isKeyBoard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-        appBar: AppBar(),
+        appBar: PreferredSize(
+            preferredSize:
+                const Size.fromHeight(0.0), // here the desired height
+            child: AppBar(
+              backgroundColor: Colors.blue,
+              elevation: 0.0,
+              leading: const Padding(
+                padding: EdgeInsets.only(
+                  left: 18.0,
+                  top: 12.0,
+                  bottom: 12.0,
+                  right: 12.0,
+                ),
+              ),
+            )),
         body: Center(
           child: SingleChildScrollView(
               child: Padding(
@@ -214,35 +238,103 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 44,
                 ),
-                TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                      errorText: null,
-                      hintText: "User Email",
-                      prefixIcon: Icon(Icons.mail, color: Colors.black)),
+                Row(
+                  children: [
+                    Text(
+                      (!_switchValue)
+                          ? 'Login By Username'
+                          : 'Login By Phone Number',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Spacer(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: CupertinoSwitch(
+                        value: _switchValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _switchValue = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const SizedBox(
-                  height: 26,
-                ),
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      hintText: "User Password",
-                      prefixIcon: Icon(Icons.security, color: Colors.black)),
-                ),
+                (!_switchValue)
+                    ? SizedBox(
+                        height: 150,
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                  errorText: null,
+                                  hintText: "User Email",
+                                  prefixIcon:
+                                      Icon(Icons.mail, color: Colors.black)),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const SizedBox(
+                              height: 26,
+                            ),
+                            TextField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  hintText: "User Password",
+                                  prefixIcon: Icon(Icons.security,
+                                      color: Colors.black)),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        height: 150,
+                        alignment: Alignment.center,
+                        child: Center(
+                            child: TextField(
+                          controller: _phoneController,
+                          keyboardType: TextInputType.phone,
+                          // obscureText: true,
+                          decoration: InputDecoration(
+                              errorText: errorphone,
+                              hintText: "Phone number",
+                              prefixIcon:
+                                  const Icon(Icons.phone, color: Colors.black)),
+                        )),
+                      ),
                 const SizedBox(
                   height: 10,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-                const Text('Don\'t remember your password?',
-                    style: TextStyle(color: Colors.blue, fontSize: 16)),
+                Row(
+                  children: [
+                    const Text('Forget your password ?',
+                        style: TextStyle(color: Colors.blue, fontSize: 16)),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        UserObj user = UserObj();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen(
+                                      user: user,
+                                    )));
+                      },
+                      child: const Text('Register new Account ?',
+                          style: TextStyle(color: Colors.blue, fontSize: 16)),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -255,12 +347,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                     onPressed: () async {
-                      loginbyEmailandPass(
-                          _emailController.text, _passwordController.text);
+                      if (_switchValue) {
+                        if (validatePhone(_phoneController.text) != null) {
+                          setState(() {
+                            errorphone = validatePhone(_phoneController.text);
+                          });
+                        } else {
+                          loginByPhoneNumber(_phoneController.text
+                              .substring(1, _phoneController.text.length));
+                        }
+                      } else {
+                        loginbyEmailandPass(
+                            _emailController.text, _passwordController.text);
+                      }
                     },
                     child: const Text(
                       'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
                 ),
@@ -270,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Container(
                     width: 450,
-                    height: 50,
+                    height: 60,
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.black,

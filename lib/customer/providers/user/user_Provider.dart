@@ -95,6 +95,8 @@ class userProviders {
           var datauser = jsondata['data'];
           if (datauser == 'USER_INVALID') {
             user = UserObj(status: datauser);
+          } else if (datauser == 'ACCOUNT_NOTFOUND') {
+            user = UserObj(status: datauser);
           } else {
             if (datauser is Map) {
               user = UserObj(

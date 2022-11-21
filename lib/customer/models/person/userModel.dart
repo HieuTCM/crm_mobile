@@ -50,10 +50,10 @@ class UserObj {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['emailAddress'] = this.emailAddress;
-    data['phoneNumber'] = this.phoneNumber;
+    data['email'] = this.emailAddress;
+    data['phone'] = this.phoneNumber;
     data['password'] = this.password;
-    data['fullName'] = this.fullName;
+    data['fullname'] = this.fullName;
     data['image'] = this.image;
     data['gender'] = this.gender;
     data['dob'] = this.dob;
