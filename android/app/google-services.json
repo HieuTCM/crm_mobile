@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "568639907795",
+    "project_id": "crm-cstone",
+    "storage_bucket": "crm-cstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568639907795:android:87aa2dad71aa264f58f126",
+        "android_client_info": {
+          "package_name": "com.example.crm_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568639907795-k28f9mnk1orgsbbh9sb743thkknvmule.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crm_mobile",
+            "certificate_hash": "6d5b565885d21e4ae0f05156271938bcc7c37ddc"
+          }
+        },
+        {
+          "client_id": "568639907795-2jo2bkr6p7nmevhbm6aq7u83j3k9rveq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqfFY347-a8ClWrVbFKZS8q529SqBVn68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568639907795-2jo2bkr6p7nmevhbm6aq7u83j3k9rveq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
