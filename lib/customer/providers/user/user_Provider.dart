@@ -1,5 +1,9 @@
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
+import 'package:crm_mobile/customer/pages/root/mainPage.dart';
+import 'package:crm_mobile/customer/pages/user/profile_Screen.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -33,6 +37,8 @@ class userProviders {
       '/api/v1/Authentication/customer/fbase';
 
   //User
+  static const String _registerCustomer =
+      '/api/v1/CustomerAccount/customer-account/add';
   static const String _getUserInformation = '/api/v1/CustomerAccount/profile';
   static const String _getUserAvatar =
       '/api/v1/CustomerAccount/customer-account/get-avatar';
@@ -178,5 +184,65 @@ class userProviders {
     }
 
     return user;
+  }
+
+  //Register Customer Account
+  static Future<List<String>> registerCustomerAccount(UserObj userValue) async {
+    List<String> listStatus = [];
+    Map<String, String> header = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'text/plain',
+      'Accept-Charset': 'UTF-8',
+    };
+    var data = userValue.toJson();
+    var body = json.encode(data);
+    print(body);
+
+    try {
+      final res = await http.put(Uri.parse('$_mainURL' + '$_registerCustomer'),
+          headers: header, body: body);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsonData = json.decode(res.body);
+          var data = jsonData['data'];
+          var listSta = data['errors'];
+          if (listSta != null) {
+            for (var status in listSta) {
+              listStatus.add(status);
+              Fluttertoast.showToast(
+                  msg: "Register false",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            }
+          } else if (data['id'] != null) {
+            fetchUserLoginWithGoogle(data['email']).then((value) async {
+              await Fluttertoast.showToast(
+                  msg: "Register Successful",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            });
+          }
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      } else if (res.statusCode == 400) {
+        if (res.body.isNotEmpty) {
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listStatus;
   }
 }

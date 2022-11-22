@@ -18,6 +18,7 @@ class verifyOTP extends StatefulWidget {
 
   @override
   State<verifyOTP> createState() => _verifyOTPState();
+  final _formKey = GlobalKey<_verifyOTPState>();
 }
 
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -36,7 +37,6 @@ loginByPhoneNumber(String phone /*, String OTPCode*/) async {
   );
 }
 
-final _formKey = GlobalKey<_verifyOTPState>();
 String? pin1;
 String? pin2;
 String? pin3;
@@ -145,7 +145,7 @@ class _verifyOTPState extends State<verifyOTP> {
                   height: MediaQuery.of(context).size.height * 0.18,
                 ),
                 Form(
-                    key: _formKey,
+                    key: widget._formKey,
                     child: Column(
                       children: [
                         Row(

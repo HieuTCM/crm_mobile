@@ -49,7 +49,7 @@ class UserObj {
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    // data['id'] = this.id;
     data['email'] = this.emailAddress;
     data['phone'] = this.phoneNumber;
     data['password'] = this.password;

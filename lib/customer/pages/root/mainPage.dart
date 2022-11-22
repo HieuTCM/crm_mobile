@@ -22,10 +22,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  String urlImg =
+      'https://i.pinimg.com/474x/3d/b7/9e/3db79e59b9052890ea1ffbef0f3970cc.jpg';
   bool waiting = true;
   UserObj user = new UserObj();
   List<Category> listCate = [];
   List<Product> listProduct = [];
+  String? cateSelectedID;
   getUserinfo() async {
     userProviders.fetchUserInfor().then((value) {
       setState(() {
@@ -52,6 +55,7 @@ class _MainPageState extends State<MainPage> {
     cateProviders.fetchAllCategory().then((value) {
       setState(() {
         listCate = value;
+        cateSelectedID = listCate[0].id;
       });
       productProviders.fetchProductByCateID(listCate[0].id).then((value) {
         setState(() {
@@ -111,7 +115,9 @@ class _MainPageState extends State<MainPage> {
                           child: CircleAvatar(
                             radius: 48, // Image radius
                             backgroundImage: NetworkImage(
-                                (user.image == null) ? '' : user.image),
+                                (user.image!.toString().isEmpty)
+                                    ? urlImg
+                                    : user.image),
                           )),
                       const SizedBox(
                         width: 10,
@@ -188,11 +194,15 @@ class _MainPageState extends State<MainPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               getListProductByCategory(listCate[index].id);
+                              cateSelectedID = listCate[index].id;
                             },
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
                               padding: const EdgeInsets.all(12),
-                              backgroundColor: Colors.blue,
+                              backgroundColor: (cateSelectedID ==
+                                      listCate[index].id.toString())
+                                  ? Color.fromARGB(255, 10, 76, 109)
+                                  : Colors.blue,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),

@@ -1,4 +1,7 @@
 import 'package:crm_mobile/customer/models/person/userModel.dart';
+import 'package:crm_mobile/customer/pages/login/login.dart';
+import 'package:crm_mobile/customer/pages/root/mainPage.dart';
+import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String urlImg =
       'https://i.pinimg.com/474x/3d/b7/9e/3db79e59b9052890ea1ffbef0f3970cc.jpg';
 
-  bool male = false;
+  bool male = true;
   bool female = false;
   bool gender = false;
 
@@ -31,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? validePhone;
   String? valideConfirmPass;
   final _nameCon = TextEditingController();
-
   final _emailCon = TextEditingController();
   final _emailavaliabkeCon = TextEditingController();
   final _phoneCon = TextEditingController();
@@ -126,6 +128,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   const EdgeInsets.symmetric(horizontal: 30),
                               child: TextFormField(
                                 keyboardType: TextInputType.emailAddress,
+                                readOnly: (userData.emailAddress != null)
+                                    ? true
+                                    : false,
+                                onChanged: (value) {
+                                  setState(() {
+                                    valideEmail = validateEmail(value);
+                                  });
+                                },
                                 decoration: InputDecoration(
                                     errorText: valideEmail,
                                     labelText: "Example@gmail.com"),
@@ -355,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           margin: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
                           child: ElevatedButton(
-                              child: const Text("Update"),
+                              child: const Text("Register"),
                               onPressed: () {
                                 if (validateName(_nameCon.text) != null ||
                                     validateEmail(
@@ -370,7 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     validateConfirmPass(_confirmPassCon.text) !=
                                         null) {
                                   Fluttertoast.showToast(
-                                      msg: "Update fail",
+                                      msg: "Input not valid",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.BOTTOM,
                                       timeInSecForIosWeb: 1,
@@ -387,13 +397,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           (userData.phoneNumber != null)
                                               ? _phoneavaliableCon.text
                                               : _phoneCon.text,
-                                      password: _passCon!.text,
-                                      fullName: _nameCon!.text,
+                                      password: _passCon.text,
+                                      fullName: _nameCon.text,
                                       gender: male,
                                       dob: DateFormat('yyyy-MM-dd')
                                           .format(_dateTime));
 
-                                  print(useData);
+                                  userProviders
+                                      .registerCustomerAccount(useData)
+                                      .then((value) {
+                                    if (value.isEmpty) {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginScreen()));
+                                    } else if (value != null) {
+                                      for (String status in value) {
+                                        if (status == 'Email existed') {
+                                          setState(() {
+                                            valideEmail = status;
+                                          });
+                                        }
+                                        if (status == 'Phone existed') {
+                                          setState(() {
+                                            validePhone = status;
+                                          });
+                                        }
+                                      }
+                                    }
+                                  });
                                 }
                               }))
                     ],

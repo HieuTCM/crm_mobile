@@ -104,7 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
           .fetchUserLoginWithGoogle(Uservalue.user!.email.toString())
           .then((value) async {
         if (value.status == 'ACCOUNT_NOTFOUND') {
-          user = UserObj(emailAddress: Uservalue.user!.email);
+          user = UserObj(
+              fullName: Uservalue.user!.displayName,
+              emailAddress: Uservalue.user!.email,
+              phoneNumber: Uservalue.user!.phoneNumber);
           await Fluttertoast.showToast(
               msg: "You Are New User",
               toastLength: Toast.LENGTH_SHORT,

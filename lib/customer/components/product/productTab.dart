@@ -2,6 +2,7 @@ import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/productDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class productTab extends StatefulWidget {
   Product product;
@@ -12,6 +13,7 @@ class productTab extends StatefulWidget {
 }
 
 class _productTabState extends State<productTab> {
+  var f = NumberFormat("###,###,###.0#", "en_US");
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,6 +79,19 @@ class _productTabState extends State<productTab> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     widget.product.name,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ]),
+              const SizedBox(
+                height: 10,
+              ),
+              Wrap(children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${f.format(widget.product.price)} VND',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),

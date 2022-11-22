@@ -185,7 +185,9 @@ class _ProductDetailState extends State<ProductDetail> {
               height: 50.0,
               width: 300,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
