@@ -1,3 +1,6 @@
+// ignore_for_file: file_names, camel_case_types, must_be_immutable
+
+import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/productDetail.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +9,14 @@ import 'package:intl/intl.dart';
 
 class productTab extends StatefulWidget {
   Product product;
-  productTab({super.key, required this.product});
+  UserObj user;
+  productTab({super.key, required this.product, required this.user});
 
   @override
   State<productTab> createState() => _productTabState();
 }
+
+bool isfollow = false;
 
 class _productTabState extends State<productTab> {
   var f = NumberFormat("###,###,###.0#", "en_US");
@@ -21,14 +27,26 @@ class _productTabState extends State<productTab> {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Colors.blue, borderRadius: BorderRadius.circular(12)),
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade800,
+              Colors.lightBlue.shade200,
+              Colors.blueAccent.shade700,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomLeft,
+            stops: const [0.0, 0.4, 0.9],
+            tileMode: TileMode.clamp,
+          ),
+          borderRadius: BorderRadius.circular(12)),
       child: InkWell(
           onTap: () {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ProductDetail(
                           product: widget.product,
+                          user: widget.user,
                         )));
           },
           child: Column(
@@ -61,12 +79,14 @@ class _productTabState extends State<productTab> {
                             .withOpacity(0.6),
                         borderRadius: BorderRadius.circular(50)),
                     child: IconButton(
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.heart,
                         size: 30,
-                        color: Colors.black,
+                        color: (isfollow) ? Colors.red : Colors.black,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {});
+                      },
                     ),
                   )
                 ],
