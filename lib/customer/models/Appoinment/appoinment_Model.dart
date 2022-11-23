@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, must_be_immutable, prefer_typing_uninitialized_variables, prefer_collection_literals
+
 import 'package:crm_mobile/customer/models/person/employeeModel.dart';
 import 'package:crm_mobile/customer/models/person/leadModel.dart';
 import 'package:crm_mobile/customer/models/person/productOwner.dart';
@@ -50,19 +52,48 @@ class Appointment {
       required this.lead,
       required this.product,
       required this.proOwner});
+}
 
+class RequestAppointment {
+  late final name;
+  late final productId;
+  late final fullname;
+  late final phone;
+  late final email;
+  late final activityType;
+  late final description;
+  late final startDate;
+  late final startTime;
+  RequestAppointment({
+    this.name,
+    this.productId,
+    this.fullname,
+    this.phone,
+    this.email,
+    this.activityType,
+    this.description,
+    this.startDate,
+    this.startTime,
+  });
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     // data['id'] = this.id;
-    data['name'] = this.name;
-    data['productId'] = this.productId;
-    data['fullname'] = this.fullname;
-    data['phone'] = this.phone;
-    data['activityType'] = this.activityType;
-    data['description'] = this.description;
-    data['startDate'] = this.startDate;
-    data['startTime'] = this.startTime;
+    data['name'] = name;
+    data['productId'] = productId;
+    data['fullname'] = fullname;
+    data['phone'] = phone;
+    data['email'] = email;
+    data['activityType'] = activityType;
+    data['description'] = description;
+    data['startDate'] = startDate;
+    data['startTime'] = startTime;
 
     return data;
   }
+}
+
+class ActivityType {
+  late final id;
+  late final name;
+  ActivityType({this.id, this.name});
 }

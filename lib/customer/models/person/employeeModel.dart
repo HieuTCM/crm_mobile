@@ -1,3 +1,4 @@
+// ignore_for_file: file_names, camel_case_types, must_be_immutable, prefer_typing_uninitialized_variables, prefer_collection_literals
 class Role {
   late final id;
   late final name;

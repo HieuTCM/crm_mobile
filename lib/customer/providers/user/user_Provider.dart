@@ -1,14 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, prefer_collection_literals
+
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
-import 'package:crm_mobile/customer/pages/root/mainPage.dart';
-import 'package:crm_mobile/customer/pages/user/profile_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class userProviders {
   static String token = getTokenAuthenFromSharedPrefs();
@@ -47,14 +45,14 @@ class userProviders {
   //Fetch_API
   //login by email and password
   static Future<UserObj> fetchUserLogin(String email, String password) async {
-    UserObj user = new UserObj();
-    Map<String, dynamic> data = new Map<String, dynamic>();
+    UserObj user = UserObj();
+    Map<String, dynamic> data = Map<String, dynamic>();
     data['email'] = email;
     data['password'] = password;
     var body = json.encode(data);
     try {
       final res = await http.post(
-          Uri.parse('$_mainURL' + '$_loginbyEmailandPassword'),
+          Uri.parse(_mainURL + _loginbyEmailandPassword),
           headers: _header2,
           body: body);
       if (res.statusCode == 200) {
@@ -78,6 +76,15 @@ class userProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Get User failed : Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -88,12 +95,12 @@ class userProviders {
 
   //login With Google
   static Future<UserObj> fetchUserLoginWithGoogle(String value) async {
-    UserObj user = new UserObj();
+    UserObj user = UserObj();
 
     var body = json.encode(value);
 
     try {
-      final res = await http.post(Uri.parse('$_mainURL' + '$_loginWithGoogle'),
+      final res = await http.post(Uri.parse(_mainURL + _loginWithGoogle),
           headers: _header2, body: body);
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
@@ -120,6 +127,15 @@ class userProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -130,7 +146,7 @@ class userProviders {
 
   //get User information
   static Future<UserObj> fetchUserInfor() async {
-    UserObj user = new UserObj();
+    UserObj user = UserObj();
     String img = '';
     String auth = getTokenAuthenFromSharedPrefs();
     Map<String, String> header = {
@@ -140,8 +156,8 @@ class userProviders {
       "Authorization": 'Bearer $auth'
     };
     try {
-      final res = await http.get(Uri.parse('$_mainURL' + '$_getUserAvatar'),
-          headers: header);
+      final res =
+          await http.get(Uri.parse(_mainURL + _getUserAvatar), headers: header);
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
           var jsondata = json.decode(res.body);
@@ -149,13 +165,21 @@ class userProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
     }
     try {
-      final res = await http.get(
-          Uri.parse('$_mainURL' + '$_getUserInformation'),
+      final res = await http.get(Uri.parse(_mainURL + _getUserInformation),
           headers: header);
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
@@ -178,6 +202,15 @@ class userProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -199,7 +232,7 @@ class userProviders {
     print(body);
 
     try {
-      final res = await http.put(Uri.parse('$_mainURL' + '$_registerCustomer'),
+      final res = await http.put(Uri.parse(_mainURL + _registerCustomer),
           headers: header, body: body);
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
@@ -233,11 +266,15 @@ class userProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
-      } else if (res.statusCode == 400) {
-        if (res.body.isNotEmpty) {
-        } else {
-          throw Exception('Error ${res.statusCode}');
-        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());

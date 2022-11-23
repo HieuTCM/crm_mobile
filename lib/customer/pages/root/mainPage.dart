@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers
+
 import 'package:crm_mobile/customer/components/NavBar/navBar.dart';
 import 'package:crm_mobile/customer/components/product/listProductComponent.dart';
 import 'package:crm_mobile/customer/models/product/category_model.dart';
@@ -12,10 +14,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({super.key});
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -25,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   String urlImg =
       'https://i.pinimg.com/474x/3d/b7/9e/3db79e59b9052890ea1ffbef0f3970cc.jpg';
   bool waiting = true;
-  UserObj user = new UserObj();
+  UserObj user = UserObj();
   List<Category> listCate = [];
   List<Product> listProduct = [];
   String? cateSelectedID;
@@ -143,7 +144,8 @@ class _MainPageState extends State<MainPage> {
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => LoginScreen()),
+                                          builder: (context) =>
+                                              const LoginScreen()),
                                       (Route<dynamic> route) => false);
                                 },
                               ),
@@ -189,7 +191,30 @@ class _MainPageState extends State<MainPage> {
                           width: 120,
                           margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.amber,
+                              gradient: (cateSelectedID ==
+                                      listCate[index].id.toString())
+                                  ? LinearGradient(
+                                      colors: [
+                                        Colors.green,
+                                        Colors.greenAccent.shade700,
+                                        Colors.teal,
+                                      ],
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      stops: const [0.0, 0.4, 0.9],
+                                      tileMode: TileMode.clamp,
+                                    )
+                                  : LinearGradient(
+                                      colors: [
+                                        Colors.lightBlue.shade200,
+                                        Colors.blue.shade800,
+                                        Colors.blueAccent.shade700,
+                                      ],
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      stops: const [0.0, 0.6, 0.9],
+                                      tileMode: TileMode.clamp,
+                                    ),
                               borderRadius: BorderRadius.circular(12)),
                           child: ElevatedButton(
                             onPressed: () {
@@ -199,10 +224,7 @@ class _MainPageState extends State<MainPage> {
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
                               padding: const EdgeInsets.all(12),
-                              backgroundColor: (cateSelectedID ==
-                                      listCate[index].id.toString())
-                                  ? Color.fromARGB(255, 10, 76, 109)
-                                  : Colors.blue,
+                              backgroundColor: Colors.transparent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
@@ -243,7 +265,10 @@ class _MainPageState extends State<MainPage> {
                       ? const Expanded(
                           child: Center(child: CircularProgressIndicator()),
                         )
-                      : listProductComp(listProduct: listProduct)
+                      : listProductComp(
+                          listProduct: listProduct,
+                          user: user,
+                        )
                 ],
               ),
             ),

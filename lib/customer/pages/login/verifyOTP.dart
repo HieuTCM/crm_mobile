@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names
+
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/login.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
@@ -43,7 +45,7 @@ String? pin3;
 String? pin4;
 String? pin5;
 String? pin6;
-UserObj user = new UserObj();
+UserObj user = UserObj();
 
 class _verifyOTPState extends State<verifyOTP> {
   @override
@@ -92,7 +94,7 @@ class _verifyOTPState extends State<verifyOTP> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => const LoginScreen()));
                     },
                   ),
                 ),
@@ -132,7 +134,7 @@ class _verifyOTPState extends State<verifyOTP> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => const LoginScreen()));
                       },
                       child: const Text(
                         'Change phone number ?',
@@ -159,7 +161,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -183,7 +185,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -207,7 +209,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -231,7 +233,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -255,7 +257,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -279,7 +281,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                     if (value.length == 1) {
                                       FocusScope.of(context).nextFocus();
                                     }
-                                    if (value.length == 0) {
+                                    if (value.isEmpty) {
                                       FocusScope.of(context).previousFocus();
                                     }
                                     setState(() {
@@ -336,8 +338,8 @@ class _verifyOTPState extends State<verifyOTP> {
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
-                                          backgroundColor:
-                                              Color.fromARGB(255, 23, 252, 2),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 23, 252, 2),
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                       Navigator.of(context).pushReplacement(
@@ -356,9 +358,9 @@ class _verifyOTPState extends State<verifyOTP> {
                                           backgroundColor: Colors.red,
                                           textColor: Colors.white,
                                           fontSize: 16.0);
-                                      GoogleSignIn _googleSignIn =
+                                      GoogleSignIn googleSignIn =
                                           GoogleSignIn();
-                                      await _googleSignIn.signOut();
+                                      await googleSignIn.signOut();
                                       await FirebaseAuth.instance.signOut();
                                     } else {
                                       user = value;
@@ -370,14 +372,14 @@ class _verifyOTPState extends State<verifyOTP> {
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
-                                          backgroundColor:
-                                              Color.fromARGB(255, 23, 252, 2),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 23, 252, 2),
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                       Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  MainPage()));
+                                                  const MainPage()));
                                     }
                                   });
                                 }).catchError((e) {
@@ -387,7 +389,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                       gravity: ToastGravity.BOTTOM,
                                       timeInSecForIosWeb: 1,
                                       backgroundColor:
-                                          Color.fromARGB(255, 252, 2, 2),
+                                          const Color.fromARGB(255, 252, 2, 2),
                                       textColor: Colors.white,
                                       fontSize: 16.0);
                                 });

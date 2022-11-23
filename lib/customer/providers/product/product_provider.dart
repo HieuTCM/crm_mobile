@@ -1,12 +1,15 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field
+
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/person/employeeModel.dart';
 import 'package:crm_mobile/customer/models/person/productOwner.dart';
 import 'package:crm_mobile/customer/models/product/category_model.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class productProviders {
   static String token = getTokenAuthenFromSharedPrefs();
@@ -30,10 +33,10 @@ class productProviders {
   //Fetch_API
 
   static Future<List<Product>> fetchProductByCateID(String id) async {
-    Category cate = new Category();
-    Owner owner = new Owner();
-    Role role = new Role();
-    Employee epm = new Employee(role: role);
+    Category cate = Category();
+    Owner owner = Owner();
+    Role role = Role();
+    Employee epm = Employee(role: role);
     List<Product> listproduct = [];
     String auth = getTokenAuthenFromSharedPrefs();
     Map<String, String> header = {
@@ -43,8 +46,7 @@ class productProviders {
       "Authorization": 'Bearer $auth'
     };
     try {
-      final res = await http.get(
-          Uri.parse('$_mainURL' + '$_getProductByCateID' + '$id'),
+      final res = await http.get(Uri.parse(_mainURL + _getProductByCateID + id),
           headers: header);
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
@@ -125,6 +127,15 @@ class productProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} can't load product",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());

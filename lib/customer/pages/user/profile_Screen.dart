@@ -1,13 +1,13 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison
+
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/login.dart';
-import 'package:crm_mobile/customer/pages/root/mainPage.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:format/format.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -410,7 +410,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  LoginScreen()));
+                                                  const LoginScreen()));
                                     } else if (value != null) {
                                       for (String status in value) {
                                         if (status == 'Email existed') {
@@ -444,8 +444,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return 'Name more than 3 characters';
     } else if (value.length >= 50) {
       return 'Name no more than 50 characters';
-    } else
+    } else {
       return (!regExp.hasMatch(value)) ? null : 'Name Invald';
+    }
   }
 
   String? validateEmail(String value) {
@@ -472,5 +473,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else if (value != _passCon.text) {
       return 'Confirm Password not Equal';
     }
+    return null;
   }
 }

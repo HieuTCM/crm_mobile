@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print
+
+import 'dart:ui';
+
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
@@ -21,16 +25,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   Future<UserCredential> signInWithGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn();
-    await _googleSignIn
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn
         .disconnect()
         .catchError((e) {})
         .onError((error, stackTrace) => null);
-    _googleSignIn.isSignedIn().then((value) async {
-      await _googleSignIn.signOut().onError((error, stackTrace) => null);
+    googleSignIn.isSignedIn().then((value) async {
+      await googleSignIn.signOut().onError((error, stackTrace) => null);
       await FirebaseAuth.instance.signOut();
     });
-    GoogleSignInAccount? googleUser = await new GoogleSignIn().signIn();
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     String? token1 = googleAuth?.idToken.toString().substring(0, 500);
@@ -69,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //   }
   //   return user;
   // }
-  UserObj user = new UserObj();
+  UserObj user = UserObj();
   loginbyEmailandPass(String email, String pass) async {
     userProviders.fetchUserLogin(email, pass).then((value) async {
       if (value.id == null) {
@@ -88,12 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Color.fromARGB(255, 23, 252, 2),
+            backgroundColor: const Color.fromARGB(255, 23, 252, 2),
             textColor: Colors.white,
             fontSize: 16.0);
         await sharedPreferences.setString('Token', value.authToken);
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => MainPage()));
+            MaterialPageRoute(builder: (context) => const MainPage()));
       }
     });
   }
@@ -113,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Color.fromARGB(255, 23, 252, 2),
+              backgroundColor: const Color.fromARGB(255, 23, 252, 2),
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.of(context).push(MaterialPageRoute(
@@ -129,8 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
               backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16.0);
-          GoogleSignIn _googleSignIn = GoogleSignIn();
-          await _googleSignIn.signOut();
+          GoogleSignIn googleSignIn = GoogleSignIn();
+          await googleSignIn.signOut();
           await FirebaseAuth.instance.signOut();
         } else {
           user = value;
@@ -141,11 +145,11 @@ class _LoginScreenState extends State<LoginScreen> {
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
-              backgroundColor: Color.fromARGB(255, 23, 252, 2),
+              backgroundColor: const Color.fromARGB(255, 23, 252, 2),
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => MainPage()));
+              MaterialPageRoute(builder: (context) => const MainPage()));
         }
       });
     });
@@ -179,7 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -197,9 +200,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String? errorphone;
   @override
   Widget build(BuildContext context) {
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _phoneController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final phoneController = TextEditingController();
 
     //final isKeyBoard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
@@ -249,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           : 'Login By Phone Number',
                       style: const TextStyle(fontSize: 18),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Align(
                       alignment: Alignment.centerRight,
                       child: CupertinoSwitch(
@@ -269,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           children: [
                             TextField(
-                              controller: _emailController,
+                              controller: emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                   errorText: null,
@@ -284,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 26,
                             ),
                             TextField(
-                              controller: _passwordController,
+                              controller: passwordController,
                               obscureText: true,
                               decoration: const InputDecoration(
                                   hintText: "User Password",
@@ -302,7 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.center,
                         child: Center(
                             child: TextField(
-                          controller: _phoneController,
+                          controller: phoneController,
                           keyboardType: TextInputType.phone,
                           // obscureText: true,
                           decoration: InputDecoration(
@@ -322,7 +325,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text('Forget your password ?',
                         style: TextStyle(color: Colors.blue, fontSize: 16)),
-                    Spacer(),
+                    const Spacer(),
                     GestureDetector(
                       onTap: () {
                         UserObj user = UserObj();
@@ -341,27 +344,41 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.lightBlue.shade200,
+                        Colors.blue.shade800,
+                        Colors.blueAccent.shade700,
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: const [0.0, 0.4, 0.9],
+                      tileMode: TileMode.clamp,
+                    ),
+                  ),
                   width: double.infinity,
                   child: RawMaterialButton(
-                    fillColor: const Color(0xFF0069FE),
+                    fillColor: Colors.transparent,
                     elevation: 0.0,
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                     onPressed: () async {
                       if (_switchValue) {
-                        if (validatePhone(_phoneController.text) != null) {
+                        if (validatePhone(phoneController.text) != null) {
                           setState(() {
-                            errorphone = validatePhone(_phoneController.text);
+                            errorphone = validatePhone(phoneController.text);
                           });
                         } else {
-                          loginByPhoneNumber(_phoneController.text
-                              .substring(1, _phoneController.text.length));
+                          loginByPhoneNumber(phoneController.text
+                              .substring(1, phoneController.text.length));
                         }
                       } else {
                         loginbyEmailandPass(
-                            _emailController.text, _passwordController.text);
+                            emailController.text, passwordController.text);
                       }
                     },
                     child: const Text(
@@ -377,10 +394,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: 450,
                     height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.lightBlue.shade200,
+                          Colors.blue.shade800,
+                          Colors.blueAccent.shade700,
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: const [0.0, 0.4, 0.9],
+                        tileMode: TileMode.clamp,
+                      ),
+                    ),
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          foregroundColor:
+                              const Color.fromARGB(255, 255, 255, 255),
+                          backgroundColor: Colors.transparent,
                           maximumSize: const Size(double.infinity, 50)),
                       icon: const FaIcon(
                         FontAwesomeIcons.google,

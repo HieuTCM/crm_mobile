@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names
+
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/pages/login/login.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (token.isEmpty) {
               return const LoginScreen();
             } else {
-              return MainPage();
+              return const MainPage();
             }
           }
           return const Center(

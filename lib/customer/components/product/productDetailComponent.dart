@@ -1,8 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class ProductDetailComponent extends StatefulWidget {
   Product product;
   ProductDetailComponent({super.key, required this.product});
@@ -20,7 +23,7 @@ class _ProductDetailComponentState extends State<ProductDetailComponent> {
         ',  ' +
         widget.product.province;
     var f = NumberFormat("###,###,###.0#", "en_US");
-    var _maxheight = MediaQuery.of(context).size.width * 0.91;
+    var maxheight = MediaQuery.of(context).size.width * 0.91;
     String price = f.format(widget.product.price).toString();
     return DraggableScrollableSheet(
         expand: false,
@@ -32,7 +35,7 @@ class _ProductDetailComponentState extends State<ProductDetailComponent> {
               padding: const EdgeInsets.only(
                   top: 5, left: 25, right: 25, bottom: 25),
               alignment: Alignment.topLeft,
-              height: _maxheight,
+              height: maxheight,
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.only(

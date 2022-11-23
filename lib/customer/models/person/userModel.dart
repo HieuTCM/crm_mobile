@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, must_be_immutable, prefer_typing_uninitialized_variables, prefer_collection_literals
+
 class UserObj {
   late final id;
   late final fullName;
@@ -48,15 +50,15 @@ class UserObj {
     image = json["image"];
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     // data['id'] = this.id;
-    data['email'] = this.emailAddress;
-    data['phone'] = this.phoneNumber;
-    data['password'] = this.password;
-    data['fullname'] = this.fullName;
-    data['image'] = this.image;
-    data['gender'] = this.gender;
-    data['dob'] = this.dob;
+    data['email'] = emailAddress;
+    data['phone'] = phoneNumber;
+    data['password'] = password;
+    data['fullname'] = fullName;
+    data['image'] = image;
+    data['gender'] = gender;
+    data['dob'] = dob;
 
     return data;
   }
