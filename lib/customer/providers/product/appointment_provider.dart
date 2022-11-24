@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, unnecessary_string_interpolations, prefer_adjacent_string_concatenation
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unused_local_variable
 
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/Appoinment/appoinment_Model.dart';
@@ -36,7 +36,6 @@ class appointmentProvider {
   static Future<List<ActivityType>> fetchAllActivityTypes() async {
     List<ActivityType> listActivityTypes = [];
     try {
-// ignore: unnecessary_string_interpolations
       final res = await http.get(Uri.parse('$_mainURL' + '$_getActivityType'),
           headers: _header);
       if (res.statusCode == 200) {

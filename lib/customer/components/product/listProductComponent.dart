@@ -7,9 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class listProductComp extends StatefulWidget {
+  String wherecall;
+  Function getListProductByCategory;
   List<Product> listProduct;
   UserObj user;
-  listProductComp({super.key, required this.listProduct, required this.user});
+  listProductComp(
+      {super.key,
+      required this.listProduct,
+      required this.user,
+      required this.getListProductByCategory,
+      required this.wherecall});
 
   @override
   State<listProductComp> createState() => _listProductCompState();
@@ -24,8 +31,10 @@ class _listProductCompState extends State<listProductComp> {
         itemCount: widget.listProduct.length,
         itemBuilder: (context, index) {
           return productTab(
+            wherecall: widget.wherecall,
             product: widget.listProduct[index],
             user: widget.user,
+            getListProductByCategory: widget.getListProductByCategory,
           );
         },
       ),

@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'package:crm_mobile/customer/pages/product/followPgae.dart';
+import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +26,7 @@ class NavBar extends StatelessWidget {
         ),
       ),
       child: BottomAppBar(
-        color: Color.fromARGB(0, 0, 0, 0),
+        color: const Color.fromARGB(0, 0, 0, 0),
         elevation: 0.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,14 +47,24 @@ class NavBar extends StatelessWidget {
               child: IconButton(
                 icon: const FaIcon(FontAwesomeIcons.heart, color: Colors.white),
                 tooltip: 'Follow',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FollowPage()));
+                },
               ),
             ),
             Expanded(
               child: IconButton(
                 icon: const Icon(Icons.access_time, color: Colors.white),
                 tooltip: 'History ',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecentPage()));
+                },
               ),
             ),
             Expanded(

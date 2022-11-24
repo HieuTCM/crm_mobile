@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, prefer_final_fields, unused_field
 
 import 'package:crm_mobile/customer/components/NavBar/navBar.dart';
 import 'package:crm_mobile/customer/components/product/listProductComponent.dart';
@@ -30,6 +30,9 @@ class _MainPageState extends State<MainPage> {
   List<Category> listCate = [];
   List<Product> listProduct = [];
   String? cateSelectedID;
+
+  TextEditingController _searchController = TextEditingController();
+
   getUserinfo() async {
     userProviders.fetchUserInfor().then((value) {
       setState(() {
@@ -38,7 +41,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  Future getListProductByCategory(String id) async {
+  getListProductByCategory(String id) async {
     setState(() {
       waiting = true;
     });
@@ -176,6 +179,25 @@ class _MainPageState extends State<MainPage> {
                   const SizedBox(
                     height: 5,
                   ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 12),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: const InputDecoration(
+                              errorText: null,
+                              hintText: "Search",
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.black)),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   const Divider(
                     height: 10,
                     thickness: 2,
@@ -266,8 +288,10 @@ class _MainPageState extends State<MainPage> {
                           child: Center(child: CircularProgressIndicator()),
                         )
                       : listProductComp(
+                          wherecall: 'MainPage',
                           listProduct: listProduct,
                           user: user,
+                          getListProductByCategory: getListProductByCategory,
                         )
                 ],
               ),

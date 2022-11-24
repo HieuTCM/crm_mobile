@@ -39,6 +39,7 @@ class Product {
   late final soldDate;
   late final employeeSoldId;
   late final isDelete;
+  late final isFavorite;
   late final isSold;
   late Category category;
   late Employee employeeSold;
@@ -73,6 +74,7 @@ class Product {
       this.employeeSoldId,
       this.isDelete,
       this.isSold,
+      this.isFavorite,
       required this.category,
       required this.owner,
       required this.employeeSold,

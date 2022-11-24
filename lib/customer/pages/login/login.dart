@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print
 
-import 'dart:ui';
-
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';

@@ -4,8 +4,11 @@ import 'package:crm_mobile/customer/components/product/productDetailComponent.da
 import 'package:crm_mobile/customer/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
+import 'package:crm_mobile/customer/pages/product/followPgae.dart';
+import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
 import 'package:crm_mobile/customer/providers/product/appointment_provider.dart';
+import 'package:crm_mobile/customer/providers/product/product_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,9 +17,14 @@ import 'package:intl/intl.dart';
 import 'package:xen_popup_card/xen_card.dart';
 
 class ProductDetail extends StatefulWidget {
+  String wherecall;
   Product product;
   UserObj user;
-  ProductDetail({super.key, required this.product, required this.user});
+  ProductDetail(
+      {super.key,
+      required this.product,
+      required this.user,
+      required this.wherecall});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -29,6 +37,7 @@ class _ProductDetailState extends State<ProductDetail> {
   DateTime _date = DateTime.now();
   TimeOfDay _Time = TimeOfDay.now();
   bool popupClosed = false;
+  bool isFollow = false;
   previousImge() {
     setState(() {
       if (_tabIndex > 0) {
@@ -121,6 +130,11 @@ class _ProductDetailState extends State<ProductDetail> {
         }
       });
     });
+    if (widget.product.isFavorite) {
+      setState(() {
+        isFollow = true;
+      });
+    }
   }
 
   @override
@@ -194,10 +208,25 @@ class _ProductDetailState extends State<ProductDetail> {
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MainPage()));
+                              if (widget.wherecall == 'MainPage') {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainPage()));
+                              } else if (widget.wherecall == 'FollowPage') {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FollowPage()));
+                              } else if (widget.wherecall == 'RecentPage') {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RecentPage()));
+                              }
                             },
                           ),
                         ),
@@ -208,16 +237,57 @@ class _ProductDetailState extends State<ProductDetail> {
                           height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 0, 137, 250)
+                              color: const Color.fromARGB(0, 255, 255, 255)
                                   .withOpacity(0.6),
                               borderRadius: BorderRadius.circular(50)),
                           child: IconButton(
-                            icon: const FaIcon(
+                            icon: FaIcon(
                               FontAwesomeIcons.heart,
                               size: 20,
-                              color: Colors.white,
+                              color: (isFollow)
+                                  ? Colors.red
+                                  : const Color.fromARGB(255, 0, 0, 0),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              await productProviders
+                                  .updFollowProduct(widget.product.id)
+                                  .then((value) {
+                                if (value) {
+                                  setState(() {
+                                    isFollow = !isFollow;
+                                  });
+                                  if (isFollow) {
+                                    Fluttertoast.showToast(
+                                        msg: "Follow Product Successful",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: " Product Unfollowed",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 223, 0, 0),
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Follow Product failed",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              });
+                            },
                           ),
                         )
                       ],

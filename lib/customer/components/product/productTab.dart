@@ -1,25 +1,44 @@
-// ignore_for_file: file_names, camel_case_types, must_be_immutable
+// ignore_for_file: file_names, camel_case_types, must_be_immutable, use_build_context_synchronously
 
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/productDetail.dart';
+import 'package:crm_mobile/customer/providers/product/product_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class productTab extends StatefulWidget {
+  String wherecall;
+  Function getListProductByCategory;
   Product product;
   UserObj user;
-  productTab({super.key, required this.product, required this.user});
+  productTab(
+      {super.key,
+      required this.product,
+      required this.user,
+      required this.getListProductByCategory,
+      required this.wherecall});
 
   @override
   State<productTab> createState() => _productTabState();
 }
 
-bool isfollow = false;
-
 class _productTabState extends State<productTab> {
   var f = NumberFormat("###,###,###.0#", "en_US");
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,14 +59,21 @@ class _productTabState extends State<productTab> {
           ),
           borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-          onTap: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProductDetail(
-                          product: widget.product,
-                          user: widget.user,
-                        )));
+          onTap: () async {
+            OverlayLoadingProgress.start(context);
+            await productProviders
+                .fetchProductByProID(widget.product.id)
+                .then((value) {
+              OverlayLoadingProgress.stop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductDetail(
+                            wherecall: widget.wherecall,
+                            product: value,
+                            user: widget.user,
+                          )));
+            });
           },
           child: Column(
             children: [
@@ -82,10 +108,57 @@ class _productTabState extends State<productTab> {
                       icon: FaIcon(
                         FontAwesomeIcons.heart,
                         size: 30,
-                        color: (isfollow) ? Colors.red : Colors.black,
+                        color: (widget.product.isFavorite)
+                            ? Colors.red
+                            : Colors.black,
                       ),
-                      onPressed: () {
-                        setState(() {});
+                      onPressed: () async {
+                        // Navigator.pushAndRemoveUntil(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           MainPage()), // this mymainpage is your page to refresh
+                        //   (Route<dynamic> route) => false,
+                        // );
+
+                        OverlayLoadingProgress.start(context);
+                        await productProviders
+                            .updFollowProduct(widget.product.id)
+                            .then((value) {
+                          OverlayLoadingProgress.stop(context);
+                          if (value) {
+                            setState(() {
+                              widget.getListProductByCategory(
+                                  widget.product.categoryId);
+                            });
+                            (!widget.product.isFavorite)
+                                ? Fluttertoast.showToast(
+                                    msg: "Follow Product Successful",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0)
+                                : Fluttertoast.showToast(
+                                    msg: " Product Unfollowed",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Follow Product failed",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        });
                       },
                     ),
                   )
