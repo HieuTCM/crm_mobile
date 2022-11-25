@@ -1,10 +1,13 @@
-import 'dart:ui';
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names
 
 import 'package:crm_mobile/customer/components/NavBar/navBar.dart';
+import 'package:crm_mobile/customer/components/appointment/listappoitmentcomp.dart';
 import 'package:crm_mobile/customer/models/Appoinment/appoinment_Model.dart';
+import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/providers/appointment/appointment_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({super.key});
@@ -15,9 +18,10 @@ class AppointmentPage extends StatefulWidget {
 
 class _AppointmentPageState extends State<AppointmentPage> {
   bool waiting = true;
-
+  UserObj user = UserObj();
   List<Appointment> listAppointments = [];
-
+  List<String> listAppointmentStatus = ['All'];
+  AppointmentStatus appointmentStatus = AppointmentStatus();
   Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "6"});
 
   int totalRow = 0;
@@ -25,6 +29,20 @@ class _AppointmentPageState extends State<AppointmentPage> {
   int pageCurrent = 1;
 
   int totalpage = 1;
+
+  String fillter = '';
+
+  String? filterSelected;
+
+  getAppointmentStatus() async {
+    await appointmentProvider.fetchAllAppointmentStatus().then((value) {
+      setState(() {
+        for (var data in value) {
+          listAppointmentStatus.add(data.name);
+        }
+      });
+    });
+  }
 
   getListAppointment() async {
     setState(() {
@@ -45,9 +63,37 @@ class _AppointmentPageState extends State<AppointmentPage> {
     });
   }
 
+  getListAppointmentWithfillter(String value) async {
+    setState(() {
+      mapParam.update('pageNumber', (value) => value = '1');
+      pageCurrent = 1;
+      waiting = true;
+      waiting = true;
+      mapParam["sort"] = '2;false';
+      mapParam["filter"] = '7;$value';
+      if (value == 'All') {
+        mapParam.remove("filter");
+      }
+    });
+
+    await appointmentProvider.fetchAllAppointments(mapParam).then((value) {
+      setState(() {
+        listAppointments = value;
+        waiting = false;
+        totalRow = value[0].totalRow;
+        totalpage = totalRow ~/ 6;
+        if (totalRow % 6 != 0) {
+          totalpage++;
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
+    getAppointmentStatus();
     getListAppointment();
+
     super.initState();
   }
 
@@ -56,6 +102,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
     super.dispose();
   }
 
+  var f = NumberFormat("###,###,###.0#", "en_US");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,29 +142,38 @@ class _AppointmentPageState extends State<AppointmentPage> {
               const Spacer(),
               Container(
                 alignment: Alignment.center,
-                child: const Text('Page: '),
+                child: const Text('Fillter: '),
               ),
               SizedBox(
                 child: DropdownButton2(
-                  value: pageCurrent,
+                  hint: const Text('Fillter '),
+                  value: filterSelected,
                   dropdownMaxHeight: 300,
-                  items: List<int>.generate(totalpage, (int index) => index + 1,
-                          growable: true)
+                  items: listAppointmentStatus
                       .map((e) => DropdownMenuItem(
                           value: e,
                           child: Container(
-                            width: 100,
+                            width: 140,
                             alignment: Alignment.center,
-                            child: Text(e.toString()),
+                            child: Text(
+                              e,
+                              style: const TextStyle(fontSize: 15),
+                            ),
                           )))
                       .toList(),
-                  onChanged: (value) {
-                    setState(() async {
-                      pageCurrent = value!;
-                      mapParam.update('pageNumber',
-                          (value) => value = pageCurrent.toString());
-                      await getListAppointment();
+                  onChanged: (e) async {
+                    setState(() {
+                      filterSelected = e;
                     });
+                    if (e == 'All') {
+                      setState(() {
+                        mapParam.update('pageNumber', (value) => value = '1');
+                        mapParam.remove('filter');
+                      });
+
+                      await getListAppointment();
+                    }
+                    await getListAppointmentWithfillter(filterSelected!);
                   },
                 ),
               ),
@@ -127,115 +183,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
             ],
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.7,
-            margin: const EdgeInsets.all(12),
-            child: (waiting)
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: listAppointments.length,
-                    itemBuilder: (context, index) {
-                      Appointment appointment = listAppointments[index];
-                      int maxString =
-                          listAppointments[index].description.toString().length;
-                      if (listAppointments[index]
-                              .description
-                              .toString()
-                              .length >
-                          40) {
-                        maxString = 40;
-                      }
-                      String status = appointment.appointmentStatus;
-
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.all(12),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue, width: 5),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(children: [
-                          Row(
-                            children: [
-                              Text(
-                                appointment.name,
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              Text(appointment.createDate,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold))
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                appointment.product.name,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Text('${appointment.product.price}  VND',
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
-                              const Spacer(),
-                              Text('${appointment.appointmentStatus}',
-                                  style: TextStyle(
-                                      color: (status == 'Waiting')
-                                          ? Colors.yellow.shade800
-                                          : (status == 'Accepted')
-                                              ? Colors.blue.shade800
-                                              : (status == 'Finished')
-                                                  ? Colors.green.shade800
-                                                  : Colors.red,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 50,
-                            child: SingleChildScrollView(
-                              child: (maxString < 40)
-                                  ? Text(
-                                      '${appointment.description.toString().substring(0, maxString)} ',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    )
-                                  : Text(
-                                      '${appointment.description.toString().substring(0, maxString)} ...',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                            ),
-                          )
-                        ]),
-                      );
-                    },
-                  ),
-          ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.7,
+              margin: const EdgeInsets.all(12),
+              child: (waiting)
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListAppointment(listAppointments: listAppointments)),
         ],
       ),
       bottomNavigationBar: const NavBar(),

@@ -42,7 +42,9 @@ class searchProvider {
           var jsondata = json.decode(res.body);
           var datauser = jsondata['data'];
           for (var data in datauser) {
-            listprovince.add(data);
+            if (data != null) {
+              listprovince.add(data);
+            }
           }
         } else {
           throw Exception('Error ${res.statusCode}');

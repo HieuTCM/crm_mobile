@@ -99,3 +99,14 @@ class ActivityType {
   late final name;
   ActivityType({this.id, this.name});
 }
+
+class AppointmentStatus {
+  late final id;
+  late final name;
+  AppointmentStatus({this.id, this.name});
+
+  AppointmentStatus.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+}

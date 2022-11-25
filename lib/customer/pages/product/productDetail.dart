@@ -231,6 +231,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             const RecentPage()));
+                              } else if (widget.wherecall ==
+                                  'AppointmentView') {
+                                Navigator.pop(context);
                               }
                             },
                           ),

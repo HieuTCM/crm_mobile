@@ -33,6 +33,10 @@ class appointmentProvider {
 
   //Activity Type
   static const String _getActivityType = '/v1/api/Enum/activity-type';
+  //Appointment Status
+
+  static const String _getAllAppointmentStatus =
+      '/v1/api/Enum/appointment-status';
 
   //Appointment
   static const String _getAllApponitmemt = '/api/v1/Appointment/appointment?';
@@ -72,6 +76,40 @@ class appointmentProvider {
     }
 
     return listActivityTypes;
+  }
+
+  static Future<List<AppointmentStatus>> fetchAllAppointmentStatus() async {
+    List<AppointmentStatus> listActivityStatus = [];
+    try {
+      final res = await http.get(
+          Uri.parse('$_mainURL' + '$_getAllAppointmentStatus'),
+          headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          for (var data in jsondata) {
+            AppointmentStatus activityType =
+                AppointmentStatus(id: data['id'], name: data['name']);
+            listActivityStatus.add(activityType);
+          }
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listActivityStatus;
   }
 
   static Future<List<Appointment>> fetchAllAppointments(
