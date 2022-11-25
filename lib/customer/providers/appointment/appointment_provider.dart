@@ -126,7 +126,7 @@ class appointmentProvider {
             var productData = data['product'];
             if (productData is Map) {
               await productProviders
-                  .fetchProductByProID(productData['Id'])
+                  .fetchProductByProID(productData['id'])
                   .then((value) async {
                 product = value;
               });
@@ -143,7 +143,8 @@ class appointmentProvider {
                 email: data['email'],
                 activityType: data['activityType'],
                 appointmentStatus: data['appointmentStatus'],
-                description: data['description'],
+                description:
+                    data['description'].toString().replaceAll('//', '/'),
                 createDate: data['createDate'],
                 startDate: data['startDate'],
                 startTime: data['startTime'],
@@ -157,6 +158,7 @@ class appointmentProvider {
                 proOwner: product.owner,
                 totalRow: totalRow,
               );
+              listAppointment.add(appointment);
             }
           }
         }

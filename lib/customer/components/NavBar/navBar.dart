@@ -49,7 +49,7 @@ class NavBar extends StatelessWidget {
                 icon: const FaIcon(FontAwesomeIcons.heart, color: Colors.white),
                 tooltip: 'Follow',
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const FollowPage()));
@@ -61,7 +61,7 @@ class NavBar extends StatelessWidget {
                 icon: const Icon(Icons.access_time, color: Colors.white),
                 tooltip: 'History ',
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const RecentPage()));
@@ -74,7 +74,7 @@ class NavBar extends StatelessWidget {
                     color: Colors.white),
                 tooltip: 'Appointment ',
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AppointmentPage()));

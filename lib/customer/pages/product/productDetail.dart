@@ -105,14 +105,13 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   String? validateDes(String value) {
-    RegExp regExp = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
-    bool check = regExp.hasMatch(value);
+    // RegExp regExp = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
+    // RegExp regExp = RegExp('');
+    // bool check = regExp.hasMatch(value);
     if (value.isEmpty) {
       return 'Enter your Description';
-    } else if (check) {
-      return 'Enter a Valid Description';
     } else {
-      return (!regExp.hasMatch(value)) ? null : 'Description Invald';
+      return null;
     }
   }
 
@@ -471,7 +470,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                           nameRequest =
                                                               value.replaceAll(
                                                                   RegExp('\n'),
-                                                                  r' \n');
+                                                                  r' \n ');
                                                         });
                                                       },
                                                       textInputAction:
