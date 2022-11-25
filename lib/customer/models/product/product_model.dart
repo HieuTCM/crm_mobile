@@ -12,6 +12,7 @@ class ProductImgae {
 }
 
 class Product {
+  late final totalRow;
   late final id;
   late final name;
   late final categoryId;
@@ -41,13 +42,16 @@ class Product {
   late final isDelete;
   late final isFavorite;
   late final isSold;
+  late final noFavorite;
+  late final noView;
   late Category category;
   late Employee employeeSold;
   late Owner owner;
   late List<ProductImgae> listImg;
 
   Product(
-      {this.id,
+      {this.totalRow,
+      this.id,
       this.name, //
       this.categoryId,
       this.price, //
@@ -75,8 +79,22 @@ class Product {
       this.isDelete,
       this.isSold,
       this.isFavorite,
+      this.noFavorite,
+      this.noView,
       required this.category,
       required this.owner,
       required this.employeeSold,
       required this.listImg}); //
+}
+
+class Fillter {
+  late final id;
+  late final name;
+  Fillter({this.id, this.name});
+}
+
+class Sort {
+  late final id;
+  late final name;
+  Sort({this.id, this.name});
 }

@@ -24,6 +24,7 @@ class Appointment {
   late final abortReason;
   late final abortDate;
   late final acceptedDate;
+  late final totalRow;
   late Employee employee;
   late Lead lead;
   late Product product;
@@ -48,6 +49,7 @@ class Appointment {
       this.endDate,
       this.abortReason,
       this.acceptedDate,
+      this.totalRow,
       required this.employee,
       required this.lead,
       required this.product,

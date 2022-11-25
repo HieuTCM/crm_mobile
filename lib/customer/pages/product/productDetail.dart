@@ -7,7 +7,7 @@ import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/followPgae.dart';
 import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
-import 'package:crm_mobile/customer/providers/product/appointment_provider.dart';
+import 'package:crm_mobile/customer/providers/appointment/appointment_provider.dart';
 import 'package:crm_mobile/customer/providers/product/product_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -226,6 +226,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             const RecentPage()));
+                              } else if (widget.wherecall == 'SearchPage') {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RecentPage()));
                               }
                             },
                           ),
@@ -343,7 +349,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ],
           ),
           ProductDetailComponent(product: widget.product),
-          (popupClosed)
+          (widget.product.isSold)
               ? Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
@@ -351,371 +357,409 @@ class _ProductDetailState extends State<ProductDetail> {
                     height: 50.0,
                     width: 300,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.lightBlue.shade200,
-                          Colors.blue.shade800,
-                          Colors.blueAccent.shade700,
-                        ],
+                      gradient: const LinearGradient(
+                        colors: [Colors.grey, Colors.grey, Colors.grey],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
-                        stops: const [0.0, 0.6, 0.9],
+                        stops: [0.0, 0.6, 0.9],
                         tileMode: TileMode.clamp,
                       ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ))
-              : Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.all(15),
-                    height: 50.0,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.lightBlue.shade200,
-                          Colors.blue.shade800,
-                          Colors.blueAccent.shade700,
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: const [0.0, 0.6, 0.9],
-                        tileMode: TileMode.clamp,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (emailController.text == "") {
-                          emailController.text = userData.emailAddress;
-                        }
-                        if (nameController.text == "") {
-                          nameController.text = userData.fullName;
-                        }
-                        if (phoneController.text == "") {
-                          phoneController.text = userData.phoneNumber;
-                        }
-
-                        showDialog(
-                            context: context,
-                            builder: (builder) => StatefulBuilder(
-                                builder: ((context, setState) => XenPopupCard(
-                                      gutter: CardGutter(),
-                                      body: Container(
-                                          alignment: Alignment.topLeft,
-                                          padding: const EdgeInsets.all(12),
-                                          child: SingleChildScrollView(
-                                            child: Column(children: [
-                                              Row(
-                                                children: const [
-                                                  Text(
-                                                    'Name of Request : ',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                ],
-                                              ),
-                                              TextField(
-                                                  controller:
-                                                      nameRequestController,
-                                                  keyboardType:
-                                                      TextInputType.multiline,
-                                                  style: const TextStyle(
-                                                      fontSize: 14),
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      validReqName =
-                                                          validateResName(
-                                                              value);
-                                                      nameRequest =
-                                                          value.replaceAll(
-                                                              RegExp('\n'),
-                                                              r' \n');
-                                                    });
-                                                  },
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: InputDecoration(
-                                                    errorText: validReqName,
-                                                    hintText:
-                                                        "Name of Request ",
-                                                  )),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: const [
-                                                  Text(
-                                                    'Your Name :',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextField(
-                                                  controller: nameController,
-                                                  keyboardType:
-                                                      TextInputType.name,
-                                                  onChanged: (value) {
-                                                    validCusName =
-                                                        validateName(value);
-                                                  },
-                                                  style: const TextStyle(
-                                                      fontSize: 14),
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: InputDecoration(
-                                                    border:
-                                                        const OutlineInputBorder(),
-                                                    errorText: validCusName,
-                                                    hintText: "Your Name",
-                                                  )),
-                                              Row(
-                                                children: [
-                                                  const Text(
-                                                    'Type of Request :',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const Spacer(),
-                                                  SizedBox(
-                                                    child: DropdownButton2(
-                                                      hint: const Text(
-                                                          'Select Type'),
-                                                      value:
-                                                          activityTypeSelected,
-                                                      items: listActivityTypes
-                                                          .map((e) =>
-                                                              DropdownMenuItem(
-                                                                value: e,
-                                                                child: Text(
-                                                                    e.name),
-                                                              ))
-                                                          .toList(),
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          isSelectedType = true;
-                                                          activityTypeSelected =
-                                                              value;
-                                                        });
-                                                      },
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              (isSelectedType)
-                                                  ? const SizedBox()
-                                                  : Row(
-                                                      children: const [
-                                                        Spacer(),
-                                                        Text(
-                                                          'Select Type',
-                                                          style: TextStyle(
-                                                              color: Colors.red,
-                                                              fontSize: 12),
-                                                        )
-                                                      ],
-                                                    ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: const [
-                                                  Text(
-                                                    'Description :',
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextField(
-                                                controller:
-                                                    DescriptionController,
-                                                keyboardType:
-                                                    TextInputType.multiline,
-                                                maxLines: 4,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    validDes =
-                                                        validateDes(value);
-                                                    DescriptionRequest =
-                                                        value.replaceAll(
-                                                            RegExp('\n'),
-                                                            r' \n');
-                                                  });
-                                                },
-                                                decoration: InputDecoration(
-                                                    errorText: validDes,
-                                                    hintText: "Enter Remarks",
-                                                    border:
-                                                        const OutlineInputBorder(),
-                                                    focusedBorder:
-                                                        const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 1,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        0,
-                                                                        0,
-                                                                        0)))),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Text(
-                                                    "Date : ",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  IconButton(
-                                                      onPressed: (() {
-                                                        showDatePicker(
-                                                                context:
-                                                                    context,
-                                                                initialDate: DateTime(
-                                                                    DateTime.now()
-                                                                        .year,
-                                                                    DateTime.now()
-                                                                        .month,
-                                                                    DateTime.now()
-                                                                        .day),
-                                                                firstDate: DateTime(
-                                                                    DateTime.now()
-                                                                        .year,
-                                                                    DateTime.now()
-                                                                        .month,
-                                                                    DateTime.now()
-                                                                        .day),
-                                                                lastDate:
-                                                                    DateTime(
-                                                                        2050))
-                                                            .then((value) {
-                                                          setState(() {
-                                                            _date = value!;
-                                                          });
-                                                        });
-                                                      }),
-                                                      icon: const FaIcon(
-                                                        FontAwesomeIcons
-                                                            .calendar,
-                                                        color: Colors.blue,
-                                                        size: 30,
-                                                      )),
-                                                  Text(
-                                                    DateFormat(
-                                                      'MM/dd/yyyy',
-                                                    ).format(_date),
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Text(
-                                                    "Time : ",
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  IconButton(
-                                                      onPressed: (() {
-                                                        showTimePicker(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context,
-                                                                        child) {
-                                                                  return MediaQuery(
-                                                                    data: MediaQuery.of(
-                                                                            context)
-                                                                        .copyWith(
-                                                                            alwaysUse24HourFormat:
-                                                                                true),
-                                                                    child: child ??
-                                                                        Container(),
-                                                                  );
-                                                                },
-                                                                initialTime: TimeOfDay(
-                                                                    hour: TimeOfDay
-                                                                            .now()
-                                                                        .hour,
-                                                                    minute: TimeOfDay
-                                                                            .now()
-                                                                        .minute))
-                                                            .then((value) {
-                                                          setState(() {
-                                                            _Time = value!;
-                                                          });
-                                                        });
-                                                      }),
-                                                      icon: const FaIcon(
-                                                        FontAwesomeIcons.clock,
-                                                        color: Colors.blue,
-                                                        size: 30,
-                                                      )),
-                                                  Text(
-                                                    _Time.format(context),
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 100,
-                                              ),
-                                            ]),
-                                          )),
-                                    ))));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0.0,
-                      ),
-                      child: const Text(
-                        "Ask for advice",
+                      child: Text(
+                        'Product is Sold',
                         style: TextStyle(
                           fontSize: 24,
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  ))
+              : (popupClosed)
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: const EdgeInsets.all(15),
+                        height: 50.0,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.lightBlue.shade200,
+                              Colors.blue.shade800,
+                              Colors.blueAccent.shade700,
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: const [0.0, 0.6, 0.9],
+                            tileMode: TileMode.clamp,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ))
+                  : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: const EdgeInsets.all(15),
+                        height: 50.0,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.lightBlue.shade200,
+                              Colors.blue.shade800,
+                              Colors.blueAccent.shade700,
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: const [0.0, 0.6, 0.9],
+                            tileMode: TileMode.clamp,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (emailController.text == "") {
+                              emailController.text = userData.emailAddress;
+                            }
+                            if (nameController.text == "") {
+                              nameController.text = userData.fullName;
+                            }
+                            if (phoneController.text == "") {
+                              phoneController.text = userData.phoneNumber;
+                            }
+
+                            showDialog(
+                                context: context,
+                                builder: (builder) => StatefulBuilder(
+                                    builder: ((context, setState) =>
+                                        XenPopupCard(
+                                          gutter: CardGutter(),
+                                          body: Container(
+                                              alignment: Alignment.topLeft,
+                                              padding: const EdgeInsets.all(12),
+                                              child: SingleChildScrollView(
+                                                child: Column(children: [
+                                                  Row(
+                                                    children: const [
+                                                      Text(
+                                                        'Name of Request : ',
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  TextField(
+                                                      controller:
+                                                          nameRequestController,
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .multiline,
+                                                      style: const TextStyle(
+                                                          fontSize: 14),
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          validReqName =
+                                                              validateResName(
+                                                                  value);
+                                                          nameRequest =
+                                                              value.replaceAll(
+                                                                  RegExp('\n'),
+                                                                  r' \n');
+                                                        });
+                                                      },
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        errorText: validReqName,
+                                                        hintText:
+                                                            "Name of Request ",
+                                                      )),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    children: const [
+                                                      Text(
+                                                        'Your Name :',
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextField(
+                                                      controller:
+                                                          nameController,
+                                                      keyboardType:
+                                                          TextInputType.name,
+                                                      onChanged: (value) {
+                                                        validCusName =
+                                                            validateName(value);
+                                                      },
+                                                      style: const TextStyle(
+                                                          fontSize: 14),
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            const OutlineInputBorder(),
+                                                        errorText: validCusName,
+                                                        hintText: "Your Name",
+                                                      )),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        'Type of Request :',
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const Spacer(),
+                                                      SizedBox(
+                                                        child: DropdownButton2(
+                                                          hint: const Text(
+                                                              'Select Type'),
+                                                          value:
+                                                              activityTypeSelected,
+                                                          items:
+                                                              listActivityTypes
+                                                                  .map((e) =>
+                                                                      DropdownMenuItem(
+                                                                        value:
+                                                                            e,
+                                                                        child: Text(
+                                                                            e.name),
+                                                                      ))
+                                                                  .toList(),
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              isSelectedType =
+                                                                  true;
+                                                              activityTypeSelected =
+                                                                  value;
+                                                            });
+                                                          },
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  (isSelectedType)
+                                                      ? const SizedBox()
+                                                      : Row(
+                                                          children: const [
+                                                            Spacer(),
+                                                            Text(
+                                                              'Select Type',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 12),
+                                                            )
+                                                          ],
+                                                        ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    children: const [
+                                                      Text(
+                                                        'Description :',
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  TextField(
+                                                    controller:
+                                                        DescriptionController,
+                                                    keyboardType:
+                                                        TextInputType.multiline,
+                                                    maxLines: 4,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        validDes =
+                                                            validateDes(value);
+                                                        DescriptionRequest =
+                                                            value.replaceAll(
+                                                                RegExp('\n'),
+                                                                r' \n');
+                                                      });
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        errorText: validDes,
+                                                        hintText:
+                                                            "Enter Remarks",
+                                                        border:
+                                                            const OutlineInputBorder(),
+                                                        focusedBorder:
+                                                            const OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    width: 1,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            0,
+                                                                            0,
+                                                                            0)))),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Date : ",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      IconButton(
+                                                          onPressed: (() {
+                                                            showDatePicker(
+                                                                    context:
+                                                                        context,
+                                                                    initialDate: DateTime(
+                                                                        DateTime.now()
+                                                                            .year,
+                                                                        DateTime.now()
+                                                                            .month,
+                                                                        DateTime.now()
+                                                                            .day),
+                                                                    firstDate: DateTime(
+                                                                        DateTime.now()
+                                                                            .year,
+                                                                        DateTime.now()
+                                                                            .month,
+                                                                        DateTime.now()
+                                                                            .day),
+                                                                    lastDate:
+                                                                        DateTime(
+                                                                            2050))
+                                                                .then((value) {
+                                                              setState(() {
+                                                                _date = value!;
+                                                              });
+                                                            });
+                                                          }),
+                                                          icon: const FaIcon(
+                                                            FontAwesomeIcons
+                                                                .calendar,
+                                                            color: Colors.blue,
+                                                            size: 30,
+                                                          )),
+                                                      Text(
+                                                        DateFormat(
+                                                          'MM/dd/yyyy',
+                                                        ).format(_date),
+                                                        style: const TextStyle(
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Time : ",
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      IconButton(
+                                                          onPressed: (() {
+                                                            showTimePicker(
+                                                                    context:
+                                                                        context,
+                                                                    builder: (context,
+                                                                        child) {
+                                                                      return MediaQuery(
+                                                                        data: MediaQuery.of(context).copyWith(
+                                                                            alwaysUse24HourFormat:
+                                                                                true),
+                                                                        child: child ??
+                                                                            Container(),
+                                                                      );
+                                                                    },
+                                                                    initialTime: TimeOfDay(
+                                                                        hour: TimeOfDay.now()
+                                                                            .hour,
+                                                                        minute:
+                                                                            TimeOfDay.now().minute))
+                                                                .then((value) {
+                                                              setState(() {
+                                                                _Time = value!;
+                                                              });
+                                                            });
+                                                          }),
+                                                          icon: const FaIcon(
+                                                            FontAwesomeIcons
+                                                                .clock,
+                                                            color: Colors.blue,
+                                                            size: 30,
+                                                          )),
+                                                      Text(
+                                                        _Time.format(context),
+                                                        style: const TextStyle(
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 100,
+                                                  ),
+                                                ]),
+                                              )),
+                                        ))));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            backgroundColor: Colors.transparent,
+                            elevation: 0.0,
+                          ),
+                          child: const Text(
+                            "Ask for advice",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
         ],
       ),
 

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:crm_mobile/customer/pages/appointment/appointment.dart';
 import 'package:crm_mobile/customer/pages/product/followPgae.dart';
 import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
@@ -64,6 +65,19 @@ class NavBar extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const RecentPage()));
+                },
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                icon: const FaIcon(FontAwesomeIcons.calendarCheck,
+                    color: Colors.white),
+                tooltip: 'Appointment ',
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AppointmentPage()));
                 },
               ),
             ),

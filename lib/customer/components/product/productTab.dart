@@ -47,11 +47,13 @@ class _productTabState extends State<productTab> {
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.blue.shade800,
-              Colors.lightBlue.shade200,
-              Colors.blueAccent.shade700,
-            ],
+            colors: (widget.product.isSold)
+                ? [Colors.grey, Colors.grey, Colors.grey]
+                : [
+                    Colors.blue.shade800,
+                    Colors.lightBlue.shade200,
+                    Colors.blueAccent.shade700,
+                  ],
             begin: Alignment.topLeft,
             end: Alignment.bottomLeft,
             stops: const [0.0, 0.4, 0.9],
@@ -113,14 +115,6 @@ class _productTabState extends State<productTab> {
                             : Colors.black,
                       ),
                       onPressed: () async {
-                        // Navigator.pushAndRemoveUntil(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           MainPage()), // this mymainpage is your page to refresh
-                        //   (Route<dynamic> route) => false,
-                        // );
-
                         OverlayLoadingProgress.start(context);
                         await productProviders
                             .updFollowProduct(widget.product.id)
@@ -128,8 +122,13 @@ class _productTabState extends State<productTab> {
                           OverlayLoadingProgress.stop(context);
                           if (value) {
                             setState(() {
-                              widget.getListProductByCategory(
-                                  widget.product.categoryId);
+                              if (widget.wherecall == 'SearchPage') {
+                                widget.getListProductByCategory(
+                                    'MHjdLiT59asdyKu');
+                              } else {
+                                widget.getListProductByCategory(
+                                    widget.product.categoryId);
+                              }
                             });
                             (!widget.product.isFavorite)
                                 ? Fluttertoast.showToast(
@@ -160,6 +159,39 @@ class _productTabState extends State<productTab> {
                           }
                         });
                       },
+                    ),
+                  ),
+                  Positioned(
+                    top: 150,
+                    child: Container(
+                      margin: const EdgeInsets.all(6),
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 161, 159, 159)
+                            .withOpacity(0),
+                      ),
+                      child: Row(
+                        children: [
+                          const FaIcon(FontAwesomeIcons.eye),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '${widget.product.noView}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(
+                            width: 30,
+                          ),
+                          const FaIcon(FontAwesomeIcons.heart),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(widget.product.noFavorite.toString(),
+                              style: const TextStyle(fontSize: 20))
+                        ],
+                      ),
                     ),
                   )
                 ],

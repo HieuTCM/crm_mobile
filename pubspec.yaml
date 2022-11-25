@@ -65,6 +65,7 @@ dependencies:
   flutter_pw_validator: ^1.4.2
   xen_popup_card: ^0.0.1
   overlay_loading_progress: ^1.0.0
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:

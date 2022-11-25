@@ -55,20 +55,9 @@ class _RecentPageState extends State<RecentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(0.0), // here the desired height
-          child: AppBar(
-            backgroundColor: Colors.blue,
-            elevation: 0.0,
-            leading: const Padding(
-              padding: EdgeInsets.only(
-                left: 18.0,
-                top: 12.0,
-                bottom: 12.0,
-                right: 12.0,
-              ),
-            ),
-          )),
+      appBar: AppBar(
+        title: const Text('Recent Product'),
+      ),
       body: Container(
         margin: const EdgeInsets.all(10),
         child: Column(

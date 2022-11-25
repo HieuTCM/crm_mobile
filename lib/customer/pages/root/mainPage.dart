@@ -6,6 +6,7 @@ import 'package:crm_mobile/customer/models/product/category_model.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/login/login.dart';
+import 'package:crm_mobile/customer/pages/search/search.dart';
 import 'package:crm_mobile/customer/providers/product/category_provider.dart';
 import 'package:crm_mobile/customer/providers/product/product_provider.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
@@ -104,196 +105,216 @@ class _MainPageState extends State<MainPage> {
           )),
       body: (user.id == null)
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              margin: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                          width: 75,
-                          height: 75,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: CircleAvatar(
-                            radius: 48, // Image radius
-                            backgroundImage: NetworkImage(
-                                (user.image!.toString().isEmpty)
-                                    ? urlImg
-                                    : user.image),
-                          )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Row(children: [
-                        Column(
-                          children: [
-                            Wrap(
-                              children: [
-                                Text('Welcome, ${user.fullName}'),
-                              ],
-                            ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: ElevatedButton(
-                                child: const Text('Sign Out'),
-                                onPressed: () async {
-                                  GoogleSignIn _googleSignIn = GoogleSignIn();
-                                  await _googleSignIn.signOut();
-                                  await FirebaseAuth.instance.signOut();
-
-                                  await sharedPreferences.clear();
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginScreen()),
-                                      (Route<dynamic> route) => false);
-                                },
+          : SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                            width: 75,
+                            height: 75,
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                            child: CircleAvatar(
+                              radius: 48, // Image radius
+                              backgroundImage: NetworkImage(
+                                  (user.image!.toString().isEmpty)
+                                      ? urlImg
+                                      : user.image),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Row(children: [
+                          Column(
+                            children: [
+                              Wrap(
+                                children: [
+                                  Text('Welcome, ${user.fullName}'),
+                                ],
                               ),
-                            ),
-                          ],
-                        )
-                      ]),
-                      const Spacer(),
-                      Container(
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: ElevatedButton(
+                                  child: const Text('Sign Out'),
+                                  onPressed: () async {
+                                    GoogleSignIn _googleSignIn = GoogleSignIn();
+                                    await _googleSignIn.signOut();
+                                    await FirebaseAuth.instance.signOut();
+
+                                    await sharedPreferences.clear();
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen()),
+                                        (Route<dynamic> route) => false);
+                                  },
+                                ),
+                              ),
+                            ],
+                          )
+                        ]),
+                        const Spacer(),
+                        Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                                border: Border.all(
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    width: 4.0,
+                                    style: BorderStyle.solid)),
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.notifications),
+                                  tooltip: 'Notifications',
+                                  onPressed: () {},
+                                ))),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 12),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: const InputDecoration(
+                                hintText: "Search",
+                                prefixIcon:
+                                    Icon(Icons.search, color: Colors.black)),
+                          ),
+                        ),
+                        SizedBox(
                           width: 50,
                           height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50)),
-                              border: Border.all(
-                                  color: const Color.fromARGB(255, 0, 0, 0),
-                                  width: 4.0,
-                                  style: BorderStyle.solid)),
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                icon: const Icon(Icons.notifications),
-                                tooltip: 'Notifications',
-                                onPressed: () {},
-                              ))),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 12),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: const InputDecoration(
-                              errorText: null,
-                              hintText: "Search",
-                              prefixIcon:
-                                  Icon(Icons.search, color: Colors.black)),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Divider(
-                    height: 10,
-                    thickness: 2,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 170,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: listCate.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: 120,
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              gradient: (cateSelectedID ==
-                                      listCate[index].id.toString())
-                                  ? LinearGradient(
-                                      colors: [
-                                        Colors.green,
-                                        Colors.greenAccent.shade700,
-                                        Colors.teal,
-                                      ],
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      stops: const [0.0, 0.4, 0.9],
-                                      tileMode: TileMode.clamp,
-                                    )
-                                  : LinearGradient(
-                                      colors: [
-                                        Colors.lightBlue.shade200,
-                                        Colors.blue.shade800,
-                                        Colors.blueAccent.shade700,
-                                      ],
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      stops: const [0.0, 0.6, 0.9],
-                                      tileMode: TileMode.clamp,
-                                    ),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: ElevatedButton(
+                          child: IconButton(
+                            icon: const Icon(Icons.search, size: 35),
                             onPressed: () {
-                              getListProductByCategory(listCate[index].id);
-                              cateSelectedID = listCate[index].id;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchPage(
+                                            SearchValue: _searchController.text,
+                                          )));
                             },
-                            style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              padding: const EdgeInsets.all(12),
-                              backgroundColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                            ),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  listCate[index].name,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Center(
-                                  child: FaIcon(icons[index], size: 50),
-                                )
-                              ],
-                            )),
                           ),
-                        );
-                      },
+                        )
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Divider(
-                    height: 10,
-                    thickness: 2,
-                  ),
-                  (waiting)
-                      ? const Expanded(
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      : listProductComp(
-                          wherecall: 'MainPage',
-                          listProduct: listProduct,
-                          user: user,
-                          getListProductByCategory: getListProductByCategory,
-                        )
-                ],
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Divider(
+                      height: 10,
+                      thickness: 2,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 170,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listCate.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 120,
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                gradient: (cateSelectedID ==
+                                        listCate[index].id.toString())
+                                    ? LinearGradient(
+                                        colors: [
+                                          Colors.green,
+                                          Colors.greenAccent.shade700,
+                                          Colors.teal,
+                                        ],
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        stops: const [0.0, 0.4, 0.9],
+                                        tileMode: TileMode.clamp,
+                                      )
+                                    : LinearGradient(
+                                        colors: [
+                                          Colors.lightBlue.shade200,
+                                          Colors.blue.shade800,
+                                          Colors.blueAccent.shade700,
+                                        ],
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        stops: const [0.0, 0.6, 0.9],
+                                        tileMode: TileMode.clamp,
+                                      ),
+                                borderRadius: BorderRadius.circular(12)),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                getListProductByCategory(listCate[index].id);
+                                cateSelectedID = listCate[index].id;
+                              },
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                padding: const EdgeInsets.all(12),
+                                backgroundColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                              child: Center(
+                                  child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    listCate[index].name,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: FaIcon(icons[index], size: 50),
+                                  )
+                                ],
+                              )),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Divider(
+                      height: 10,
+                      thickness: 2,
+                    ),
+                    (waiting)
+                        ? const Expanded(
+                            child: Center(child: CircularProgressIndicator()),
+                          )
+                        : listProductComp(
+                            wherecall: 'MainPage',
+                            listProduct: listProduct,
+                            user: user,
+                            getListProductByCategory: getListProductByCategory,
+                          ),
+                    // const SizedBox(
+                    //   height: 50,
+                    // ),
+                  ],
+                ),
               ),
             ),
       bottomNavigationBar: const NavBar(),
