@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _emailCon = TextEditingController();
   TextEditingController _phoneCon = TextEditingController();
 
-  File? _image;
+  File _image = File('');
 
   Future _pickImage(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
@@ -62,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _image = img;
       // Navigator.pop(context);
+      userProviders.updImageAccount(_image);
     });
   }
 
@@ -113,7 +114,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ? Center(
                                     child: CircleAvatar(
                                     radius: 48, // Image radius
-                                    backgroundImage: NetworkImage(urlImg),
+                                    backgroundImage: NetworkImage(
+                                        (userData.image!.toString().isEmpty)
+                                            ? urlImg
+                                            : userData.image),
                                   ))
                                 : Center(
                                     child: CircleAvatar(
@@ -125,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     onPressed: () {
                                       _pickImage(ImageSource.gallery);
                                     },
-                                    child: Text('Upload Image'))),
+                                    child: const Text('Upload Image'))),
                             const SizedBox(
                               height: 10,
                             ),
@@ -143,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 30),
                                     child: TextFormField(
+                                      autofocus: false,
                                       controller: _nameCon,
                                       onChanged: ((value) {
                                         setState(() {
@@ -347,7 +352,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         userProviders
                                             .updCustomerAccount(useData)
                                             .then((value) {
-                                          Navigator.push(
+                                          Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

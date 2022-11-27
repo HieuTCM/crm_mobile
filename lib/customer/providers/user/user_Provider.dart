@@ -1,7 +1,9 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, prefer_collection_literals
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, prefer_collection_literals, deprecated_member_use
 
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +41,8 @@ class userProviders {
       '/api/v1/CustomerAccount/customer-account/add';
   static const String _updProfile =
       '/api/v1/CustomerAccount/customer-account/update';
+  static const String _updImageProfile =
+      '/api/v1/CustomerAccount/customer-account/update-avatar';
   static const String _getUserInformation = '/api/v1/CustomerAccount/profile';
   static const String _getUserAvatar =
       '/api/v1/CustomerAccount/customer-account/get-avatar';
@@ -313,6 +317,31 @@ class userProviders {
             textColor: Colors.white,
             fontSize: 16.0);
       }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
+  }
+
+  static Future<String> updImageAccount(File file) async {
+    String status = '';
+
+    try {
+      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      // get file length
+      var length = await file.length();
+      final request = await http.MultipartRequest(
+          "PUT", Uri.parse(_mainURL + _updImageProfile));
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['accept'] = 'text/plain';
+      request.headers['Content-Type'] = 'multipart/form-data';
+
+      request.files.add(await http.MultipartFile('picture', stream, length,
+          filename: basename(file.path)));
+      var res = await request.send();
+
+      print(res.statusCode);
     } on HttpException catch (e) {
       print(e.toString());
     }

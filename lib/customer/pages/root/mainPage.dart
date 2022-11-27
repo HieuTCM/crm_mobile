@@ -180,6 +180,7 @@ class _MainPageState extends State<MainPage> {
                           padding: const EdgeInsets.only(left: 12),
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextField(
+                            autofocus: false,
                             controller: _searchController,
                             decoration: const InputDecoration(
                                 hintText: "Search",
