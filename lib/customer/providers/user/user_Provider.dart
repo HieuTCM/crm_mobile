@@ -11,8 +11,8 @@ import 'dart:io';
 class userProviders {
   static String token = getTokenAuthenFromSharedPrefs();
 
-  static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
-
+  // static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
+  static const String _mainURL = 'https://backup-dtv-crm.azurewebsites.net';
   //Header
   static final Map<String, String> _header = {
     'Content-Type': 'application/json; charset=UTF-8',
@@ -37,6 +37,8 @@ class userProviders {
   //User
   static const String _registerCustomer =
       '/api/v1/CustomerAccount/customer-account/add';
+  static const String _updProfile =
+      '/api/v1/CustomerAccount/customer-account/update';
   static const String _getUserInformation = '/api/v1/CustomerAccount/profile';
   static const String _getUserAvatar =
       '/api/v1/CustomerAccount/customer-account/get-avatar';
@@ -281,5 +283,40 @@ class userProviders {
     }
 
     return listStatus;
+  }
+
+  static Future<String> updCustomerAccount(UserObj userValue) async {
+    String status = '';
+    var data = userValue.toJson();
+    var body = json.encode(data);
+
+    try {
+      final res = await http.put(Uri.parse(_mainURL + _updProfile),
+          headers: _header, body: body);
+      if (res.statusCode == 200) {
+        print(res.body);
+        Fluttertoast.showToast(
+            msg: "Update Successful",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
   }
 }

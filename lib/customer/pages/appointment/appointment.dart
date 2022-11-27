@@ -5,6 +5,7 @@ import 'package:crm_mobile/customer/components/appointment/listappoitmentcomp.da
 import 'package:crm_mobile/customer/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/providers/appointment/appointment_provider.dart';
+import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +34,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
   String fillter = '';
 
   String? filterSelected;
+
+  getUserinfo() async {
+    userProviders.fetchUserInfor().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
+  }
 
   getAppointmentStatus() async {
     await appointmentProvider.fetchAllAppointmentStatus().then((value) {
@@ -78,19 +87,25 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
     await appointmentProvider.fetchAllAppointments(mapParam).then((value) {
       setState(() {
-        listAppointments = value;
-        waiting = false;
-        totalRow = value[0].totalRow;
-        totalpage = totalRow ~/ 6;
-        if (totalRow % 6 != 0) {
-          totalpage++;
+        if (value[0].appointmentStatus == 'NotFound') {
+          listAppointments = [];
+          totalpage = 1;
+        } else {
+          listAppointments = value;
+          totalRow = value[0].totalRow;
+          totalpage = totalRow ~/ 6;
+          if (totalRow % 6 != 0) {
+            totalpage++;
+          }
         }
+        waiting = false;
       });
     });
   }
 
   @override
   void initState() {
+    getUserinfo();
     getAppointmentStatus();
     getListAppointment();
 
@@ -190,7 +205,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : ListAppointment(listAppointments: listAppointments)),
+                  : (listAppointments.isEmpty)
+                      ? const Center(
+                          child: Text('Apppoointments not found'),
+                        )
+                      : ListAppointment(
+                          listAppointments: listAppointments,
+                          user: user,
+                        )),
         ],
       ),
       bottomNavigationBar: const NavBar(),

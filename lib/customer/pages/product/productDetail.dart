@@ -97,8 +97,8 @@ class _ProductDetailState extends State<ProductDetail> {
       return 'Enter a Valid Resquest Name';
     } else if (value.length < 3) {
       return 'Resquest Name more than 3 characters';
-    } else if (value.length >= 50) {
-      return 'Resquest Name no more than 50 characters';
+    } else if (value.length >= 30) {
+      return 'Resquest Name no more than 30 characters';
     } else {
       return (!regExp.hasMatch(value)) ? null : 'Resquest Name Invald';
     }
@@ -110,6 +110,10 @@ class _ProductDetailState extends State<ProductDetail> {
     // bool check = regExp.hasMatch(value);
     if (value.isEmpty) {
       return 'Enter your Description';
+    } else if (value.length < 3) {
+      return 'Resquest Name more than 3 characters';
+    } else if (value.length >= 50) {
+      return 'Description no more than 50 characters';
     } else {
       return null;
     }
@@ -612,7 +616,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     decoration: InputDecoration(
                                                         errorText: validDes,
                                                         hintText:
-                                                            "Enter Remarks",
+                                                            "Enter Description",
                                                         border:
                                                             const OutlineInputBorder(),
                                                         focusedBorder:

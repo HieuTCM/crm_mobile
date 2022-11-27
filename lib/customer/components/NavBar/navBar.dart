@@ -4,12 +4,18 @@ import 'package:crm_mobile/customer/pages/appointment/appointment.dart';
 import 'package:crm_mobile/customer/pages/product/followPgae.dart';
 import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
+import 'package:crm_mobile/customer/pages/user/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   const NavBar({super.key});
 
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,7 +91,10 @@ class NavBar extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.menu, color: Colors.white),
                 tooltip: 'More',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                },
               ),
             ),
           ],

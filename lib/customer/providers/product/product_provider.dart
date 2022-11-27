@@ -14,8 +14,8 @@ import 'dart:io';
 class productProviders {
   static String token = getTokenAuthenFromSharedPrefs();
 
-  static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
-
+  // static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
+  static const String _mainURL = 'https://backup-dtv-crm.azurewebsites.net';
   //Header
   static final Map<String, String> _header = {
     'Content-Type': 'application/json; charset=UTF-8',
@@ -147,13 +147,7 @@ class productProviders {
                   title: 'Image',
                   url:
                       // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://www.sustainableplaces.eu/wp-content/uploads/2017/02/SmartBuilding.jpg');
-              listImg.add(img);
-              img = ProductImgae(
-                  title: 'Image',
-                  url:
-                      // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://cdn.britannica.com/08/187508-050-D6FB5173/Shanghai-Tower-Gensler-San-Francisco-world-Oriental-2015.jpg');
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png');
               listImg.add(img);
             } else {
               for (var imgdata in listImgData) {
@@ -265,13 +259,7 @@ class productProviders {
                   title: 'Image',
                   url:
                       // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://www.sustainableplaces.eu/wp-content/uploads/2017/02/SmartBuilding.jpg');
-              listImg.add(img);
-              img = ProductImgae(
-                  title: 'Image',
-                  url:
-                      // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://cdn.britannica.com/08/187508-050-D6FB5173/Shanghai-Tower-Gensler-San-Francisco-world-Oriental-2015.jpg');
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png');
               listImg.add(img);
             } else {
               for (var imgdata in listImgData) {
@@ -507,13 +495,7 @@ class productProviders {
                   title: 'Image',
                   url:
                       // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://www.sustainableplaces.eu/wp-content/uploads/2017/02/SmartBuilding.jpg');
-              listImg.add(img);
-              img = ProductImgae(
-                  title: 'Image',
-                  url:
-                      // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
-                      'https://cdn.britannica.com/08/187508-050-D6FB5173/Shanghai-Tower-Gensler-San-Francisco-world-Oriental-2015.jpg');
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png');
               listImg.add(img);
             } else {
               for (var imgdata in listImgData) {

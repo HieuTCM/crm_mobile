@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, camel_case_types, must_be_immutable, prefer_typing_uninitialized_variables, prefer_collection_literals
 
+import 'package:crm_mobile/customer/models/feedback/feedback_model.dart';
 import 'package:crm_mobile/customer/models/person/employeeModel.dart';
 import 'package:crm_mobile/customer/models/person/leadModel.dart';
 import 'package:crm_mobile/customer/models/person/productOwner.dart';
@@ -25,10 +26,12 @@ class Appointment {
   late final abortDate;
   late final acceptedDate;
   late final totalRow;
+  late final isFeedback;
   late Employee employee;
   late Lead lead;
   late Product product;
   late Owner proOwner;
+  late Feedbackmodel feedback;
 
   Appointment(
       {this.id,
@@ -50,10 +53,12 @@ class Appointment {
       this.abortReason,
       this.acceptedDate,
       this.totalRow,
+      this.isFeedback,
       required this.employee,
       required this.lead,
       required this.product,
-      required this.proOwner});
+      required this.proOwner,
+      required this.feedback});
 }
 
 class RequestAppointment {

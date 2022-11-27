@@ -10,16 +10,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:intl/intl.dart';
 
-class ProfileScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   UserObj user;
-  ProfileScreen({super.key, required this.user});
+  RegisterScreen({super.key, required this.user});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   String urlImg =
       'https://i.pinimg.com/474x/3d/b7/9e/3db79e59b9052890ea1ffbef0f3970cc.jpg';
 

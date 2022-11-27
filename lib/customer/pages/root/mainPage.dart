@@ -79,14 +79,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<IconData> icons = [
-      FontAwesomeIcons.shop,
-      FontAwesomeIcons.house,
-      FontAwesomeIcons.building,
-      FontAwesomeIcons.city,
-      FontAwesomeIcons.hotel,
-      FontAwesomeIcons.building
-    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -284,7 +276,11 @@ class _MainPageState extends State<MainPage> {
                                     height: 20,
                                   ),
                                   Center(
-                                    child: FaIcon(icons[index], size: 50),
+                                    child: FaIcon(
+                                        icons[(index > 5)
+                                            ? (index % 5) - 1
+                                            : index],
+                                        size: 50),
                                   )
                                 ],
                               )),
@@ -320,4 +316,13 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: const NavBar(),
     );
   }
+
+  List<IconData> icons = [
+    FontAwesomeIcons.shop,
+    FontAwesomeIcons.house,
+    FontAwesomeIcons.building,
+    FontAwesomeIcons.city,
+    FontAwesomeIcons.hotel,
+    FontAwesomeIcons.building,
+  ];
 }

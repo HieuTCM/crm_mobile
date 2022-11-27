@@ -66,6 +66,8 @@ dependencies:
   xen_popup_card: ^0.0.1
   overlay_loading_progress: ^1.0.0
   flutter_switch: ^0.3.2
+  rating_dialog: ^2.0.4
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:

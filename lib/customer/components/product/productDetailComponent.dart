@@ -17,11 +17,13 @@ class ProductDetailComponent extends StatefulWidget {
 class _ProductDetailComponentState extends State<ProductDetailComponent> {
   @override
   Widget build(BuildContext context) {
-    String address = widget.product.street +
-        ', ' +
-        widget.product.district +
-        ',  ' +
-        widget.product.province;
+    // String address = widget.product.street +
+    //     ', ' +
+    //     widget.product.district +
+    //     ',  ' +
+    //     widget.product.province;
+    String address =
+        '${(widget.product.street == null) ? '' : widget.product.street}, ${widget.product.district}, ${widget.product.province} ';
     var f = NumberFormat("###,###,###.0#", "en_US");
     var maxheight = MediaQuery.of(context).size.width * 0.91;
     String price = f.format(widget.product.price).toString();

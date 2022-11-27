@@ -3,7 +3,7 @@
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
-import 'package:crm_mobile/customer/pages/user/profile_Screen.dart';
+import 'package:crm_mobile/customer/pages/user/registerPage.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
               textColor: Colors.white,
               fontSize: 16.0);
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ProfileScreen(
+              builder: (context) => RegisterScreen(
                     user: user,
                   )));
         } else if (value.status == 'USER_INVALID' || value.id == null) {
@@ -330,7 +330,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfileScreen(
+                                builder: (context) => RegisterScreen(
                                       user: user,
                                     )));
                       },

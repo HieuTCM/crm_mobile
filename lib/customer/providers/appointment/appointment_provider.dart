@@ -1,13 +1,15 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unused_local_variable
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unused_local_variable, prefer_collection_literals
 
 import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/Appoinment/appoinment_Model.dart';
+import 'package:crm_mobile/customer/models/feedback/feedback_model.dart';
 import 'package:crm_mobile/customer/models/person/employeeModel.dart';
 import 'package:crm_mobile/customer/models/person/leadModel.dart';
 import 'package:crm_mobile/customer/models/person/productOwner.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/category_model.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
+import 'package:crm_mobile/customer/providers/feedback/feedbback_provider.dart';
 import 'package:crm_mobile/customer/providers/product/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,7 +20,8 @@ import 'dart:io';
 class appointmentProvider {
   static String token = getTokenAuthenFromSharedPrefs();
 
-  static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
+  // static const String _mainURL = 'https://dtv-crm.azurewebsites.net';
+  static const String _mainURL = 'https://backup-dtv-crm.azurewebsites.net';
 
   //Header
   static final Map<String, String> _header = {
@@ -40,6 +43,8 @@ class appointmentProvider {
 
   //Appointment
   static const String _getAllApponitmemt = '/api/v1/Appointment/appointment?';
+  static const String _updCancelApponitmemt =
+      '/api/v1/Appointment/appointment/cancel';
   static const String _insApponitmemt =
       '/api/v1/Appointment/appointment/add-by-customer';
 
@@ -76,6 +81,37 @@ class appointmentProvider {
     }
 
     return listActivityTypes;
+  }
+
+  static Future<String> updCancelApponitmemt(String id, String value) async {
+    String status = '';
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['abortReason'] = value;
+    var body = json.encode(data);
+    try {
+      final res = await http.put(
+          Uri.parse('$_mainURL' + '$_updCancelApponitmemt'),
+          headers: _header,
+          body: body);
+      if (res.statusCode == 200) {
+        status = "Successful";
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} cancel Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
   }
 
   static Future<List<AppointmentStatus>> fetchAllAppointmentStatus() async {
@@ -123,6 +159,7 @@ class appointmentProvider {
     int noFavorite = 0;
     int noView = 0;
     List<ProductImgae> listImg = [];
+    Feedbackmodel feedback = Feedbackmodel();
     Lead lead = Lead(account: user, employee: epm);
     Product product = Product(
         category: cate, owner: owner, employeeSold: epm, listImg: listImg);
@@ -169,37 +206,54 @@ class appointmentProvider {
                 product = value;
               });
             }
+            if (data['isFeedback'] == true) {
+              await feedbackProvider
+                  .fetchFeedbackbyAppointmentID(data['id'])
+                  .then((value) {
+                feedback = value;
+              });
+            }
             if (data is Map) {
               Appointment appointment = Appointment(
-                id: data['id'],
-                name: data['name'],
-                employeeId: data['employeeId'],
-                leadId: data['leadId'],
-                productId: data['productId'],
-                fullname: data['fullname'],
-                phone: data['phone'],
-                email: data['email'],
-                activityType: data['activityType'],
-                appointmentStatus: data['appointmentStatus'],
-                description:
-                    data['description'].toString().replaceAll('//', '/'),
-                createDate: data['createDate'],
-                startDate: data['startDate'],
-                startTime: data['startTime'],
-                endDate: data['endDate'],
-                abortReason: data['abortReason'],
-                abortDate: data['abortDate'],
-                acceptedDate: data['acceptedDate'],
-                employee: epm,
-                lead: lead,
-                product: product,
-                proOwner: product.owner,
-                totalRow: totalRow,
-              );
+                  id: data['id'],
+                  name: data['name'],
+                  employeeId: data['employeeId'],
+                  leadId: data['leadId'],
+                  productId: data['productId'],
+                  fullname: data['fullname'],
+                  phone: data['phone'],
+                  email: data['email'],
+                  activityType: data['activityType'],
+                  appointmentStatus: data['appointmentStatus'],
+                  description:
+                      data['description'].toString().replaceAll('//', '/'),
+                  createDate: data['createDate'],
+                  startDate: data['startDate'],
+                  startTime: data['startTime'],
+                  endDate: data['endDate'],
+                  abortReason: data['abortReason'],
+                  abortDate: data['abortDate'],
+                  acceptedDate: data['acceptedDate'],
+                  isFeedback: data['isFeedback'],
+                  employee: epm,
+                  lead: lead,
+                  product: product,
+                  proOwner: product.owner,
+                  totalRow: totalRow,
+                  feedback: feedback);
               listAppointment.add(appointment);
             }
           }
         }
+      } else {
+        Appointment appointment = Appointment(
+            appointmentStatus: 'NotFound',
+            employee: epm,
+            lead: lead,
+            proOwner: owner,
+            product: product,
+            feedback: feedback);
+        listAppointment.add(appointment);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -215,7 +269,7 @@ class appointmentProvider {
       var body = json.encode(data);
 
       final res = await http.post(Uri.parse('$_mainURL' + '$_insApponitmemt'),
-          headers: _header, body: body);
+          headers: _header, body: body.toString().replaceAll(r'\\', r'\'));
       if (res.statusCode == 200) {
         if (res.body.isNotEmpty) {
           var jsondata = json.decode(res.body);

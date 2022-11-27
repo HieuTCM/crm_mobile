@@ -3,7 +3,7 @@
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/pages/login/login.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
-import 'package:crm_mobile/customer/pages/user/profile_Screen.dart';
+import 'package:crm_mobile/customer/pages/user/registerPage.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -345,7 +345,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                       Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ProfileScreen(
+                                                  RegisterScreen(
                                                     user: user,
                                                   )));
                                     } else if (value.status == 'USER_INVALID' ||

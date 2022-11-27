@@ -7,18 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentDetail extends StatefulWidget {
+  UserObj user;
   Appointment appointment;
-  AppointmentDetail({super.key, required this.appointment});
+  AppointmentDetail({super.key, required this.appointment, required this.user});
 
   @override
   State<AppointmentDetail> createState() => _AppointmentDetailState();
 }
 
 class _AppointmentDetailState extends State<AppointmentDetail> {
-  UserObj user = UserObj();
   var f = NumberFormat("###,###,###.0#", "en_US");
   @override
   Widget build(BuildContext context) {
+    UserObj user = widget.user;
     Appointment appointment = widget.appointment;
     return Container(
         alignment: Alignment.topLeft,
