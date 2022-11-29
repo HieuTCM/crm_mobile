@@ -6,7 +6,6 @@ import 'package:crm_mobile/employee/pages/root/mainPage.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -138,12 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return (regExp.hasMatch(value)) ? null : "Invalid mobile";
   }
 
-  bool _switchValue = true;
   String? errorphone;
   @override
   Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
     final phoneController = TextEditingController();
 
     //final isKeyBoard = MediaQuery.of(context).viewInsets.bottom != 0;

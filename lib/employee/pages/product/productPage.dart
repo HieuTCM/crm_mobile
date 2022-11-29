@@ -1,20 +1,15 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, prefer_final_fields, unused_field
 
-import 'package:crm_mobile/employee/components/NavBar/navBar.dart';
 import 'package:crm_mobile/employee/components/product/listProductComponent.dart';
 import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
-import 'package:crm_mobile/employee/pages/login/login.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
 import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
-import 'package:crm_mobile/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});

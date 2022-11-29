@@ -77,7 +77,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
       mapParam.update('pageNumber', (value) => value = '1');
       pageCurrent = 1;
       waiting = true;
-      waiting = true;
       mapParam["sort"] = '2;false';
       mapParam["filter"] = '7;$value';
       if (value == 'All') {
@@ -205,7 +204,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : (listAppointments.isEmpty)
+                  : (listAppointments.isEmpty ||
+                          listAppointments[0].appointmentStatus == 'NotFound')
                       ? const Center(
                           child: Text('Apppoointments not found'),
                         )
@@ -215,7 +215,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                         )),
         ],
       ),
-      bottomNavigationBar: const NavBar(),
+      // bottomNavigationBar: const NavBar(),
     );
   }
 }

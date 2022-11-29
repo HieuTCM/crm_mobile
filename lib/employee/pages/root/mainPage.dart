@@ -3,9 +3,11 @@
 import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
+import 'package:crm_mobile/employee/pages/appointment/appointment.dart';
 import 'package:crm_mobile/employee/pages/login/login.dart';
 import 'package:crm_mobile/employee/pages/product/productPage.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
+import 'package:crm_mobile/employee/pages/productOwner/productOwnerPage.dart';
 import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
@@ -193,7 +195,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.box,
                                         size: 50),
                                     Colors.blue,
-                                    ProductPage()),
+                                    const ProductPage()),
                                 const SizedBox(
                                   width: 30,
                                 ),
@@ -202,7 +204,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.userTie,
                                         size: 50),
                                     Colors.blue,
-                                    SearchPage(SearchValue: '')),
+                                    const ProductOwnerPage()),
                                 const Spacer(),
                               ],
                             ),
@@ -226,7 +228,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.calendarCheck,
                                         size: 50),
                                     Colors.blueGrey,
-                                    SearchPage(SearchValue: '')),
+                                    const AppointmentPage()),
                                 const Spacer(),
                               ],
                             ),

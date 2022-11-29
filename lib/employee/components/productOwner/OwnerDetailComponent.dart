@@ -5,25 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 // ignore: must_be_immutable
-class ProductDetailComponent extends StatefulWidget {
+class OwnerDetailComponent extends StatefulWidget {
   Product product;
-  ProductDetailComponent({super.key, required this.product});
+  OwnerDetailComponent({super.key, required this.product});
 
   @override
-  State<ProductDetailComponent> createState() => _ProductDetailComponentState();
+  State<OwnerDetailComponent> createState() => _OwnerDetailComponentState();
 }
 
-class _ProductDetailComponentState extends State<ProductDetailComponent> {
+class _OwnerDetailComponentState extends State<OwnerDetailComponent> {
   @override
   Widget build(BuildContext context) {
-    // String address = widget.product.street +
-    //     ', ' +
-    //     widget.product.district +
-    //     ',  ' +
-    //     widget.product.province;
     String address =
         '${(widget.product.street == null) ? '' : widget.product.street}, ${widget.product.district}, ${widget.product.province} ';
     var f = NumberFormat("###,###,###.0#", "en_US");
@@ -384,8 +378,7 @@ class _ProductDetailComponentState extends State<ProductDetailComponent> {
                               },
                               child: Row(
                                 children: [
-                                  const FaIcon(FontAwesomeIcons.phone,
-                                      color: Colors.blue),
+                                  const FaIcon(FontAwesomeIcons.phone),
                                   const SizedBox(
                                     width: 10,
                                   ),

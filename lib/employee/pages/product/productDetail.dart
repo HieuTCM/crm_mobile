@@ -4,28 +4,15 @@ import 'package:crm_mobile/employee/components/product/productDetailComponent.da
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
-import 'package:crm_mobile/employee/pages/product/followPgae.dart';
-import 'package:crm_mobile/employee/pages/product/recentPage.dart';
-import 'package:crm_mobile/employee/pages/root/mainPage.dart';
-import 'package:crm_mobile/employee/pages/product/search/search.dart';
+import 'package:crm_mobile/employee/pages/product/productPage.dart';
 import 'package:crm_mobile/employee/providers/appointment/appointment_provider.dart';
-import 'package:crm_mobile/employee/providers/product/product_provider.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:xen_popup_card/xen_card.dart';
 
 class ProductDetail extends StatefulWidget {
   String wherecall;
   Product product;
-  UserObj user;
-  ProductDetail(
-      {super.key,
-      required this.product,
-      required this.user,
-      required this.wherecall});
+  ProductDetail({super.key, required this.product, required this.wherecall});
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -35,8 +22,6 @@ class _ProductDetailState extends State<ProductDetail> {
   int _tabIndex = 0;
   List<ActivityType> listActivityTypes = [];
   ActivityType? activityTypeSelected;
-  DateTime _date = DateTime.now();
-  TimeOfDay _Time = TimeOfDay.now();
   bool popupClosed = false;
   bool isFollow = false;
   previousImge() {
@@ -57,71 +42,6 @@ class _ProductDetailState extends State<ProductDetail> {
         _tabIndex++;
       }
     });
-  }
-
-  TextEditingController nameRequestController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController DescriptionController = TextEditingController();
-
-  String? nameRequest;
-  String? DescriptionRequest;
-
-  String? validReqName;
-  String? validCusName;
-  bool isSelectedType = false;
-  String? validDes;
-
-  String? validateName(String value) {
-    RegExp regExp = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
-    bool check = regExp.hasMatch(value);
-    if (value.isEmpty) {
-      return 'Enter your name';
-    } else if (check) {
-      return 'Enter a Valid name';
-    } else if (value.length < 3) {
-      return 'Name more than 3 characters';
-    } else if (value.length >= 50) {
-      return 'Name no more than 50 characters';
-    } else {
-      return (!regExp.hasMatch(value)) ? null : 'Name Invald';
-    }
-  }
-
-  String? validateResName(String value) {
-    RegExp regExp = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
-    bool check = regExp.hasMatch(value);
-    if (value.isEmpty) {
-      return 'Enter Resquest Name';
-    } else if (check) {
-      return 'Enter a Valid Resquest Name';
-    } else if (value.length < 3) {
-      return 'Resquest Name more than 3 characters';
-    } else if (value.length >= 30) {
-      return 'Resquest Name no more than 30 characters';
-    } else {
-      return (!regExp.hasMatch(value)) ? null : 'Resquest Name Invald';
-    }
-  }
-
-  String? validateDes(String value) {
-    // RegExp regExp = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
-    // RegExp regExp = RegExp('');
-    // bool check = regExp.hasMatch(value);
-    if (value.isEmpty) {
-      return 'Enter your Description';
-    } else if (value.length < 3) {
-      return 'Resquest Name more than 3 characters';
-    } else if (value.length >= 50) {
-      return 'Description no more than 50 characters';
-    } else {
-      return null;
-    }
-  }
-
-  submitRequest(String value) {
-    print(value);
   }
 
   @override
@@ -148,8 +68,6 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
-    UserObj userData = widget.user;
-
     final children = <Widget>[];
     for (var img in widget.product.listImg) {
       children.add(
@@ -213,27 +131,14 @@ class _ProductDetailState extends State<ProductDetail> {
                             ),
                             onPressed: () {
                               if (widget.wherecall == 'MainPage') {
-                                Navigator.pushReplacement(
+                                Navigator.pop(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const MainPage()));
-                              } else if (widget.wherecall == 'FollowPage') {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FollowPage()));
-                              } else if (widget.wherecall == 'RecentPage') {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RecentPage()));
+                                            const ProductPage()));
                               } else if (widget.wherecall == 'SearchPage') {
                                 Navigator.of(context).pop();
-                              } else if (widget.wherecall ==
-                                  'AppointmentView') {
+                              } else if (widget.wherecall == 'ProductOwner') {
                                 Navigator.pop(context);
                               }
                             },
@@ -298,61 +203,5 @@ class _ProductDetailState extends State<ProductDetail> {
 
       //bottomNavigationBar: const NavBar(),
     );
-  }
-
-  XenCardGutter? CardGutter() {
-    XenCardGutter gutter = XenCardGutter(
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              if (validateName(nameController.text) != null ||
-                  validateResName(nameRequestController.text) != null ||
-                  validateDes(DescriptionController.text) != null ||
-                  isSelectedType == false) {
-                Fluttertoast.showToast(
-                    msg: "Invalid Input",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 2,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              } else {
-                Navigator.pop(context);
-                setState(() {
-                  popupClosed = true;
-                });
-                RequestAppointment request = RequestAppointment(
-                    name: nameRequestController.text,
-                    email: widget.user.emailAddress,
-                    phone: widget.user.phoneNumber,
-                    fullname: nameController.text,
-                    activityType: activityTypeSelected!.name,
-                    description: DescriptionRequest,
-                    productId: widget.product.id,
-                    startDate: DateFormat(
-                      'MM/dd/yyyy',
-                    ).format(_date),
-                    startTime: '${_Time.hour}:${_Time.minute}');
-                appointmentProvider.insAppointment(request).then((value) {
-                  setState(() {
-                    popupClosed = false;
-                  });
-                  Fluttertoast.showToast(
-                      msg: " $value",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 2,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                });
-              }
-            },
-            child: const Text('Submit'),
-          )),
-    );
-    return gutter;
   }
 }

@@ -31,6 +31,8 @@ class productProviders {
   static const String _getNoView = '/api/v1/Product/product/number-of-view?id=';
   static const String _getProductByCateID =
       '/api/v1/Product/product/product-category/';
+  static const String _getProductByOwnerID =
+      '/api/v1/Product/product/product-owner/';
 
   static const String _getProductByProID = '/api/v1/Product/product/';
 
@@ -216,6 +218,120 @@ class productProviders {
             textColor: Colors.white,
             fontSize: 16.0);
       }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return listproduct;
+  }
+
+  static Future<List<Product>> fetchProductByOwnerID(String id) async {
+    Category cate = Category();
+    Owner owner = Owner();
+    Role role = Role();
+    Employee epm = Employee(role: role);
+    List<Product> listproduct = [];
+    int noFavorite = 0;
+    int noView = 0;
+
+    try {
+      final res = await http.get(
+          Uri.parse(_mainURL + _getProductByOwnerID + id),
+          headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          var dataProduct = jsondata['data'];
+          for (var data in dataProduct) {
+            List<ProductImgae> listImg = [];
+            //fetch Category
+            var cateData = data['category'];
+            cate = Category(
+                id: cateData['id'], name: cateData['productCategoryName']);
+            //fetch Product Owner
+            var ownerData = data['productOwner'];
+            owner = Owner(
+                id: ownerData['id'],
+                name: ownerData['name'],
+                email: ownerData['email'],
+                phone: ownerData['phone'],
+                isDelete: ownerData['isDelete']);
+            //fetch product Img
+            var listImgData = data['productImages'];
+            if (listImgData.isEmpty) {
+              ProductImgae img = ProductImgae(
+                  title: 'Image',
+                  url:
+                      // 'https://media.publit.io/file/realestatecrm/fil-sT.jpg?at=eyJpdiI6ImdkeFIrclFnZ2NpQk95UmxCWjdvUEE9PSIsInZhbHVlIjoiamVYZzh3OHpoWGhvUWJjSStiSHo2ajErc2ptQytpUzRETU92RFNCK0tqdz0iLCJtYWMiOiIwMjhlYTA4ODcwODUzZTNjOTM4NjZiMGI3NDY5MzY0ZTg4ZDYwM2YyZTBiMjVmZDE0MDQyZTliOGI0Y2UzODFjIiwidGFnIjoiIn0=');
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png');
+              listImg.add(img);
+            } else {
+              for (var imgdata in listImgData) {
+                ProductImgae img =
+                    ProductImgae(title: imgdata['title'], url: imgdata['url']);
+                listImg.add(img);
+              }
+            }
+            await productProviders.fetchNoFarovite(data['id']).then((value) {
+              noFavorite = value;
+            });
+            await productProviders.fetchNoView(data['id']).then((value) {
+              noView = value;
+            });
+            //fetch Product
+            Product product = Product(
+              id: data['id'],
+              name: data['name'],
+              categoryId: data['categoryId'],
+              price: data['price'],
+              description: data['description'],
+              area: data['area'],
+              width: data['width'],
+              length: data['length'],
+              street: data['street'],
+              province: data['province'],
+              district: data['district'],
+              noBedroom: data['noBedroom'],
+              noToilet: data['noToilet'],
+              noFloor: data['noFloor'],
+              facade: data['facade'],
+              isFurniture: data['isFurniture'],
+              direction: data['direction'],
+              utilities: data['utilities'],
+              productOwnerId: data['productOwnerId'],
+              productStatus: data['productStatus'],
+              createDate: data['createDate'],
+              updateDate: data['updateDate'],
+              receivedDate: data['receivedDate'],
+              soldDate: data['soldDate'],
+              employeeSoldId: data['employeeSoldId'],
+              isDelete: data['isDelete'],
+              isSold: data['isSold'],
+              isFavorite: data['isFavorite'],
+              noFavorite: noFavorite,
+              noView: noView,
+              category: cate,
+              owner: owner,
+              listImg: listImg,
+              employeeSold: epm,
+            );
+            if (!product.isDelete) {
+              listproduct.add(product);
+            }
+          }
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      }
+      // else {
+      //   Fluttertoast.showToast(
+      //       msg: "Error ${res.statusCode.toString()} can't load product",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.BOTTOM,
+      //       timeInSecForIosWeb: 1,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16.0);
+      // }
     } on HttpException catch (e) {
       print(e.toString());
     }

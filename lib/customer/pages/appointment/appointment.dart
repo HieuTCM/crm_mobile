@@ -205,7 +205,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : (listAppointments.isEmpty)
+                  : (listAppointments.isEmpty ||
+                          listAppointments[0].appointmentStatus == 'NotFound')
                       ? const Center(
                           child: Text('Apppoointments not found'),
                         )

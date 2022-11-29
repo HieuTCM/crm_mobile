@@ -6,6 +6,34 @@ class Owner {
   late final email;
   late final phone;
   late final isDelete;
+  late final totalRow;
+  late final totalProduct;
 
-  Owner({this.id, this.name, this.email, this.phone, this.isDelete});
+  Owner(
+      {this.id,
+      this.name,
+      this.email,
+      this.phone,
+      this.isDelete,
+      this.totalRow,
+      this.totalProduct});
+
+  Owner.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+    email = json["email"];
+    phone = json["phone"];
+    isDelete = json["isDelete"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    // data['id'] = this.id;
+    data['name'] = name;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['isDelete'] = isDelete;
+
+    return data;
+  }
 }

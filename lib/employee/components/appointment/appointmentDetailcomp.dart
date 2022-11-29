@@ -168,7 +168,6 @@ class _AppointmentDetailState extends State<AppointmentDetail> {
                     MaterialPageRoute(
                         builder: (context) => ProductDetail(
                               product: appointment.product,
-                              user: user,
                               wherecall: 'AppointmentView',
                             )));
               },

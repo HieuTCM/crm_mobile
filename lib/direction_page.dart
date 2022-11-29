@@ -65,7 +65,8 @@ class _DirectonPageState extends State<DirectonPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => customer.LoginScreen()));
+                            builder: (context) =>
+                                const customer.LoginScreen()));
                   },
                   child: Row(children: const [
                     FaIcon(
@@ -112,7 +113,8 @@ class _DirectonPageState extends State<DirectonPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => employee.LoginScreen()));
+                            builder: (context) =>
+                                const employee.LoginScreen()));
                   },
                   child: Row(children: const [
                     FaIcon(

@@ -354,15 +354,15 @@ class _verifyOTPState extends State<verifyOTP> {
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
-                                          backgroundColor:
-                                              Color.fromARGB(255, 252, 40, 2),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 252, 40, 2),
                                           textColor: Colors.white,
                                           fontSize: 16.0);
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  LoginScreen()));
+                                                  const LoginScreen()));
                                     } else if (value.status == 'USER_INVALID' ||
                                         value.id == null) {
                                       await Fluttertoast.showToast(

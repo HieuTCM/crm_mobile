@@ -73,7 +73,6 @@ class _productTabState extends State<productTab> {
                       builder: (context) => ProductDetail(
                             wherecall: widget.wherecall,
                             product: value,
-                            user: widget.user,
                           )));
             });
           },
@@ -97,70 +96,6 @@ class _productTabState extends State<productTab> {
                           )),
                     ),
                   ),
-                  // Container(
-                  //   margin: const EdgeInsets.all(6),
-                  //   width: 50,
-                  //   height: 50,
-                  //   alignment: Alignment.center,
-                  //   decoration: BoxDecoration(
-                  //       color: const Color.fromARGB(255, 161, 159, 159)
-                  //           .withOpacity(0.6),
-                  //       borderRadius: BorderRadius.circular(50)),
-                  //   child: IconButton(
-                  //     icon: FaIcon(
-                  //       FontAwesomeIcons.heart,
-                  //       size: 30,
-                  //       color: (widget.product.isFavorite)
-                  //           ? Colors.red
-                  //           : Colors.black,
-                  //     ),
-                  //     onPressed: () async {
-                  //       OverlayLoadingProgress.start(context);
-                  //       await productProviders
-                  //           .updFollowProduct(widget.product.id)
-                  //           .then((value) {
-                  //         OverlayLoadingProgress.stop(context);
-                  //         if (value) {
-                  //           setState(() {
-                  //             if (widget.wherecall == 'SearchPage') {
-                  //               widget.getListProductByCategory(
-                  //                   'MHjdLiT59asdyKu');
-                  //             } else {
-                  //               widget.getListProductByCategory(
-                  //                   widget.product.categoryId);
-                  //             }
-                  //           });
-                  //           (!widget.product.isFavorite)
-                  //               ? Fluttertoast.showToast(
-                  //                   msg: "Follow Product Successful",
-                  //                   toastLength: Toast.LENGTH_SHORT,
-                  //                   gravity: ToastGravity.BOTTOM,
-                  //                   timeInSecForIosWeb: 1,
-                  //                   backgroundColor: Colors.green,
-                  //                   textColor: Colors.white,
-                  //                   fontSize: 16.0)
-                  //               : Fluttertoast.showToast(
-                  //                   msg: " Product Unfollowed",
-                  //                   toastLength: Toast.LENGTH_SHORT,
-                  //                   gravity: ToastGravity.BOTTOM,
-                  //                   timeInSecForIosWeb: 1,
-                  //                   backgroundColor: Colors.green,
-                  //                   textColor: Colors.white,
-                  //                   fontSize: 16.0);
-                  //         } else {
-                  //           Fluttertoast.showToast(
-                  //               msg: "Follow Product failed",
-                  //               toastLength: Toast.LENGTH_SHORT,
-                  //               gravity: ToastGravity.BOTTOM,
-                  //               timeInSecForIosWeb: 1,
-                  //               backgroundColor: Colors.green,
-                  //               textColor: Colors.white,
-                  //               fontSize: 16.0);
-                  //         }
-                  //       });
-                  //     },
-                  //   ),
-                  // ),
                   Positioned(
                     top: 150,
                     child: Container(

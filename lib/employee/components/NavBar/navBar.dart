@@ -1,8 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:crm_mobile/employee/pages/appointment/appointment.dart';
-import 'package:crm_mobile/employee/pages/product/followPgae.dart';
-import 'package:crm_mobile/employee/pages/product/recentPage.dart';
 import 'package:crm_mobile/employee/pages/root/mainPage.dart';
 import 'package:crm_mobile/employee/pages/user/profilePage.dart';
 import 'package:flutter/material.dart';
@@ -54,24 +52,14 @@ class _NavBarState extends State<NavBar> {
               child: IconButton(
                 icon: const FaIcon(FontAwesomeIcons.heart, color: Colors.white),
                 tooltip: 'Follow',
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FollowPage()));
-                },
+                onPressed: () {},
               ),
             ),
             Expanded(
               child: IconButton(
                 icon: const Icon(Icons.access_time, color: Colors.white),
                 tooltip: 'History ',
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RecentPage()));
-                },
+                onPressed: () {},
               ),
             ),
             Expanded(
