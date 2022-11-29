@@ -1,10 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print
 
-import 'package:crm_mobile/customer/models/person/userModel.dart';
-import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
-import 'package:crm_mobile/customer/pages/root/mainPage.dart';
-import 'package:crm_mobile/customer/pages/user/registerPage.dart';
-import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
+import 'package:crm_mobile/employee/models/person/userModel.dart';
+import 'package:crm_mobile/employee/pages/login/verifyOTP.dart';
+import 'package:crm_mobile/employee/pages/root/mainPage.dart';
+import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
+
   Future<UserCredential> signInWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn
@@ -46,59 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  // static Future<User?> loginUsigEmailPassword(
-  //     {required String email,
-  //     required String password,
-  //     required BuildContext context}) async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   User? user;
-  //   try {
-  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     user = userCredential.user;
-  //     await Fluttertoast.showToast(
-  //         msg: "Login Successful",
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         timeInSecForIosWeb: 1,
-  //         backgroundColor: const Color.fromARGB(255, 72, 255, 0),
-  //         textColor: Colors.white,
-  //         fontSize: 16.0);
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == "invalid-email") {
-  //       // print("No user found for this email");
-  //     }
-  //   }
-  //   return user;
-  // }
   UserObj user = UserObj();
-  loginbyEmailandPass(String email, String pass) async {
-    userProviders.fetchUserLogin(email, pass).then((value) async {
-      if (value.id == null) {
-        Fluttertoast.showToast(
-            msg: "Login failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      } else {
-        user = value;
-        Fluttertoast.showToast(
-            msg: "Login Successful",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: const Color.fromARGB(255, 23, 252, 2),
-            textColor: Colors.white,
-            fontSize: 16.0);
-        await sharedPreferences.setString('Token', value.authToken);
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const MainPage()));
-      }
-    });
-  }
 
   loginWithGoogle() {
     signInWithGoogle().then((Uservalue) async {
@@ -111,17 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
               emailAddress: Uservalue.user!.email,
               phoneNumber: Uservalue.user!.phoneNumber);
           await Fluttertoast.showToast(
-              msg: "You Are New User",
+              msg: "You do not have permission to access this",
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: const Color.fromARGB(255, 23, 252, 2),
               textColor: Colors.white,
               fontSize: 16.0);
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => RegisterScreen(
-                    user: user,
-                  )));
         } else if (value.status == 'USER_INVALID' || value.id == null) {
           await Fluttertoast.showToast(
               msg: "Login failed",
@@ -205,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //final isKeyBoard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Customer Login'),
+          title: const Text('Employee Login'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -231,104 +175,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 44,
                 ),
                 Row(
-                  children: [
+                  children: const [
                     Text(
-                      (!_switchValue)
-                          ? 'Login By Username'
-                          : 'Login By Phone Number',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    const Spacer(),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CupertinoSwitch(
-                        value: _switchValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _switchValue = value;
-                          });
-                        },
-                      ),
+                      'Login By Phone Number',
+                      style: TextStyle(fontSize: 18),
                     ),
                   ],
                 ),
-                (!_switchValue)
-                    ? SizedBox(
-                        height: 150,
-                        child: Column(
-                          children: [
-                            TextField(
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                  errorText: null,
-                                  hintText: "User Email",
-                                  prefixIcon:
-                                      Icon(Icons.mail, color: Colors.black)),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const SizedBox(
-                              height: 26,
-                            ),
-                            TextField(
-                              controller: passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                  hintText: "User Password",
-                                  prefixIcon: Icon(Icons.security,
-                                      color: Colors.black)),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        height: 150,
-                        alignment: Alignment.center,
-                        child: Center(
-                            child: TextField(
-                          controller: phoneController,
-                          keyboardType: TextInputType.phone,
-                          // obscureText: true,
-                          decoration: InputDecoration(
-                              errorText: errorphone,
-                              hintText: "Phone number",
-                              prefixIcon:
-                                  const Icon(Icons.phone, color: Colors.black)),
-                        )),
-                      ),
+                Container(
+                  height: 150,
+                  alignment: Alignment.center,
+                  child: Center(
+                      child: TextField(
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    // obscureText: true,
+                    decoration: InputDecoration(
+                        errorText: errorphone,
+                        hintText: "Phone number",
+                        prefixIcon:
+                            const Icon(Icons.phone, color: Colors.black)),
+                  )),
+                ),
                 const SizedBox(
                   height: 10,
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    const Text('Forget your password ?',
-                        style: TextStyle(color: Colors.blue, fontSize: 16)),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        UserObj user = UserObj();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterScreen(
-                                      user: user,
-                                    )));
-                      },
-                      child: const Text('Register new Account ?',
-                          style: TextStyle(color: Colors.blue, fontSize: 16)),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -353,18 +223,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                     onPressed: () async {
-                      if (_switchValue) {
-                        if (validatePhone(phoneController.text) != null) {
-                          setState(() {
-                            errorphone = validatePhone(phoneController.text);
-                          });
-                        } else {
-                          loginByPhoneNumber(phoneController.text
-                              .substring(1, phoneController.text.length));
-                        }
+                      if (validatePhone(phoneController.text) != null) {
+                        setState(() {
+                          errorphone = validatePhone(phoneController.text);
+                        });
                       } else {
-                        loginbyEmailandPass(
-                            emailController.text, passwordController.text);
+                        loginByPhoneNumber(phoneController.text
+                            .substring(1, phoneController.text.length));
                       }
                     },
                     child: const Text(

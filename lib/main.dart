@@ -1,4 +1,4 @@
-import 'package:crm_mobile/customer/pages/root/HomePage.dart';
+import 'package:crm_mobile/direction_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const DirectonPage(),
     );
   }
 }

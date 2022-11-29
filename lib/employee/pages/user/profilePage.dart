@@ -2,8 +2,8 @@
 
 import 'dart:io';
 
-import 'package:crm_mobile/customer/models/person/userModel.dart';
-import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
+import 'package:crm_mobile/employee/models/person/userModel.dart';
+import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
