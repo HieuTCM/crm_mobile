@@ -87,7 +87,9 @@ class _OwnerTabState extends State<OwnerTab> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                widget.owner.name,
+                                (widget.owner.name != null)
+                                    ? widget.owner.name
+                                    : 'No name',
                                 style: const TextStyle(fontSize: 17),
                               ),
                             ],
@@ -151,18 +153,22 @@ class _OwnerTabState extends State<OwnerTab> {
                               ),
                               GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductOwnerDetail(
-                                                  listProduct: listProduct,
-                                                )));
+                                    (listProduct.isEmpty)
+                                        ? null
+                                        : Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductOwnerDetail(
+                                                      listProduct: listProduct,
+                                                    )));
                                   },
                                   child: Row(
                                     children: [
                                       Text(
-                                        '${listProduct.length}  (View More)',
+                                        (listProduct.isEmpty)
+                                            ? 'Loading ...'
+                                            : '${listProduct.length}  (View More)',
                                         style: const TextStyle(
                                           color: Colors.blue,
                                           fontSize: 20,
@@ -180,11 +186,13 @@ class _OwnerTabState extends State<OwnerTab> {
             Row(
               children: [
                 Text(
-                  widget.owner.name,
+                  (widget.owner.name != null) ? widget.owner.name : 'No name',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const Spacer(),
-                Text('Total Product: ${listProduct.length}')
+                Text((listProduct.isEmpty)
+                    ? 'Loading ...'
+                    : 'Total Product: ${listProduct.length}')
               ],
             ),
             const SizedBox(
@@ -200,7 +208,7 @@ class _OwnerTabState extends State<OwnerTab> {
             ),
             Row(
               children: [
-                Text('Name: ${widget.owner.phone}'),
+                Text('Phone: ${widget.owner.phone}'),
               ],
             )
           ])),

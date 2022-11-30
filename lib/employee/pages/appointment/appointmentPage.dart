@@ -23,7 +23,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   List<Appointment> listAppointments = [];
   List<String> listAppointmentStatus = ['All'];
   AppointmentStatus appointmentStatus = AppointmentStatus();
-  Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "6"});
+  Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "4"});
 
   int totalRow = 0;
   int pageNumber = 1;
@@ -64,8 +64,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
         listAppointments = value;
         waiting = false;
         totalRow = value[0].totalRow;
-        totalpage = totalRow ~/ 6;
-        if (totalRow % 6 != 0) {
+        totalpage = totalRow ~/ 4;
+        if (totalRow % 4 != 0) {
           totalpage++;
         }
       });

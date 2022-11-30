@@ -20,7 +20,7 @@ class Owner {
 
   Owner.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    name = json["name"];
+    name = json["productOwnerName"];
     email = json["email"];
     phone = json["phone"];
     isDelete = json["isDelete"];
@@ -29,7 +29,7 @@ class Owner {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     // data['id'] = this.id;
-    data['name'] = name;
+    data['productOwnerName'] = name;
     data['email'] = email;
     data['phone'] = phone;
     data['isDelete'] = isDelete;

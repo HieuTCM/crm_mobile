@@ -1,5 +1,5 @@
 import 'package:crm_mobile/customer/pages/login/login.dart' as customer;
-import 'package:crm_mobile/employee/pages/login/login.dart' as employee;
+import 'package:crm_mobile/employee/pages/login/loginPage.dart' as employee;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

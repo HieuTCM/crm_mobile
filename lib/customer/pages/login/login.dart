@@ -5,6 +5,7 @@ import 'package:crm_mobile/customer/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
 import 'package:crm_mobile/customer/pages/user/registerPage.dart';
 import 'package:crm_mobile/customer/providers/user/user_Provider.dart';
+import 'package:crm_mobile/direction_page.dart';
 import 'package:crm_mobile/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -206,6 +207,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Customer Login'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DirectonPage()));
+                },
+                child: const Text('Switch'))
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(

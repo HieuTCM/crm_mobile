@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print
 
+import 'package:crm_mobile/direction_page.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/pages/login/verifyOTP.dart';
 import 'package:crm_mobile/employee/pages/root/mainPage.dart';
@@ -146,6 +147,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Employee Login'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DirectonPage()));
+                },
+                child: const Text('Switch'))
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(

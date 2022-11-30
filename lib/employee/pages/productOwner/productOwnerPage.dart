@@ -66,7 +66,7 @@ class _ProductOwnerPageState extends State<ProductOwnerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search')),
+      appBar: AppBar(title: const Text('Search Product Owner'),),
       body: SingleChildScrollView(
           child: Container(
         width: MediaQuery.of(context).size.width,

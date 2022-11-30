@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names
 
 import 'package:crm_mobile/employee/models/person/userModel.dart';
-import 'package:crm_mobile/employee/pages/login/login.dart';
+import 'package:crm_mobile/employee/pages/login/loginPage.dart';
 import 'package:crm_mobile/employee/pages/root/mainPage.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';

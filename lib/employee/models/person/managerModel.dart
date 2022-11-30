@@ -1,11 +1,8 @@
 // ignore_for_file: file_names, camel_case_types, must_be_immutable, prefer_typing_uninitialized_variables, prefer_collection_literals
-class Role {
-  late final id;
-  late final name;
-  Role({this.id, this.name});
-}
 
-class Employee {
+import 'package:crm_mobile/employee/models/person/employeeModel.dart';
+
+class Manager {
   late final id;
   late final email;
   late final phone;
@@ -22,7 +19,7 @@ class Employee {
   late final fcmToken;
   late final updateBy;
   late Role role;
-  Employee(
+  Manager(
       {this.id,
       this.email,
       this.phone,
@@ -39,7 +36,7 @@ class Employee {
       this.gender,
       required this.role,
       this.updateByID});
-  Employee.fromJson(Map<dynamic, dynamic> json) {
+  Manager.fromJson(Map<dynamic, dynamic> json) {
     id = json["id"];
     fullname = json["fullname"];
     email = json["email"];

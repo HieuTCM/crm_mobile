@@ -3,7 +3,7 @@
 import 'package:crm_mobile/employee/components/appointment/appointmentDetailcomp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
-import 'package:crm_mobile/employee/pages/appointment/appointment.dart';
+import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
 import 'package:crm_mobile/employee/providers/appointment/appointment_provider.dart';
 import 'package:crm_mobile/employee/providers/feedback/feedbback_provider.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:crm_mobile/employee/pages/appointment/appointment.dart';
+import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
 import 'package:crm_mobile/employee/pages/root/mainPage.dart';
 import 'package:crm_mobile/employee/pages/user/profilePage.dart';
 import 'package:flutter/material.dart';

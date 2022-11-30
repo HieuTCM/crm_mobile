@@ -44,4 +44,23 @@ class Lead {
       this.companyName,
       required this.account,
       required this.employee});
+  Lead.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    accountId = json['accountId'];
+    fullname = json['fullname'];
+    nameCall = json['nameCall'];
+    gender = json['gender'];
+    dob = json['dob'];
+    phone = json['phone'];
+    email = json['email'];
+    leadType = json['leadType'];
+    website = json['website'];
+    companyName = json['companyName'];
+    createDate = json['createDate'];
+    lastActivityDate = json['lastActivityDate'];
+    lastActivityType = json['lastActivityType'];
+    lifeCycleStage = json['lifeCycleStage'];
+    leadStatus = json['leadStatus'];
+    employeeId = json['employeeId'];
+  }
 }

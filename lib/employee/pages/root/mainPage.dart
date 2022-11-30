@@ -3,11 +3,12 @@
 import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
-import 'package:crm_mobile/employee/pages/appointment/appointment.dart';
-import 'package:crm_mobile/employee/pages/login/login.dart';
+import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
+import 'package:crm_mobile/employee/pages/login/loginPage.dart';
 import 'package:crm_mobile/employee/pages/product/productPage.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
 import 'package:crm_mobile/employee/pages/productOwner/productOwnerPage.dart';
+import 'package:crm_mobile/employee/pages/task/taskPage.dart';
 import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
@@ -219,7 +220,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.listCheck,
                                         size: 50),
                                     Colors.blueGrey,
-                                    SearchPage(SearchValue: '')),
+                                    const TaskPage()),
                                 const SizedBox(
                                   width: 30,
                                 ),

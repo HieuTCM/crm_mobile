@@ -43,6 +43,8 @@ class appointmentProvider {
 
   //Appointment
   static const String _getAllApponitmemt = '/api/v1/Appointment/appointment?';
+  static const String _getApponitmemtByLeadId =
+      '/api/v1/Appointment/appointment/lead/';
   static const String _updCancelApponitmemt =
       '/api/v1/Appointment/appointment/cancel';
   static const String _insApponitmemt =
@@ -293,5 +295,117 @@ class appointmentProvider {
     }
 
     return value;
+  }
+
+  static Future<List<Appointment>> fetchAppointmentsByLeadId(String id) async {
+    List<Appointment> listAppointment = [];
+    UserObj user = UserObj();
+    Category cate = Category();
+    Owner owner = Owner();
+    Role role = Role();
+    Employee epm = Employee(role: role);
+    int noFavorite = 0;
+    int noView = 0;
+    List<ProductImgae> listImg = [];
+    Feedbackmodel feedback = Feedbackmodel();
+    Lead lead = Lead(account: user, employee: epm);
+    Product product = Product(
+        category: cate, owner: owner, employeeSold: epm, listImg: listImg);
+
+    try {
+      final res = await http.get(
+          Uri.parse(_mainURL + _getApponitmemtByLeadId + id),
+          headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          var totalRow = jsondata['totalRow'];
+          var apppointmentData = jsondata['data'];
+          for (var data in apppointmentData) {
+            var leadData = data['lead'];
+            if (leadData is Map) {
+              lead = Lead(
+                id: leadData['id'],
+                accountId: leadData['accountId'],
+                fullname: leadData['fullname'],
+                nameCall: leadData['nameCall'],
+                gender: leadData['gender'],
+                dob: leadData['dob'],
+                phone: leadData['phone'],
+                email: leadData['email'],
+                leadType: leadData['leadType'],
+                website: leadData['website'],
+                companyName: leadData['companyName'],
+                createDate: leadData['createDate'],
+                lastActivityDate: leadData['lastActivityDate'],
+                lastActivityType: leadData['lastActivityType'],
+                lifeCycleStage: leadData['lifeCycleStage'],
+                leadStatus: leadData['leadStatus'],
+                employeeId: leadData['employeeId'],
+                employee: epm,
+                account: user,
+              );
+            }
+            var productData = data['product'];
+            if (productData is Map) {
+              await productProviders
+                  .fetchProductByProID(productData['id'])
+                  .then((value) async {
+                product = value;
+              });
+            }
+            if (data['isFeedback'] == true) {
+              await feedbackProvider
+                  .fetchFeedbackbyAppointmentID(data['id'])
+                  .then((value) {
+                feedback = value;
+              });
+            }
+            if (data is Map) {
+              Appointment appointment = Appointment(
+                  id: data['id'],
+                  name: data['name'],
+                  employeeId: data['employeeId'],
+                  leadId: data['leadId'],
+                  productId: data['productId'],
+                  fullname: data['fullname'],
+                  phone: data['phone'],
+                  email: data['email'],
+                  activityType: data['activityType'],
+                  appointmentStatus: data['appointmentStatus'],
+                  description:
+                      data['description'].toString().replaceAll('//', '/'),
+                  createDate: data['createDate'],
+                  startDate: data['startDate'],
+                  startTime: data['startTime'],
+                  endDate: data['endDate'],
+                  abortReason: data['abortReason'],
+                  abortDate: data['abortDate'],
+                  acceptedDate: data['acceptedDate'],
+                  isFeedback: data['isFeedback'],
+                  employee: epm,
+                  lead: lead,
+                  product: product,
+                  proOwner: product.owner,
+                  totalRow: totalRow,
+                  feedback: feedback);
+              listAppointment.add(appointment);
+            }
+          }
+        }
+      } else {
+        Appointment appointment = Appointment(
+            appointmentStatus: 'NotFound',
+            employee: epm,
+            lead: lead,
+            proOwner: owner,
+            product: product,
+            feedback: feedback);
+        listAppointment.add(appointment);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return listAppointment;
   }
 }
