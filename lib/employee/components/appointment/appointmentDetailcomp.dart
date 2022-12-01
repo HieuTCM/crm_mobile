@@ -48,7 +48,7 @@ class _AppointmentDetailState extends State<AppointmentDetail> {
             Row(
               children: [
                 const Text(
-                  'Your Name : ',
+                  'Lead Name : ',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 Expanded(
@@ -190,13 +190,15 @@ class _AppointmentDetailState extends State<AppointmentDetail> {
             ),
             Row(
               children: [
-                Text(
-                  "${appointment.product.name} ",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold),
-                ),
+                Expanded(
+                  child: Text(
+                    "${appointment.product.name} ",
+                    style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
               ],
             ),
             const SizedBox(

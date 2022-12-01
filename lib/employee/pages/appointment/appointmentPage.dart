@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names
 
-import 'package:crm_mobile/employee/components/NavBar/navBar.dart';
 import 'package:crm_mobile/employee/components/appointment/listappoitmentcomp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
@@ -198,7 +197,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
           ),
           Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.75,
               margin: const EdgeInsets.all(12),
               child: (waiting)
                   ? const Center(

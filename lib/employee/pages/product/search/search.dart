@@ -379,7 +379,7 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       )),
-      bottomNavigationBar: const NavBar(),
+      // bottomNavigationBar: const NavBar(),
     );
   }
 }

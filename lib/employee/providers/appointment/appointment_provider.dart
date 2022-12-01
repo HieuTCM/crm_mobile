@@ -47,6 +47,12 @@ class appointmentProvider {
       '/api/v1/Appointment/appointment/lead/';
   static const String _updCancelApponitmemt =
       '/api/v1/Appointment/appointment/cancel';
+  static const String _updRejectApponitmemt =
+      '/api/v1/Appointment/appointment/reject';
+  static const String _updAcceptApponitmemt =
+      '/api/v1/Appointment/appointment/accept';
+  static const String _updFinishApponitmemt =
+      '/api/v1/Appointment/appointment/finish';
   static const String _insApponitmemt =
       '/api/v1/Appointment/appointment/add-by-employee';
 
@@ -102,6 +108,97 @@ class appointmentProvider {
         status = "Failed";
         Fluttertoast.showToast(
             msg: "Error ${res.statusCode.toString()} cancel Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
+  }
+
+  static Future<String> updRejectApponitmemt(String id, String value) async {
+    String status = '';
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['abortReason'] = value;
+    var body = json.encode(data);
+    try {
+      final res = await http.put(
+          Uri.parse('$_mainURL' + '$_updRejectApponitmemt'),
+          headers: _header,
+          body: body);
+      if (res.statusCode == 200) {
+        status = "Successful";
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} Reject Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
+  }
+
+  static Future<String> updAcceptApponitmemt(String id) async {
+    String status = '';
+    Map<String, dynamic> data = Map<String, dynamic>();
+
+    var body = json.encode(id);
+    try {
+      final res = await http.put(
+          Uri.parse('$_mainURL' + '$_updAcceptApponitmemt'),
+          headers: _header,
+          body: body);
+      if (res.statusCode == 200) {
+        status = "Successful";
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} Accept Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
+  }
+
+  static Future<String> updFinishApponitmemt(String id) async {
+    String status = '';
+    Map<String, dynamic> data = Map<String, dynamic>();
+
+    var body = json.encode(id);
+    try {
+      final res = await http.put(
+          Uri.parse('$_mainURL' + '$_updFinishApponitmemt'),
+          headers: _header,
+          body: body);
+      if (res.statusCode == 200) {
+        status = "Successful";
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

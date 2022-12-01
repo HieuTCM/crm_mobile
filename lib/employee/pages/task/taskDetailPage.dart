@@ -1,3 +1,4 @@
+import 'package:crm_mobile/employee/components/lead/leadTab.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
 import 'package:crm_mobile/employee/models/task/taskModel.dart';
@@ -51,81 +52,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           : ListView.builder(
               itemCount: listLead.length,
               itemBuilder: (context, index) {
-                List<Appointment> listAppointments = [];
-                appointmentProvider
-                    .fetchAppointmentsByLeadId(listLead[index].id)
-                    .then((value) {
-                  setState(() {
-                    listAppointments = value;
-                  });
-                });
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 110,
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.blue, width: 3)),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          const Text(
-                            'Name: ',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(listLead[index].fullname,
-                              style: const TextStyle(fontSize: 16)),
-                          const Spacer(),
-                          Text(
-                            widget.listTaskDetails[index].leadStatus,
-                            style: TextStyle(
-                                color:
-                                    (widget.listTaskDetails[index].leadStatus ==
-                                            'Qualified')
-                                        ? Colors.blue
-                                        : Colors.red,
-                                fontSize: 17),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          const Text('Email: ', style: TextStyle(fontSize: 18)),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(listLead[index].email,
-                              style: const TextStyle(fontSize: 16))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          const Text('Phone: ', style: TextStyle(fontSize: 18)),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(listLead[index].phone,
-                              style: const TextStyle(fontSize: 16)),
-                          const Spacer(),
-                          Text(
-                              'Number of appointment:  ${listAppointments.length.toString()}')
-                        ],
-                      )
-                    ]),
-                  ),
+                return LeadTab(
+                  lead: listLead[index],
+                  TaskDetails: widget.listTaskDetails[index],
                 );
               },
             ),
