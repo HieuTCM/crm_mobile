@@ -536,7 +536,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                   onPressed: () {
                     OverlayLoadingProgress.start(context);
                     appointmentProvider
-                        .updCancelApponitmemt(appointment.id, value)
+                        .updCancelApponitmemt(
+                            appointment.id, _nameController.text)
                         .then((value) {
                       if (value == 'Successful') {
                         OverlayLoadingProgress.stop(context);
@@ -583,7 +584,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                   onPressed: () {
                     OverlayLoadingProgress.start(context);
                     appointmentProvider
-                        .updRejectApponitmemt(appointment.id, value)
+                        .updRejectApponitmemt(
+                            appointment.id, _nameController.text)
                         .then((value) {
                       if (value == 'Successful') {
                         OverlayLoadingProgress.stop(context);

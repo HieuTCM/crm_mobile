@@ -1,15 +1,22 @@
+import 'package:crm_mobile/employee/components/lead/leadDetailComp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
 import 'package:crm_mobile/employee/models/task/taskModel.dart';
-import 'package:crm_mobile/employee/pages/appointment/appointmentLeadPage.dart';
 import 'package:crm_mobile/employee/providers/appointment/appointment_provider.dart';
+import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:xen_popup_card/xen_card.dart';
 
 class LeadTab extends StatefulWidget {
+  List<TaskDetail> listTaskDetails;
   Lead lead;
   TaskDetail TaskDetails;
-  LeadTab({super.key, required this.lead, required this.TaskDetails});
+  LeadTab(
+      {super.key,
+      required this.lead,
+      required this.TaskDetails,
+      required this.listTaskDetails});
 
   @override
   State<LeadTab> createState() => _LeadTabState();
@@ -17,6 +24,7 @@ class LeadTab extends StatefulWidget {
 
 class _LeadTabState extends State<LeadTab> {
   List<Appointment> listAppointments = [];
+  List<LeadStatus> listLeadStatus = [];
   getListAppointment() async {
     await appointmentProvider
         .fetchAppointmentsByLeadId(widget.lead.id)
@@ -27,8 +35,17 @@ class _LeadTabState extends State<LeadTab> {
     });
   }
 
+  getListLeadStatus() async {
+    await LeadProvider.fetchListLeadStatus().then((value) {
+      setState(() {
+        listLeadStatus = value;
+      });
+    });
+  }
+
   @override
   void initState() {
+    getListLeadStatus();
     getListAppointment();
     super.initState();
   }
@@ -51,30 +68,22 @@ class _LeadTabState extends State<LeadTab> {
           border: Border.all(color: Colors.blue, width: 3)),
       child: InkWell(
         onTap: () {
-          (listAppointments.isEmpty)
-              ? Fluttertoast.showToast(
-                  msg: "Appointment is loading...",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                  fontSize: 16.0)
-              : (listAppointments[0].appointmentStatus == 'NotFound')
-                  ? Fluttertoast.showToast(
-                      msg: "Lead have not send appointment yet",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0)
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AppointmentLeadPage(
-                                listAppointments: listAppointments,
-                              )));
+          showDialog(
+              context: context,
+              builder: (context) => StatefulBuilder(
+                  builder: ((context, setState) => XenPopupCard(
+                          body: LeadDetailComp(
+                        listTaskDetails: widget.listTaskDetails,
+                        lead: widget.lead,
+                        listStatus: listLeadStatus,
+                      )))));
+
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => AppointmentLeadPage(
+          //               listAppointments: listAppointments,
+          //             )));
         },
         child: Column(children: [
           Row(

@@ -53,6 +53,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               itemCount: listLead.length,
               itemBuilder: (context, index) {
                 return LeadTab(
+                  listTaskDetails: widget.listTaskDetails,
                   lead: listLead[index],
                   TaskDetails: widget.listTaskDetails[index],
                 );

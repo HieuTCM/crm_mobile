@@ -23,6 +23,8 @@ class LeadProvider {
   /*-------------------------------------------------------------*/
   //path URL
   static const String _getLeadByID = '/api/v1/Lead/lead/';
+  static const String _getListLeadStatus = '/v1/api/Enum/customer-status';
+  static const String _updLeadStatus = '/api/v1/Lead/lead/update-status';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
@@ -46,5 +48,43 @@ class LeadProvider {
     }
 
     return lead;
+  }
+
+  static Future<List<LeadStatus>> fetchListLeadStatus() async {
+    List<LeadStatus> listStatus = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getListLeadStatus),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        for (var data in jsondata) {
+          LeadStatus leadStatus = LeadStatus.fromJson(data);
+          listStatus.add(leadStatus);
+        }
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listStatus;
+  }
+
+  static Future<String> updLeadstatus(Map<String, dynamic> data) async {
+    String status = '';
+
+    var body = json.encode(data);
+    try {
+      final res = await http.put(Uri.parse(_mainURL + _updLeadStatus),
+          headers: _header, body: body);
+      if (res.statusCode == 200) {
+        status = 'successful';
+      } else {
+        status = 'failed';
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
   }
 }

@@ -166,8 +166,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                             context: context,
                             builder: (builder) => StatefulBuilder(
                                 builder: ((context, setState) => XenPopupCard(
-                                    gutter: CancelGutter(
-                                        appointment, _nameController.text),
+                                    gutter: CancelGutter(appointment,
+                                        _nameController.text.toString()),
                                     body: Column(children: [
                                       Container(
                                         alignment: Alignment.topLeft,
@@ -454,7 +454,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                   onPressed: () {
                     OverlayLoadingProgress.start(context);
                     appointmentProvider
-                        .updCancelApponitmemt(appointment.id, value)
+                        .updCancelApponitmemt(
+                            appointment.id, _nameController.text)
                         .then((value) {
                       if (value == 'Successful') {
                         OverlayLoadingProgress.stop(context);

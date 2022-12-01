@@ -64,3 +64,15 @@ class Lead {
     employeeId = json['employeeId'];
   }
 }
+
+class LeadStatus {
+  late final id;
+  late final name;
+
+  LeadStatus({this.id, this.name});
+
+  LeadStatus.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+}
