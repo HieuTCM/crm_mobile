@@ -4,7 +4,9 @@ import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/pages/product/productDetail.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppointmentDetail extends StatefulWidget {
   UserObj user;
@@ -59,6 +61,43 @@ class _AppointmentDetailState extends State<AppointmentDetail> {
                     ),
                   ),
                 )
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                const Text(
+                  'Phone:',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      _makePhoneCall(appointment.phone);
+                    },
+                    child: Row(
+                      children: [
+                        const FaIcon(FontAwesomeIcons.phone,
+                            color: Colors.blue),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          appointment.phone,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    )),
               ],
             ),
             const SizedBox(
@@ -220,5 +259,15 @@ class _AppointmentDetailState extends State<AppointmentDetail> {
             ),
           ]),
         ));
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (!await launchUrl(launchUri)) {
+      throw 'Could not launch $launchUri';
+    }
   }
 }

@@ -1,24 +1,28 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
 import 'package:crm_mobile/employee/models/task/taskModel.dart';
-import 'package:crm_mobile/employee/pages/task/taskDetailPage.dart';
+import 'package:crm_mobile/employee/pages/task/listAppointment.dart';
 import 'package:crm_mobile/employee/pages/task/taskPage.dart';
 import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LeadDetailComp extends StatefulWidget {
-  List<TaskDetail> listTaskDetails;
+  List<Appointment> listAppointments;
+  // List<TaskDetail> listTaskDetails;
   Lead lead;
   List<LeadStatus> listStatus;
   LeadDetailComp(
       {super.key,
       required this.lead,
       required this.listStatus,
-      required this.listTaskDetails});
+      // required this.listTaskDetails,
+      required this.listAppointments});
 
   @override
   State<LeadDetailComp> createState() => _LeadDetailCompState();
@@ -42,7 +46,7 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => TaskPage()));
       } else {
         Fluttertoast.showToast(
@@ -113,7 +117,25 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
             SizedBox(
               width: 20,
             ),
-            Text(widget.lead.phone)
+            GestureDetector(
+                onTap: () {
+                  _makePhoneCall(widget.lead.phone);
+                },
+                child: Row(
+                  children: [
+                    const FaIcon(FontAwesomeIcons.phone, color: Colors.blue),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      widget.lead.phone,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                )),
           ],
         ),
         const SizedBox(
@@ -133,11 +155,11 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
         ),
         Row(
           children: [
-            Text('Company: '),
-            SizedBox(
+            const Text('Company: '),
+            const SizedBox(
               width: 20,
             ),
-            Text(widget.lead?.companyName)
+            Text(widget.lead.companyName)
           ],
         ),
         const SizedBox(
@@ -145,11 +167,11 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
         ),
         Row(
           children: [
-            Text('Website: '),
-            SizedBox(
+            const Text('Website: '),
+            const SizedBox(
               width: 20,
             ),
-            Text(widget.lead?.website)
+            Text(widget.lead.website)
           ],
         ),
         const SizedBox(
@@ -195,13 +217,51 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
                     updateStatus = true;
                   });
                 },
-                child: Text('Change'))
+                child: const Text('Change'))
           ],
         ),
         const SizedBox(
           height: 20,
         ),
+        Row(
+          children: [
+            GestureDetector(
+                onTap: () {
+                  (widget.listAppointments.isEmpty)
+                      ? null
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => listAppointment(
+                                    listAppointments: widget.listAppointments,
+                                  )));
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      (widget.listAppointments.isEmpty)
+                          ? 'Loading...'
+                          : (widget.listAppointments[0].appointmentStatus ==
+                                  'NotFound')
+                              ? 'Number of appointment: 0'
+                              : 'Number of appointment:  ${widget.listAppointments.length}  (View more ..)',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    )
+                  ],
+                )),
+          ],
+        )
       ]),
     );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (!await launchUrl(launchUri)) {
+      throw 'Could not launch $launchUri';
+    }
   }
 }

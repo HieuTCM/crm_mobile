@@ -9,14 +9,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:xen_popup_card/xen_card.dart';
 
 class LeadTab extends StatefulWidget {
-  List<TaskDetail> listTaskDetails;
+  // List<TaskDetail> listTaskDetails;
   Lead lead;
-  TaskDetail TaskDetails;
-  LeadTab(
-      {super.key,
-      required this.lead,
-      required this.TaskDetails,
-      required this.listTaskDetails});
+  // TaskDetail TaskDetails;
+  LeadTab({
+    super.key,
+    required this.lead,
+    // required this.TaskDetails,
+    // required this.listTaskDetails
+  });
 
   @override
   State<LeadTab> createState() => _LeadTabState();
@@ -73,7 +74,8 @@ class _LeadTabState extends State<LeadTab> {
               builder: (context) => StatefulBuilder(
                   builder: ((context, setState) => XenPopupCard(
                           body: LeadDetailComp(
-                        listTaskDetails: widget.listTaskDetails,
+                        listAppointments: listAppointments,
+                        // listTaskDetails: widget.listTaskDetails,
                         lead: widget.lead,
                         listStatus: listLeadStatus,
                       )))));
@@ -98,9 +100,9 @@ class _LeadTabState extends State<LeadTab> {
               Text(widget.lead.fullname, style: const TextStyle(fontSize: 16)),
               const Spacer(),
               Text(
-                widget.TaskDetails.leadStatus,
+                widget.lead.leadStatus,
                 style: TextStyle(
-                    color: (widget.TaskDetails.leadStatus == 'Qualified')
+                    color: (widget.lead.leadStatus == 'Qualified')
                         ? Colors.blue
                         : Colors.red,
                     fontSize: 17),

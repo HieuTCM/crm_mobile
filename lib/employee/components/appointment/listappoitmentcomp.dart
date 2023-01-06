@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, prefer_final_fields, unused_field, prefer_collection_literals
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crm_mobile/employee/components/appointment/appointmentDetailcomp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
 import 'package:crm_mobile/employee/providers/appointment/appointment_provider.dart';
-import 'package:crm_mobile/employee/providers/feedback/feedbback_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -63,15 +63,25 @@ class _ListAppointmentState extends State<ListAppointment> {
             child: Column(children: [
               Row(
                 children: [
-                  Text(
-                    appointment.name,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.bold),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.43,
+                    child: AutoSizeText(
+                      appointment.name,
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
                   ),
                   const Spacer(),
-                  Text(appointment.createDate,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: AutoSizeText(
+                      appointment.createDate,
                       style: const TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.bold))
+                          fontSize: 15, fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
+                  )
                 ],
               ),
               const SizedBox(
@@ -97,7 +107,11 @@ class _ListAppointmentState extends State<ListAppointment> {
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold)),
                   const Spacer(),
-                  Text('${appointment.appointmentStatus}',
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    child: AutoSizeText(
+                      '${appointment.appointmentStatus}',
                       style: TextStyle(
                           color: (status == 'Waiting')
                               ? Colors.yellow.shade800
@@ -107,7 +121,10 @@ class _ListAppointmentState extends State<ListAppointment> {
                                       ? Colors.green.shade800
                                       : Colors.red,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(

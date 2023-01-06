@@ -23,11 +23,38 @@ class LeadProvider {
   /*-------------------------------------------------------------*/
   //path URL
   static const String _getLeadByID = '/api/v1/Lead/lead/';
+  static const String _getLead = '/api/v1/Lead/lead?';
   static const String _getListLeadStatus = '/v1/api/Enum/customer-status';
   static const String _updLeadStatus = '/api/v1/Lead/lead/update-status';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
+  static Future<List<Lead>> fetchLead(Map<String, String> param) async {
+    UserObj user = UserObj();
+    Role role = Role();
+    Employee emp = Employee(role: role);
+    List<Lead> listLead = [];
+    Lead lead = Lead(account: user, employee: emp);
+    String queryString = Uri(queryParameters: param).query;
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getLead + queryString),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        var dataLead = jsondata['data'];
+        var totalRow = jsondata['totalRow'];
+        for (var data in dataLead) {
+          lead = Lead.fromJson(data, totalRow);
+          listLead.add(lead);
+        }
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listLead;
+  }
+
   static Future<Lead> fetchLeadByID(String id) async {
     UserObj user = UserObj();
     Role role = Role();
@@ -40,7 +67,7 @@ class LeadProvider {
         var jsondata = json.decode(res.body);
         var dataLead = jsondata['data'];
         for (var data in dataLead) {
-          lead = Lead.fromJson(data);
+          lead = Lead.fromJson(data, 1);
         }
       }
     } on HttpException catch (e) {

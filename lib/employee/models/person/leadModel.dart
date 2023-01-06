@@ -4,6 +4,7 @@ import 'package:crm_mobile/employee/models/person/employeeModel.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 
 class Lead {
+  late final totalRow;
   late final id;
   late final accountId;
   late final fullname;
@@ -42,9 +43,10 @@ class Lead {
       this.lifeCycleStage,
       this.employeeId,
       this.companyName,
+      this.totalRow,
       required this.account,
       required this.employee});
-  Lead.fromJson(Map<String, dynamic> json) {
+  Lead.fromJson(Map<String, dynamic> json, int totalRow) {
     id = json['id'];
     accountId = json['accountId'];
     fullname = json['fullname'];
@@ -62,6 +64,7 @@ class Lead {
     lifeCycleStage = json['lifeCycleStage'];
     leadStatus = json['leadStatus'];
     employeeId = json['employeeId'];
+    totalRow = totalRow;
   }
 }
 

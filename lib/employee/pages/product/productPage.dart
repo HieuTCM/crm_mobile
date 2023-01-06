@@ -5,6 +5,7 @@ import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
+import 'package:crm_mobile/employee/providers/notification/notification_provider.dart';
 import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
@@ -28,6 +29,12 @@ class _ProductPageState extends State<ProductPage> {
   String? cateSelectedID;
 
   TextEditingController _searchController = TextEditingController();
+  // getNotification() async {
+  //   Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "10"});
+  //   await NotificationProvider.fetchTask(mapParam).then((value) {
+  //     print(value);
+  //   });
+  // }
 
   getUserinfo() async {
     userProviders.fetchUserInfor().then((value) {

@@ -140,6 +140,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                 Navigator.of(context).pop();
                               } else if (widget.wherecall == 'ProductOwner') {
                                 Navigator.pop(context);
+                              } else if (widget.wherecall ==
+                                  'AppointmentView') {
+                                Navigator.pop(context);
                               }
                             },
                           ),

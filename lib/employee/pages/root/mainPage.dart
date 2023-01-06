@@ -4,11 +4,14 @@ import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
+import 'package:crm_mobile/employee/pages/customer/customer.dart';
+import 'package:crm_mobile/employee/pages/lead/leadPage.dart';
 import 'package:crm_mobile/employee/pages/login/loginPage.dart';
 import 'package:crm_mobile/employee/pages/product/productPage.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
 import 'package:crm_mobile/employee/pages/productOwner/productOwnerPage.dart';
 import 'package:crm_mobile/employee/pages/task/taskPage.dart';
+import 'package:crm_mobile/employee/providers/notification/notification_provider.dart';
 import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
@@ -244,7 +247,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.user,
                                         size: 50),
                                     Colors.teal,
-                                    SearchPage(SearchValue: '')),
+                                    const CustomerPage()),
                                 const SizedBox(
                                   width: 30,
                                 ),
@@ -253,7 +256,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.userCheck,
                                         size: 50),
                                     Colors.teal,
-                                    SearchPage(SearchValue: '')),
+                                    LeadPage()),
                                 const Spacer(),
                               ],
                             ),
