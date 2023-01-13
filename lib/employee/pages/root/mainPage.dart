@@ -5,6 +5,7 @@ import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
 import 'package:crm_mobile/employee/pages/customer/customer.dart';
+import 'package:crm_mobile/employee/pages/feedback/feedbackPage.dart';
 import 'package:crm_mobile/employee/pages/lead/leadPage.dart';
 import 'package:crm_mobile/employee/pages/login/loginPage.dart';
 import 'package:crm_mobile/employee/pages/product/productPage.dart';
@@ -168,7 +169,7 @@ class _MainPageState extends State<MainPage> {
                                     width: 4.0,
                                     style: BorderStyle.solid)),
                             child: Align(
-                                alignment: Alignment.centerRight,
+                                alignment: Alignment.center,
                                 child: IconButton(
                                   icon: const Icon(Icons.notifications),
                                   tooltip: 'Notifications',
@@ -222,7 +223,7 @@ class _MainPageState extends State<MainPage> {
                                     'Task',
                                     const FaIcon(FontAwesomeIcons.listCheck,
                                         size: 50),
-                                    Colors.blueGrey,
+                                    Colors.blue,
                                     const TaskPage()),
                                 const SizedBox(
                                   width: 30,
@@ -231,7 +232,7 @@ class _MainPageState extends State<MainPage> {
                                     'Appointment',
                                     const FaIcon(FontAwesomeIcons.calendarCheck,
                                         size: 50),
-                                    Colors.blueGrey,
+                                    Colors.blue,
                                     const AppointmentPage()),
                                 const Spacer(),
                               ],
@@ -246,7 +247,7 @@ class _MainPageState extends State<MainPage> {
                                     'Customer',
                                     const FaIcon(FontAwesomeIcons.user,
                                         size: 50),
-                                    Colors.teal,
+                                    Colors.blue,
                                     const CustomerPage()),
                                 const SizedBox(
                                   width: 30,
@@ -255,7 +256,7 @@ class _MainPageState extends State<MainPage> {
                                     'Lead',
                                     const FaIcon(FontAwesomeIcons.userCheck,
                                         size: 50),
-                                    Colors.teal,
+                                    Colors.blue,
                                     LeadPage()),
                                 const Spacer(),
                               ],
@@ -270,7 +271,7 @@ class _MainPageState extends State<MainPage> {
                                     'Opportunity',
                                     const FaIcon(FontAwesomeIcons.userPlus,
                                         size: 50),
-                                    Colors.indigoAccent,
+                                    Colors.blue,
                                     SearchPage(SearchValue: '')),
                                 const SizedBox(
                                   width: 30,
@@ -279,8 +280,8 @@ class _MainPageState extends State<MainPage> {
                                     'Feedback',
                                     const FaIcon(FontAwesomeIcons.comment,
                                         size: 50),
-                                    Colors.indigoAccent,
-                                    SearchPage(SearchValue: '')),
+                                    Colors.blue,
+                                    FeedbackPage()),
                                 const Spacer(),
                               ],
                             ),
@@ -301,8 +302,8 @@ class _MainPageState extends State<MainPage> {
               context, MaterialPageRoute(builder: (context) => widget));
         },
         child: Container(
-          width: 150,
-          height: 165,
+          width: MediaQuery.of(context).size.width * 0.35,
+          height: MediaQuery.of(context).size.width * 0.4,
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: colors,

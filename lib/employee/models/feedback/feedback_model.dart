@@ -7,6 +7,7 @@ class Feedbackmodel {
   late final content;
   late final rate;
   late final feedbackDate;
+  late final totalRow;
 
   Feedbackmodel(
       {this.id,
@@ -14,5 +15,6 @@ class Feedbackmodel {
       this.appointmentId,
       this.content,
       this.rate,
-      this.feedbackDate});
+      this.feedbackDate,
+      this.totalRow});
 }

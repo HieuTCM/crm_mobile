@@ -27,10 +27,55 @@ class feedbackProvider {
 
   //Feedback
   static const String _insFeedback = '/api/v1/Feedback/feedback/add';
+  static const String _getAllFeedback = '/api/v1/Feedback/feedback?';
   static const String _getFeedbackbyAppointmentID =
       '/api/v1/Feedback/feedback/appointment/';
 
   //fetch API
+  static Future<List<Feedbackmodel>> fetchFeedback(
+      Map<String, String> param) async {
+    String queryString = Uri(queryParameters: param).query;
+    // Feedbackmodel feedback = Feedbackmodel();
+    List<Feedbackmodel> listFeedback = [];
+    try {
+      final res = await http.get(
+          Uri.parse('$_mainURL' + '$_getAllFeedback' + queryString),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        var data = jsondata['data'];
+        var totalRow = jsondata['totalRow'];
+        for (var feedbackdata in data) {
+          if (feedbackdata is Map) {
+            Feedbackmodel feedback = Feedbackmodel(
+                id: feedbackdata['id'],
+                appointmentId: feedbackdata['appointmentId'],
+                customerId: feedbackdata['customerId'],
+                content: feedbackdata['content'],
+                rate: feedbackdata['rate'],
+                feedbackDate:
+                    feedbackdata['feedbackDate'].toString().substring(0, 10),
+                totalRow: totalRow);
+            listFeedback.add(feedback);
+          }
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} get feedback Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listFeedback;
+  }
+
   static Future<String> insFeedback(Map<String, dynamic> mapfeedback) async {
     String status = '';
     var body = json.encode(mapfeedback);
