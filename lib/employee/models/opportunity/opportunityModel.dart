@@ -17,31 +17,27 @@ class Opportunity {
   late final negotiationPrice;
   late final lastPrice;
   late final listedPrice;
-  late Employee emp;
-  late Lead lead;
-  late Product product;
+  late int totalRow;
 
-  Opportunity(
-      {this.id,
-      this.name,
-      this.leadId,
-      this.employeeId,
-      this.productId,
-      this.saleClosingDate,
-      this.createDate,
-      this.deposit,
-      this.description,
-      this.opportunityStatus,
-      this.lostReason,
-      this.negotiationPrice,
-      this.lastPrice,
-      this.listedPrice,
-      required this.emp,
-      required this.lead,
-      required this.product});
+  Opportunity({
+    this.id,
+    this.name,
+    this.leadId,
+    this.employeeId,
+    this.productId,
+    this.saleClosingDate,
+    this.createDate,
+    this.deposit,
+    this.description,
+    this.opportunityStatus,
+    this.lostReason,
+    this.negotiationPrice,
+    this.lastPrice,
+    this.listedPrice,
+    required this.totalRow,
+  });
 
-  Opportunity.fromJson(
-      Map<String, dynamic> json, Employee emp, Lead lead, Product product) {
+  Opportunity.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
     leadId = json["leadId"];
@@ -56,8 +52,6 @@ class Opportunity {
     negotiationPrice = json["negotiationPrice"];
     lastPrice = json["lastPrice"];
     listedPrice = json["listedPrice"];
-    emp = emp;
-    lead = lead;
-    product = product;
+    totalRow = json["totalRow"];
   }
 }

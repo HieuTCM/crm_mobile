@@ -41,9 +41,7 @@ class OwnerProvider {
 
             owner.totalRow = totalRow;
 
-            if (!owner.isDelete) {
-              listOwner.add(owner);
-            }
+            listOwner.add(owner);
           }
         }
       }

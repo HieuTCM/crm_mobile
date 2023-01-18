@@ -206,7 +206,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                   : (listAppointments.isEmpty ||
                           listAppointments[0].appointmentStatus == 'NotFound')
                       ? const Center(
-                          child: Text('Apppoointments not found'),
+                          child: Text('Appointments not found'),
                         )
                       : ListAppointment(
                           listAppointments: listAppointments,

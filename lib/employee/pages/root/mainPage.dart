@@ -8,6 +8,7 @@ import 'package:crm_mobile/employee/pages/customer/customer.dart';
 import 'package:crm_mobile/employee/pages/feedback/feedbackPage.dart';
 import 'package:crm_mobile/employee/pages/lead/leadPage.dart';
 import 'package:crm_mobile/employee/pages/login/loginPage.dart';
+import 'package:crm_mobile/employee/pages/opportunity/opportunityPage.dart';
 import 'package:crm_mobile/employee/pages/product/productPage.dart';
 import 'package:crm_mobile/employee/pages/product/search/search.dart';
 import 'package:crm_mobile/employee/pages/productOwner/productOwnerPage.dart';
@@ -272,7 +273,7 @@ class _MainPageState extends State<MainPage> {
                                     const FaIcon(FontAwesomeIcons.userPlus,
                                         size: 50),
                                     Colors.blue,
-                                    SearchPage(SearchValue: '')),
+                                    OpportunityPage()),
                                 const SizedBox(
                                   width: 30,
                                 ),
