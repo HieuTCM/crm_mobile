@@ -44,8 +44,12 @@ class _OpportunityTabState extends State<OpportunityTab> {
           border: Border.all(color: Colors.blue, width: 3)),
       child: InkWell(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => OpportunityDetail()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OpportunityDetail(
+                        opportunity: widget.opportunity,
+                      )));
         },
         child: Column(children: [
           Row(
@@ -58,15 +62,17 @@ class _OpportunityTabState extends State<OpportunityTab> {
                 width: 10,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.45,
+                width: MediaQuery.of(context).size.width * 0.35,
                 child: AutoSizeText(widget.opportunity.name,
                     style: const TextStyle(fontSize: 16)),
               ),
               const Spacer(),
-              Text(
-                widget.opportunity.opportunityStatus,
-                style: const TextStyle(fontSize: 18),
-              )
+              Container(
+                alignment: Alignment.centerRight,
+                width: MediaQuery.of(context).size.width * 0.35,
+                child: AutoSizeText(widget.opportunity.opportunityStatus,
+                    style: const TextStyle(fontSize: 16)),
+              ),
             ],
           ),
           const SizedBox(
