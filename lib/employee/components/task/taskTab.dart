@@ -3,6 +3,7 @@
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/task/taskModel.dart';
 import 'package:crm_mobile/employee/pages/task/taskDetailPage.dart';
+import 'package:crm_mobile/employee/pages/task/taskPage.dart';
 import 'package:crm_mobile/employee/providers/task/task_Provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -107,6 +108,11 @@ class _TaskTabState extends State<TaskTab> {
                                                 backgroundColor: Colors.green,
                                                 textColor: Colors.white,
                                                 fontSize: 16.0);
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const TaskPage()));
                                           } else {
                                             Fluttertoast.showToast(
                                                 msg: " ${value}",

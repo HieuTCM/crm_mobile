@@ -256,9 +256,9 @@ class appointmentProvider {
     Owner owner = Owner();
     Role role = Role();
     Employee epm = Employee(role: role);
+    List<ProductImgae> listImg = [];
     int noFavorite = 0;
     int noView = 0;
-    List<ProductImgae> listImg = [];
     Feedbackmodel feedback = Feedbackmodel();
     Lead lead = Lead(account: user, employee: epm);
     Product product = Product(

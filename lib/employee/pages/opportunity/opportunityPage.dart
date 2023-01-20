@@ -1,7 +1,6 @@
-import 'package:crm_mobile/employee/components/lead/leadTab.dart';
 import 'package:crm_mobile/employee/components/opportunity/opportunityTab.dart';
 import 'package:crm_mobile/employee/models/opportunity/opportunityModel.dart';
-import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
+import 'package:crm_mobile/employee/pages/opportunity/opportunityCreatePage.dart';
 import 'package:crm_mobile/employee/providers/opportunity/opportunity_Provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -134,21 +133,46 @@ class _OpportunityPageState extends State<OpportunityPage> {
               ],
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.75,
-              margin: const EdgeInsets.all(12),
-              child: (Waiting)
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemCount: listOpportunity.length,
-                      itemBuilder: (context, index) {
-                        return OpportunityTab(
-                            opportunity: listOpportunity[index]);
-                      },
-                    ),
-            )
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.75,
+                margin: const EdgeInsets.all(12),
+                child: (Waiting)
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          ListView.builder(
+                            itemCount: listOpportunity.length,
+                            itemBuilder: (context, index) {
+                              return OpportunityTab(
+                                  opportunity: listOpportunity[index]);
+                            },
+                          ),
+                          Positioned(
+                              top: MediaQuery.of(context).size.height * 0.67,
+                              left: MediaQuery.of(context).size.width * 0.81,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const opportunityCreatePage()));
+                                },
+                                child: Container(
+                                  width: 47,
+                                  height: 47,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: const Icon(Icons.add, size: 40),
+                                ),
+                              ))
+                        ],
+                      ))
           ]),
         ));
   }

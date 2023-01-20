@@ -44,7 +44,8 @@ class LeadProvider {
         var dataLead = jsondata['data'];
         var totalRow = jsondata['totalRow'];
         for (var data in dataLead) {
-          lead = Lead.fromJson(data, totalRow);
+          data['totalRow'] = totalRow;
+          lead = Lead.fromJson(data);
           listLead.add(lead);
         }
       }
@@ -67,7 +68,8 @@ class LeadProvider {
         var jsondata = json.decode(res.body);
         var dataLead = jsondata['data'];
         for (var data in dataLead) {
-          lead = Lead.fromJson(data, 1);
+          data['totalRow'] = 1;
+          lead = Lead.fromJson(data);
         }
       }
     } on HttpException catch (e) {

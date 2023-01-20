@@ -46,7 +46,7 @@ class Lead {
       this.totalRow,
       required this.account,
       required this.employee});
-  Lead.fromJson(Map<String, dynamic> json, int totalRow) {
+  Lead.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     accountId = json['accountId'];
     fullname = json['fullname'];
@@ -64,7 +64,7 @@ class Lead {
     lifeCycleStage = json['lifeCycleStage'];
     leadStatus = json['leadStatus'];
     employeeId = json['employeeId'];
-    totalRow = totalRow;
+    totalRow = json['totalRow'];
   }
 }
 
