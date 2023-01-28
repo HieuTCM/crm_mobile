@@ -454,7 +454,29 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                   )),
                             ],
                           ),
-                        ])
+                        ]),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 244, 54, 54)),
+                            onPressed: () {},
+                            child: const Text('Lost')),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Update Status')),
+                      ),
+                      const Spacer()
+                    ],
+                  )
                 ])));
   }
 

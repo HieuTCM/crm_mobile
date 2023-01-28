@@ -98,3 +98,32 @@ class Sort {
   late final name;
   Sort({this.id, this.name});
 }
+
+class productEnum {
+  late final id;
+  late final name;
+  late final address;
+  late final price;
+  late final ownerId;
+  late final ownerName;
+  late final ownerPhone;
+
+  productEnum(
+      {this.id,
+      this.address,
+      this.name,
+      this.ownerId,
+      this.ownerName,
+      this.price,
+      this.ownerPhone});
+
+  productEnum.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+    address = json["address"];
+    price = json["price"];
+    ownerId = json["ownerId"];
+    ownerName = json["ownerName"];
+    ownerPhone = json["ownerPhone"];
+  }
+}

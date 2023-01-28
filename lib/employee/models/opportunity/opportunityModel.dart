@@ -54,4 +54,13 @@ class Opportunity {
     listedPrice = json["listedPrice"];
     totalRow = json["totalRow"];
   }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    // data['id'] = this.id;
+    data['name'] = name;
+    data['description'] = description;
+    data['leadId'] = leadId;
+    data['productId'] = productId;
+    return data;
+  }
 }

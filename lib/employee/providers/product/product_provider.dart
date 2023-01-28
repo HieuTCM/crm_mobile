@@ -42,6 +42,7 @@ class productProviders {
   static const String _getAllRecentProduct =
       '/api/v1/Product/product/my-recent-list';
   static const String _searchProduct = '/api/v1/Product/product?';
+  static const String _getProductEnum = '/v1/api/Enum/all-product';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
@@ -73,6 +74,39 @@ class productProviders {
     }
 
     return noFavorite;
+  }
+
+  static Future<List<productEnum>> fetchAllProductEnum() async {
+    List<productEnum> listpro = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getProductEnum),
+          headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          var dataProduct = jsondata['data'];
+          for (var data in dataProduct) {
+            productEnum pro = productEnum.fromJson(data);
+            listpro.add(pro);
+          }
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} can't get Product Enum",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listpro;
   }
 
   static Future<int> fetchNoView(String value) async {

@@ -3,6 +3,8 @@ import 'package:crm_mobile/employee/helpers/shared_prefs.dart';
 import 'package:crm_mobile/employee/models/person/employeeModel.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
 import 'package:crm_mobile/employee/models/person/productOwner.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -26,9 +28,43 @@ class LeadProvider {
   static const String _getLead = '/api/v1/Lead/lead?';
   static const String _getListLeadStatus = '/v1/api/Enum/customer-status';
   static const String _updLeadStatus = '/api/v1/Lead/lead/update-status';
+  static const String _getAllLeadEnum = '/v1/api/Enum/all-lead';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
+  static Future<List<LeadEnum>> fetchAllLeadEnum() async {
+    List<LeadEnum> listlead = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getAllLeadEnum),
+          headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          var dataLead = jsondata['data'];
+          for (var data in dataLead) {
+            LeadEnum lead = LeadEnum.fromJson(data);
+            listlead.add(lead);
+          }
+        } else {
+          throw Exception('Error ${res.statusCode}');
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} can't get Lead Enum",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listlead;
+  }
+
   static Future<List<Lead>> fetchLead(Map<String, String> param) async {
     UserObj user = UserObj();
     Role role = Role();

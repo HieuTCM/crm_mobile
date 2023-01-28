@@ -62,7 +62,7 @@ class _OpportunityTabState extends State<OpportunityTab> {
                 width: 10,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.35,
+                width: MediaQuery.of(context).size.width * 0.3,
                 child: AutoSizeText(widget.opportunity.name,
                     style: const TextStyle(fontSize: 16)),
               ),

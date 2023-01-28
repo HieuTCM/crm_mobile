@@ -79,3 +79,17 @@ class LeadStatus {
     name = json['name'];
   }
 }
+
+class LeadEnum {
+  late final id;
+  late final name;
+  late final phone;
+
+  LeadEnum({this.id, this.phone, this.name});
+
+  LeadEnum.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    phone = json['phone'];
+  }
+}

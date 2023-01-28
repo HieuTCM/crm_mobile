@@ -25,6 +25,7 @@ class OpportunityProviders {
   /*-------------------------------------------------------------*/
   //path URL
   static const String _getOpportunity = '/api/v1/Opportunity/opportunity?';
+  static const String _insOpportunity = '/api/v1/Opportunity/opportunity/add';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
@@ -60,5 +61,37 @@ class OpportunityProviders {
       print(e.toString());
     }
     return listOpportunity;
+  }
+
+  static Future<String> insOpportunity(Opportunity opportunity) async {
+    String status = '';
+    var data = opportunity.toJson();
+    var body = json.encode(data);
+    try {
+      final res = await http.post(Uri.parse(_mainURL + _insOpportunity),
+          headers: _header, body: body);
+      if (res.statusCode == 200) {
+        Fluttertoast.showToast(
+            msg: "Insert Opportunity Successfull",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} can't Insert Opportunity",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return status;
   }
 }
