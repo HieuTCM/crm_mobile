@@ -1,16 +1,17 @@
 import 'package:crm_mobile/employee/components/lead/leadDetailComp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
-import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/models/opportunity/opportunityModel.dart';
 import 'package:crm_mobile/employee/pages/product/productDetail.dart';
 import 'package:crm_mobile/employee/providers/appointment/appointment_provider.dart';
 import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
+import 'package:crm_mobile/employee/providers/opportunity/opportunity_Provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xen_popup_card/xen_card.dart';
 
@@ -27,6 +28,33 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
   List<Lead> listLead = [];
   List<Appointment> listAppointments = [];
   List<LeadStatus> listLeadStatus = [];
+
+  List<OpportunityStatus> listOpportunityStatus = [];
+  List<LostReason> listLostReason = [];
+
+  getListOpportunityStatus(String id) async {
+    await OpportunityProviders.fetchListOpportunityStatus().then((value) {
+      setState(() {
+        listOpportunityStatus = value;
+      });
+    });
+  }
+
+  getListLostReason(String id) async {
+    await OpportunityProviders.fetchListLostReason().then((value) {
+      setState(() {
+        listLostReason = value;
+      });
+    });
+  }
+
+  updateStatusOpp(String id, int statusID) async {
+    OverlayLoadingProgress.start(context);
+    await OpportunityProviders.updOpportunityStatus(id, statusID).then((value) {
+      OverlayLoadingProgress.stop(context);
+    });
+  }
+
   getProbyId(String id) async {
     await productProviders.fetchProductByProID(id).then((value) {
       setState(() {
@@ -464,7 +492,9 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     const Color.fromARGB(255, 244, 54, 54)),
-                            onPressed: () {},
+                            onPressed: () {
+                              updateStatusOpp(widget.opportunity.id, 7);
+                            },
                             child: const Text('Lost')),
                       ),
                       const Spacer(),

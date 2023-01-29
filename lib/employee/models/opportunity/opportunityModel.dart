@@ -64,3 +64,27 @@ class Opportunity {
     return data;
   }
 }
+
+class OpportunityStatus {
+  late final id;
+  late final status;
+
+  OpportunityStatus({this.id, this.status});
+
+  OpportunityStatus.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['name'];
+  }
+}
+
+class LostReason {
+  late final id;
+  late final status;
+
+  LostReason({this.id, this.status});
+
+  LostReason.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    status = json['name'];
+  }
+}

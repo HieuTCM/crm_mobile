@@ -26,30 +26,39 @@ class OpportunityProviders {
   //path URL
   static const String _getOpportunity = '/api/v1/Opportunity/opportunity?';
   static const String _insOpportunity = '/api/v1/Opportunity/opportunity/add';
+  static const String _getOpportunityStatus = '/v1/api/Enum/oppoturnity-status';
+  static const String _updOpportunityStatus =
+      '/api/v1/Opportunity/opportunity/update-status';
+  static const String _getLostReason = '/v1/api/Enum/lost-reason';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
 
-  static Future<List<Opportunity>> fetchAllOpportunity(
-      Map<String, String> param) async {
-    String queryString = Uri(queryParameters: param).query;
-    List<Opportunity> listOpportunity = [];
+  static Future<String> updOpportunityStatus(String id, int value) async {
+    String status = '';
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['status'] = value;
+    var body = json.encode(data);
     try {
-      final res = await http.get(
-          Uri.parse(_mainURL + _getOpportunity + queryString),
-          headers: _header);
+      final res = await http.put(
+          Uri.parse('$_mainURL' + '$_updOpportunityStatus'),
+          headers: _header,
+          body: body);
       if (res.statusCode == 200) {
-        var jsondata = json.decode(res.body);
-        var totalRow = jsondata['totalRow'];
-        var apppointmentData = jsondata['data'];
-        for (var data in apppointmentData) {
-          data['totalRow'] = totalRow;
-          Opportunity opp = Opportunity.fromJson(data);
-          listOpportunity.add(opp);
-        }
-      } else {
+        status = "Successful";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoFavorite",
+            msg: "Update Successful",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -60,7 +69,8 @@ class OpportunityProviders {
     } on HttpException catch (e) {
       print(e.toString());
     }
-    return listOpportunity;
+
+    return status;
   }
 
   static Future<String> insOpportunity(Opportunity opportunity) async {
@@ -93,5 +103,76 @@ class OpportunityProviders {
       print(e.toString());
     }
     return status;
+  }
+
+  static Future<List<OpportunityStatus>> fetchListOpportunityStatus() async {
+    List<OpportunityStatus> listStatus = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getOpportunityStatus),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        for (var data in jsondata) {
+          OpportunityStatus OppStatus = OpportunityStatus.fromJson(data);
+          listStatus.add(OppStatus);
+        }
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listStatus;
+  }
+
+  static Future<List<LostReason>> fetchListLostReason() async {
+    List<LostReason> listLostReason = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getLostReason),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        for (var data in jsondata) {
+          LostReason lostReason = LostReason.fromJson(data);
+          listLostReason.add(lostReason);
+        }
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return listLostReason;
+  }
+
+  static Future<List<Opportunity>> fetchAllOpportunity(
+      Map<String, String> param) async {
+    String queryString = Uri(queryParameters: param).query;
+    List<Opportunity> listOpportunity = [];
+    try {
+      final res = await http.get(
+          Uri.parse(_mainURL + _getOpportunity + queryString),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        var totalRow = jsondata['totalRow'];
+        var apppointmentData = jsondata['data'];
+        for (var data in apppointmentData) {
+          data['totalRow'] = totalRow;
+          Opportunity opp = Opportunity.fromJson(data);
+          listOpportunity.add(opp);
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Error ${res.statusCode.toString()} can't get NoFavorite",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return listOpportunity;
   }
 }
