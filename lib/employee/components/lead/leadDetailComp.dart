@@ -179,6 +179,18 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
         ),
         Row(
           children: [
+            const Text('Life Cycle Stage: '),
+            const SizedBox(
+              width: 20,
+            ),
+            Text(widget.lead.lifeCycleStage)
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
             const Text('Status: '),
             const SizedBox(
               width: 20,

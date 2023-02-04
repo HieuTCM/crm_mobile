@@ -75,10 +75,10 @@ class _ProductDetailComponentState extends State<ProductDetailComponent> {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                          SizedBox(
-                            width: 80,
+                          Container(
+                            width: 90,
                             child: Text(
-                              'Date: ${widget.product.updateDate.toString().substring(0, 10)}',
+                              'Date Create: ${widget.product.updateDate.toString().substring(0, 10)}',
                               textAlign: TextAlign.left,
                               style: const TextStyle(
                                   color: Colors.black,

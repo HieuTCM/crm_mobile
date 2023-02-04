@@ -25,7 +25,10 @@ class OpportunityProviders {
   /*-------------------------------------------------------------*/
   //path URL
   static const String _getOpportunity = '/api/v1/Opportunity/opportunity?';
+  static const String _getOpportunitybyID = '/api/v1/Opportunity/opportunity/';
   static const String _insOpportunity = '/api/v1/Opportunity/opportunity/add';
+  static const String _updOpportunity =
+      '/api/v1/Opportunity/opportunity/update';
   static const String _getOpportunityStatus = '/v1/api/Enum/oppoturnity-status';
   static const String _updOpportunityStatus =
       '/api/v1/Opportunity/opportunity/update-status';
@@ -58,7 +61,7 @@ class OpportunityProviders {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} Update Failed",
+            msg: "Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -91,7 +94,7 @@ class OpportunityProviders {
             fontSize: 16.0);
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't Insert Opportunity",
+            msg: "Can't Insert Opportunity",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -143,6 +146,41 @@ class OpportunityProviders {
     return listLostReason;
   }
 
+  static Future<String> updOpportunity(
+      String id, Map<String, dynamic> value) async {
+    String status = '';
+    var body = json.encode(value);
+    try {
+      final res = await http.put(Uri.parse('$_mainURL' + '$_updOpportunity'),
+          headers: _header, body: body);
+      if (res.statusCode == 200) {
+        status = "Successful";
+        Fluttertoast.showToast(
+            msg: "Update Successful",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        status = "Failed";
+        Fluttertoast.showToast(
+            msg: "Update Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+
+    return status;
+  }
+
   static Future<List<Opportunity>> fetchAllOpportunity(
       Map<String, String> param) async {
     String queryString = Uri(queryParameters: param).query;
@@ -162,7 +200,7 @@ class OpportunityProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoFavorite",
+            msg: "Can't get opportunity",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -174,5 +212,34 @@ class OpportunityProviders {
       print(e.toString());
     }
     return listOpportunity;
+  }
+
+  static Future<Opportunity> fetchOpportunitybyID(String id) async {
+    Opportunity opp = Opportunity(totalRow: 1);
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getOpportunitybyID + id),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        var totalRow = jsondata['totalRow'];
+        var apppointmentData = jsondata['data'];
+        for (var data in apppointmentData) {
+          data['totalRow'] = totalRow;
+          opp = Opportunity.fromJson(data);
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Can't get NoFavorite",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return opp;
   }
 }

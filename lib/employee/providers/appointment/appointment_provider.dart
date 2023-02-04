@@ -77,7 +77,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -108,7 +108,7 @@ class appointmentProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} cancel Failed",
+            msg: "Cancel Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -139,7 +139,7 @@ class appointmentProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} Reject Failed",
+            msg: "Reject Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -169,7 +169,7 @@ class appointmentProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} Accept Failed",
+            msg: "Accept Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -199,7 +199,7 @@ class appointmentProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} Update Failed",
+            msg: "Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -233,7 +233,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get list of appointment status Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -380,7 +380,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Insert Apponitmemt request failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

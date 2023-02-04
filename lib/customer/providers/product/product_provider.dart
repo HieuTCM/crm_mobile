@@ -58,7 +58,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoFavorite",
+            msg: "Can't get NoFavorite",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -88,7 +88,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoView",
+            msg: "Can't get NoView",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -208,7 +208,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -317,7 +317,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -340,11 +340,10 @@ class productProviders {
           headers: _header, body: body);
       if (res.statusCode == 200) {
         var jsondata = json.decode(res.body);
-        print(jsondata);
         status = jsondata;
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -391,7 +390,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -438,7 +437,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -558,7 +557,7 @@ class productProviders {
       } else if (res.statusCode == 404) {
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} product not found",
+            msg: "Product not found",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

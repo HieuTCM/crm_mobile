@@ -59,7 +59,7 @@ class cateProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get Category Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

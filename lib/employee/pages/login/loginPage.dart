@@ -78,6 +78,19 @@ class _LoginScreenState extends State<LoginScreen> {
           GoogleSignIn googleSignIn = GoogleSignIn();
           await googleSignIn.signOut();
           await FirebaseAuth.instance.signOut();
+        } else if (value.role != 'Employee') {
+          user = UserObj(
+              fullName: Uservalue.user!.displayName,
+              emailAddress: Uservalue.user!.email,
+              phoneNumber: Uservalue.user!.phoneNumber);
+          await Fluttertoast.showToast(
+              msg: "You do not have permission to access this",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: const Color.fromARGB(255, 23, 252, 2),
+              textColor: Colors.white,
+              fontSize: 16.0);
         } else {
           user = value;
           await sharedPreferences.clear();
@@ -147,14 +160,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Employee Login'),
-          actions: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DirectonPage()));
-                },
-                child: const Text('Switch'))
-          ],
+          // actions: [
+          //   ElevatedButton(
+          //       onPressed: () {
+          //         Navigator.push(context,
+          //             MaterialPageRoute(builder: (context) => DirectonPage()));
+          //       },
+          //       child: const Text('Switch'))
+          // ],
         ),
         body: Center(
           child: SingleChildScrollView(

@@ -67,9 +67,10 @@ class CustomerProvider {
                 .then((value) async {
               product = value;
 
-              if (!product.isDelete) {
-                listproduct.add(product);
-              }
+              // if (!product.isDelete) {
+              //   listproduct.add(product);
+              // }
+              listproduct.add(product);
             });
           }
         } else {
@@ -112,9 +113,10 @@ class CustomerProvider {
                 .fetchProductByProID(data['productId'])
                 .then((value) async {
               product = value;
-              if (!product.isDelete) {
-                listproduct.add(product);
-              }
+              // if (!product.isDelete) {
+              //   listproduct.add(product);
+              // }
+              listproduct.add(product);
             });
           }
         } else {

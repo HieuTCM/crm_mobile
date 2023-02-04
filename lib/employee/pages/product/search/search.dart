@@ -88,7 +88,6 @@ class _SearchPageState extends State<SearchPage> {
         mapParam["searchString"] = searchValue;
       }
     }
-
     await productProviders.fetchsearchProduct(mapParam).then((value) {
       setState(() {
         listProduct = value;
@@ -144,12 +143,12 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    var maxheight = MediaQuery.of(context).size.width * 0.3;
     return Scaffold(
       appBar: AppBar(title: const Text('Search')),
-      body: SingleChildScrollView(
-          child: Container(
+      body: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height * 1,
         margin: const EdgeInsets.all(10),
         child: Column(
           children: [
@@ -264,7 +263,7 @@ class _SearchPageState extends State<SearchPage> {
                                     .toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    district = '-14;$value';
+                                    district = '&14;$value';
                                     DistrictSelected = value;
                                   });
                                 },
@@ -363,7 +362,7 @@ class _SearchPageState extends State<SearchPage> {
                 ? const Expanded(
                     child: Center(child: CircularProgressIndicator()),
                   )
-                : (listProduct.isEmpty)
+                : (listProduct[0].id == null)
                     ? const Expanded(
                         child: Center(child: Text('Product not found')),
                       )
@@ -373,12 +372,9 @@ class _SearchPageState extends State<SearchPage> {
                         user: user,
                         getListProductByCategory: getListProductWith,
                       ),
-            const SizedBox(
-              height: 140,
-            )
           ],
         ),
-      )),
+      ),
       // bottomNavigationBar: const NavBar(),
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:crm_mobile/employee/components/lead/leadDetailComp.dart';
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
@@ -9,6 +11,7 @@ import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
 import 'package:crm_mobile/employee/providers/opportunity/opportunity_Provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
@@ -25,6 +28,7 @@ class OpportunityDetail extends StatefulWidget {
 
 class _OpportunityDetailState extends State<OpportunityDetail> {
   List<Product> listpro = [];
+  List<Opportunity> listopp = [];
   List<Lead> listLead = [];
   List<Appointment> listAppointments = [];
   List<LeadStatus> listLeadStatus = [];
@@ -32,7 +36,10 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
   List<OpportunityStatus> listOpportunityStatus = [];
   List<LostReason> listLostReason = [];
 
-  getListOpportunityStatus(String id) async {
+  TextEditingController _depositController = TextEditingController();
+  TextEditingController _negotiationController = TextEditingController();
+
+  getListOpportunityStatus() async {
     await OpportunityProviders.fetchListOpportunityStatus().then((value) {
       setState(() {
         listOpportunityStatus = value;
@@ -40,7 +47,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
     });
   }
 
-  getListLostReason(String id) async {
+  getListLostReason() async {
     await OpportunityProviders.fetchListLostReason().then((value) {
       setState(() {
         listLostReason = value;
@@ -52,6 +59,63 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
     OverlayLoadingProgress.start(context);
     await OpportunityProviders.updOpportunityStatus(id, statusID).then((value) {
       OverlayLoadingProgress.stop(context);
+      if (statusID == 7) {
+        showDialog(
+            context: context,
+            builder: (context) => StatefulBuilder(
+                builder: ((context, setState) => AlertDialog(
+                    title: Text("Lost Reason"),
+                    content: Container(
+                      width: 300,
+                      height: 200,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: listLostReason.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.all(5),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blue),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: InkWell(
+                                onTap: () {
+                                  OverlayLoadingProgress.start(context);
+                                  Map<String, dynamic> value =
+                                      Map<String, dynamic>();
+                                  value['id'] = widget.opportunity.id;
+                                  value['lostReason'] =
+                                      listLostReason[index].id;
+                                  OpportunityProviders.updOpportunity(id, value)
+                                      .then((value) {
+                                    OverlayLoadingProgress.stop(context);
+                                    Navigator.pop(context);
+                                    getOpportunity(widget.opportunity.id);
+                                    Fluttertoast.showToast(
+                                        msg: "Update Lost Reason ${value}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.blue,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                        '${listLostReason[index].id} . ${listLostReason[index].status}')
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    )))));
+      } else {
+        Navigator.pop(context);
+        getOpportunity(widget.opportunity.id);
+      }
     });
   }
 
@@ -59,6 +123,34 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
     await productProviders.fetchProductByProID(id).then((value) {
       setState(() {
         listpro.add(value);
+      });
+    });
+  }
+
+  updOpportunity(String id, int value, String type) async {
+    OverlayLoadingProgress.start(context);
+    Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = widget.opportunity.id;
+    data[type] = value;
+    OpportunityProviders.updOpportunity(id, data).then((value) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      getOpportunity(widget.opportunity.id);
+      OverlayLoadingProgress.stop(context);
+    });
+  }
+
+  getOpportunity(String id) async {
+    await OpportunityProviders.fetchOpportunitybyID(widget.opportunity.id)
+        .then((value) {
+      setState(() {
+        listopp.add(value);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OpportunityDetail(
+                      opportunity: listopp[0],
+                    )));
       });
     });
   }
@@ -93,6 +185,9 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
     getLeadbyId(widget.opportunity.leadId);
     getListAppointment(widget.opportunity.leadId);
     getListLeadStatus();
+    getListLostReason();
+    getListOpportunityStatus();
+
     super.initState();
   }
 
@@ -100,6 +195,12 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
   void dispose() {
     super.dispose();
   }
+
+  static const _locale = 'en';
+  String _formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get _currency =>
+      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +213,226 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Opportunity Detail: ',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      const Text(
+                        'Opportunity Detail: ',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const Spacer(),
+                      (widget.opportunity.opportunityStatus == 'Lost')
+                          ? IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.edit_sharp,
+                                size: 30,
+                                color: Colors.grey,
+                              ))
+                          : IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => StatefulBuilder(
+                                        builder: ((context, setState) =>
+                                            AlertDialog(
+                                                title: const Text(
+                                                    "Edit Opportunity"),
+                                                content: Container(
+                                                  width: 300,
+                                                  height: 150,
+                                                  child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: (() {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (context) => StatefulBuilder(
+                                                                    builder: ((context, setState) => AlertDialog(
+                                                                        title: const Text("Update Deposit"),
+                                                                        content: Container(
+                                                                          width:
+                                                                              300,
+                                                                          height:
+                                                                              120,
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Row(
+                                                                                children: const [
+                                                                                  Text('Price : ')
+                                                                                ],
+                                                                              ),
+                                                                              Container(
+                                                                                // padding: const EdgeInsets.only(left: 12),
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                                child: TextField(
+                                                                                  onChanged: (value) {
+                                                                                    setState(
+                                                                                      () {
+                                                                                        value = '${_formatNumber(value.replaceAll(',', ''))}';
+                                                                                        _depositController.value = TextEditingValue(
+                                                                                          text: value,
+                                                                                          selection: TextSelection.collapsed(offset: value.length),
+                                                                                        );
+                                                                                      },
+                                                                                    );
+                                                                                  },
+                                                                                  keyboardType: TextInputType.number,
+                                                                                  controller: _depositController,
+                                                                                  decoration: const InputDecoration(
+                                                                                    suffixText: 'VNĐ',
+                                                                                    // prefixText: 'VNĐ',
+                                                                                    hintText: "Deposit",
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Spacer(),
+                                                                                  ElevatedButton(
+                                                                                    onPressed: () {
+                                                                                      (_depositController.text.isEmpty) ? null : updOpportunity(widget.opportunity.id, int.parse(_depositController.text.replaceAll(',', '')), 'deposit');
+                                                                                    },
+                                                                                    child: const Text("Save"),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        )))));
+                                                          }),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            height: 50,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                border: Border.all(
+                                                                    width: 2,
+                                                                    color: Colors
+                                                                        .blue)),
+                                                            child: Row(
+                                                                children: const [
+                                                                  Text(
+                                                                      'Update Deposit'),
+                                                                  Spacer(),
+                                                                  Icon(Icons
+                                                                      .subdirectory_arrow_right_rounded)
+                                                                ]),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        InkWell(
+                                                          onTap: (() {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (context) => StatefulBuilder(
+                                                                    builder: ((context, setState) => AlertDialog(
+                                                                        title: const Text("Update Negotiation Price"),
+                                                                        content: Container(
+                                                                          width:
+                                                                              300,
+                                                                          height:
+                                                                              120,
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Row(
+                                                                                children: const [
+                                                                                  Text('Price : ')
+                                                                                ],
+                                                                              ),
+                                                                              Container(
+                                                                                // padding: const EdgeInsets.only(left: 12),
+                                                                                width: MediaQuery.of(context).size.width,
+                                                                                child: TextField(
+                                                                                  onChanged: (value) {
+                                                                                    setState(
+                                                                                      () {
+                                                                                        value = '${_formatNumber(value.replaceAll(',', ''))}';
+                                                                                        _negotiationController.value = TextEditingValue(
+                                                                                          text: value,
+                                                                                          selection: TextSelection.collapsed(offset: value.length),
+                                                                                        );
+                                                                                      },
+                                                                                    );
+                                                                                  },
+                                                                                  keyboardType: TextInputType.number,
+                                                                                  controller: _negotiationController,
+                                                                                  decoration: const InputDecoration(
+                                                                                    suffixText: 'VNĐ',
+                                                                                    // prefixText: 'VNĐ',
+                                                                                    hintText: "Negotiation",
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  const Spacer(),
+                                                                                  ElevatedButton(
+                                                                                    onPressed: () {
+                                                                                      (_negotiationController.text.isEmpty) ? null : updOpportunity(widget.opportunity.id, int.parse(_negotiationController.text.replaceAll(',', '')), 'negotiationPrice');
+                                                                                    },
+                                                                                    child: const Text("Save"),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        )))));
+                                                          }),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            height: 50,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                border: Border.all(
+                                                                    width: 2,
+                                                                    color: Colors
+                                                                        .blue)),
+                                                            child: Row(
+                                                                children: const [
+                                                                  Text(
+                                                                      'Update Negotiation Price'),
+                                                                  Spacer(),
+                                                                  Icon(Icons
+                                                                      .subdirectory_arrow_right_rounded)
+                                                                ]),
+                                                          ),
+                                                        )
+                                                      ]),
+                                                )))));
+                              },
+                              icon: const Icon(
+                                Icons.edit_sharp,
+                                size: 30,
+                                color: Colors.blue,
+                              ))
+                    ],
                   ),
                   const SizedBox(
                     height: 10,
@@ -483,30 +801,100 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                             ],
                           ),
                         ]),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 244, 54, 54)),
-                            onPressed: () {
-                              updateStatusOpp(widget.opportunity.id, 7);
-                            },
-                            child: const Text('Lost')),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Update Status')),
-                      ),
-                      const Spacer()
-                    ],
-                  )
+                  (widget.opportunity.opportunityStatus == 'Lost')
+                      ? Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 97, 97, 97)),
+                                onPressed: () {},
+                                child: const Text('Opportunity Lost')),
+                          ),
+                        )
+                      : Row(
+                          children: [
+                            const Spacer(),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 244, 54, 54)),
+                                  onPressed: () {
+                                    updateStatusOpp(widget.opportunity.id, 7);
+                                  },
+                                  child: const Text('Lost')),
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => StatefulBuilder(
+                                            builder: ((context, setState) =>
+                                                AlertDialog(
+                                                    title: Text(
+                                                        "Update Opportunity Status"),
+                                                    content: Container(
+                                                      width: 300,
+                                                      height: 420,
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          itemCount:
+                                                              listOpportunityStatus
+                                                                      .length -
+                                                                  1,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(5),
+                                                              height: 50,
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .blue),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12)),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  updateStatusOpp(
+                                                                      widget
+                                                                          .opportunity
+                                                                          .id
+                                                                          .toString(),
+                                                                      int.parse(
+                                                                          listOpportunityStatus[index]
+                                                                              .id));
+                                                                },
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                        '${listOpportunityStatus[index].id} . ${listOpportunityStatus[index].status}')
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }),
+                                                    )))));
+                                  },
+                                  child: const Text('Update Status')),
+                            ),
+                            const Spacer()
+                          ],
+                        )
                 ])));
   }
 

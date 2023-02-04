@@ -264,7 +264,7 @@ class _SearchPageState extends State<SearchPage> {
                                     .toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    district = '-14;$value';
+                                    district = '&14;$value';
                                     DistrictSelected = value;
                                   });
                                 },
@@ -363,7 +363,7 @@ class _SearchPageState extends State<SearchPage> {
                 ? const Expanded(
                     child: Center(child: CircularProgressIndicator()),
                   )
-                : (listProduct.isEmpty)
+                : (listProduct[0].id == null)
                     ? const Expanded(
                         child: Center(child: Text('Product not found')),
                       )

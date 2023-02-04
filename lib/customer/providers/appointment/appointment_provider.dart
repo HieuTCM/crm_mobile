@@ -68,7 +68,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Load Activity type failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -99,7 +99,7 @@ class appointmentProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} cancel Failed",
+            msg: "Cancel Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -133,7 +133,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get Appointment Status Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -172,8 +172,8 @@ class appointmentProvider {
         if (res.body.isNotEmpty) {
           var jsondata = json.decode(res.body);
           var totalRow = jsondata['totalRow'];
-          var apppointmentData = jsondata['data'];
-          for (var data in apppointmentData) {
+          var appointmentData = jsondata['data'];
+          for (var data in appointmentData) {
             var leadData = data['lead'];
             if (leadData is Map) {
               lead = Lead(
@@ -280,7 +280,7 @@ class appointmentProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Insert apponitmemt failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

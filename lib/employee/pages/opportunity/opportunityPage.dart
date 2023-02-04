@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 class OpportunityPage extends StatefulWidget {
   OpportunityPage({super.key});
-
   @override
   State<OpportunityPage> createState() => _OpportunityPageState();
 }
@@ -27,7 +26,7 @@ class _OpportunityPageState extends State<OpportunityPage> {
   getOpportunity(String searchValue) async {
     setState(() {
       Waiting = true;
-      mapParam["sort"] = '1;false';
+      mapParam["sort"] = '6;false';
     });
     if (searchValue.isNotEmpty) {
       mapParam["searchString"] = searchValue;
@@ -143,13 +142,17 @@ class _OpportunityPageState extends State<OpportunityPage> {
                     : Stack(
                         alignment: Alignment.topCenter,
                         children: [
-                          ListView.builder(
-                            itemCount: listOpportunity.length,
-                            itemBuilder: (context, index) {
-                              return OpportunityTab(
-                                  opportunity: listOpportunity[index]);
-                            },
-                          ),
+                          (listOpportunity.isEmpty)
+                              ? const Center(
+                                  child: (Text('Opportunity is not found')),
+                                )
+                              : ListView.builder(
+                                  itemCount: listOpportunity.length,
+                                  itemBuilder: (context, index) {
+                                    return OpportunityTab(
+                                        opportunity: listOpportunity[index]);
+                                  },
+                                ),
                           Positioned(
                               top: MediaQuery.of(context).size.height * 0.67,
                               left: MediaQuery.of(context).size.width * 0.81,

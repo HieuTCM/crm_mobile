@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, camel_case_types, must_be_immutable, use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/pages/product/productDetail.dart';
@@ -47,7 +48,7 @@ class _productTabState extends State<productTab> {
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: (widget.product.isSold)
+            colors: (widget.product.isSold || widget.product.isDelete)
                 ? [Colors.grey, Colors.grey, Colors.grey]
                 : [
                     Colors.blue.shade800,
@@ -134,11 +135,22 @@ class _productTabState extends State<productTab> {
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  width: MediaQuery.of(context).size.width * 0.44,
+                  child: AutoSizeText(
                     widget.product.name,
+                    maxLines: 2,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: AutoSizeText(
+                    widget.product.productStatus,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),
@@ -147,24 +159,51 @@ class _productTabState extends State<productTab> {
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: AutoSizeText(
                     '${f.format(widget.product.price)} VND',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                 ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * 0.44,
+                  child: Text(
+                    (widget.product.isSold)
+                        ? "Is Sold"
+                        : (widget.product.isDelete)
+                            ? 'Is deleted'
+                            : '',
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                ),
               ]),
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  alignment: Alignment.centerLeft,
+                  child: AutoSizeText(
+                      widget.product.district + ' ' + widget.product.province,
+                      style: const TextStyle(fontSize: 16)),
+                ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                      widget.product.district + ' ' + widget.product.province),
+                  width: MediaQuery.of(context).size.width * 0.22,
+                  child: AutoSizeText(
+                    maxLines: 1,
+                    'Area: ${widget.product.area} m2',
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ),
               ]),
             ],

@@ -84,7 +84,7 @@ class userProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Get User failed : Error ${res.statusCode.toString()}",
+            msg: "Get User failed ",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -135,7 +135,7 @@ class userProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Login failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -173,7 +173,7 @@ class userProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get User Information Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -210,7 +210,7 @@ class userProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Error Get User Information Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -274,7 +274,7 @@ class userProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Error Register Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -309,7 +309,7 @@ class userProviders {
             fontSize: 16.0);
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Error Update Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

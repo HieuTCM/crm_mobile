@@ -62,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Update Profile'),
+          title: const Text('Register Profile'),
           backgroundColor: Colors.blue,
         ),
         body: Container(

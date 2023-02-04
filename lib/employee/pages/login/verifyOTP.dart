@@ -24,13 +24,13 @@ class verifyOTP extends StatefulWidget {
 
 class _verifyOTPState extends State<verifyOTP> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-
+  String verificationID = '';
   loginByPhoneNumber(String phone /*, String OTPCode*/) async {
     await auth.verifyPhoneNumber(
       phoneNumber: '+84$phone',
       codeSent: (String verificationId, int? resendToken) async {
         setState(() {
-          verificationId = verificationId;
+          verificationID = verificationId;
         });
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
@@ -51,10 +51,9 @@ class _verifyOTPState extends State<verifyOTP> {
   String? pin6;
   UserObj user = UserObj();
 
-  String verificationId = '';
   @override
   void initState() {
-    verificationId = widget.verificationId;
+    verificationID = widget.verificationId;
     super.initState();
   }
 
@@ -331,7 +330,7 @@ class _verifyOTPState extends State<verifyOTP> {
                                 // Create a PhoneAuthCredential with the code
                                 PhoneAuthCredential credential =
                                     PhoneAuthProvider.credential(
-                                        verificationId: verificationId,
+                                        verificationId: verificationID,
                                         smsCode: otp);
                                 // Sign the user in (or link) with the credential
                                 await auth
@@ -377,6 +376,24 @@ class _verifyOTPState extends State<verifyOTP> {
                                           GoogleSignIn();
                                       await googleSignIn.signOut();
                                       await FirebaseAuth.instance.signOut();
+                                    }
+                                    if (value.role != 'Employee') {
+                                      user = UserObj(
+                                          fullName:
+                                              valueSignIn.user!.displayName,
+                                          emailAddress: valueSignIn.user!.email,
+                                          phoneNumber:
+                                              valueSignIn.user!.phoneNumber);
+                                      await Fluttertoast.showToast(
+                                          msg:
+                                              "You do not have permission to access this",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 23, 252, 2),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
                                     } else {
                                       user = value;
                                       await sharedPreferences.clear();

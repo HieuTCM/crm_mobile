@@ -61,7 +61,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoFavorite",
+            msg: "Can't get NoFavorite",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -94,7 +94,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get Product Enum",
+            msg: "Can't get Product Enum",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -124,7 +124,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get NoView",
+            msg: "Can't get NoView",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -235,16 +235,16 @@ class productProviders {
               listImg: listImg,
               employeeSold: epm,
             );
-            if (!product.isDelete) {
-              listproduct.add(product);
-            }
+            // if (!product.isDelete) {
+            listproduct.add(product);
+            // }
           }
         } else {
           throw Exception('Error ${res.statusCode}');
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -348,9 +348,9 @@ class productProviders {
               listImg: listImg,
               employeeSold: epm,
             );
-            if (!product.isDelete) {
-              listproduct.add(product);
-            }
+            // if (!product.isDelete) {
+            listproduct.add(product);
+            // }
           }
         } else {
           throw Exception('Error ${res.statusCode}');
@@ -467,7 +467,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -494,7 +494,7 @@ class productProviders {
         status = jsondata;
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -531,9 +531,9 @@ class productProviders {
                 .then((value) async {
               product = value;
 
-              if (!product.isDelete) {
-                listproduct.add(product);
-              }
+              // if (!product.isDelete) {
+              listproduct.add(product);
+              // }
             });
           }
         } else {
@@ -541,7 +541,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -578,9 +578,9 @@ class productProviders {
                 .then((value) async {
               product = value;
 
-              if (!product.isDelete) {
-                listproduct.add(product);
-              }
+              // if (!product.isDelete) {
+              listproduct.add(product);
+              // }
             });
           }
         } else {
@@ -588,7 +588,7 @@ class productProviders {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't load product",
+            msg: "Can't load product",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -698,17 +698,36 @@ class productProviders {
               listImg: listImg,
               employeeSold: epm,
             );
-            if (!product.isDelete) {
-              listproduct.add(product);
-            }
+
+            listproduct.add(product);
           }
         } else {
           throw Exception('Error ${res.statusCode}');
         }
       } else if (res.statusCode == 404) {
+        Category cate = Category();
+        Owner owner = Owner();
+        Role role = Role();
+        Employee epm = Employee(role: role);
+        int noFavorite = 0;
+        int noView = 0;
+        List<ProductImgae> listImg = [];
+        Product product = Product(
+            category: cate, owner: owner, employeeSold: epm, listImg: listImg);
+        listproduct.add(product);
       } else {
+        Category cate = Category();
+        Owner owner = Owner();
+        Role role = Role();
+        Employee epm = Employee(role: role);
+        int noFavorite = 0;
+        int noView = 0;
+        List<ProductImgae> listImg = [];
+        Product product = Product(
+            category: cate, owner: owner, employeeSold: epm, listImg: listImg);
+        listproduct.add(product);
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} product not found",
+            msg: "Product not found",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

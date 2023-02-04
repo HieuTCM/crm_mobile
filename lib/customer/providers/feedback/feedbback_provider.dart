@@ -42,7 +42,7 @@ class feedbackProvider {
       } else {
         status = "Failed";
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} Send feedback Failed",
+            msg: " Send feedback Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -80,7 +80,7 @@ class feedbackProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} get feedback Failed",
+            msg: "Get feedback Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

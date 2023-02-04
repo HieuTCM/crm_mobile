@@ -51,7 +51,7 @@ class searchProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get Provider Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -84,7 +84,7 @@ class searchProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get District Failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -118,7 +118,7 @@ class searchProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()}",
+            msg: "Get Sort Type failed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

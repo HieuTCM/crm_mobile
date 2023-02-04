@@ -50,7 +50,7 @@ class LeadProvider {
         }
       } else {
         Fluttertoast.showToast(
-            msg: "Error ${res.statusCode.toString()} can't get Lead Enum",
+            msg: "Can't get Lead Enum",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,

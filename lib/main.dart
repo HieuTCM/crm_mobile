@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:crm_mobile/customer/pages/login/login.dart' as customer;
+import 'package:crm_mobile/employee/pages/login/loginPage.dart' as employee;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -53,11 +55,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'CRM DTV',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DirectonPage(),
+      home: const employee.LoginScreen(),
     );
   }
 }

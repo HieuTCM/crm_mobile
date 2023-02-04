@@ -300,37 +300,58 @@ class _ListAppointmentState extends State<ListAppointment> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green),
                           onPressed: () {
-                            OverlayLoadingProgress.start(context);
-                            appointmentProvider
-                                .updFinishApponitmemt(appointment.id)
-                                .then((value) {
-                              if (value == 'Successful') {
-                                OverlayLoadingProgress.stop(context);
-                                Fluttertoast.showToast(
-                                    msg: "Finish Successful",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.green,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AppointmentPage()));
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "Finish failed ",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                                Navigator.pop(context);
-                              }
-                            });
+                            String date = appointment.startDate +
+                                ' ' +
+                                appointment.startTime;
+                            DateTime current = DateTime.now();
+                            DateTime dateApp =
+                                DateFormat("dd-MM-yyyy HH:mm:ss").parse(date);
+                            if (current.compareTo(dateApp) < 0) {
+                              Fluttertoast.showToast(
+                                  msg: " Appointment was not yet started ",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                            if (current.compareTo(dateApp) > 0 ||
+                                current.compareTo(dateApp) == 0) {
+                              OverlayLoadingProgress.start(context);
+                              appointmentProvider
+                                  .updFinishApponitmemt(appointment.id)
+                                  .then((value) {
+                                if (value == 'Successful') {
+                                  OverlayLoadingProgress.stop(context);
+                                  Fluttertoast.showToast(
+                                      msg: "Finish Successful",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AppointmentPage()));
+                                } else {
+                                  OverlayLoadingProgress.stop(context);
+                                  Fluttertoast.showToast(
+                                      msg: "Finish failed ",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  Navigator.pop(context);
+                                }
+                              });
+                            }
                           },
                           child: const Text('Finish'),
                         ))
