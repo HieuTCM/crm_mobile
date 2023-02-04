@@ -211,7 +211,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     setState(() {
                                       male = value!;
                                       female = !male;
-                                      gender = true;
+                                      gender = false;
                                     });
                                   })),
                           const Text(
@@ -228,7 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     setState(() {
                                       female = value!;
                                       male = !female;
-                                      gender = false;
+                                      gender = true;
                                     });
                                   }))
                         ],
@@ -399,7 +399,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               : _phoneCon.text,
                                       password: _passCon.text,
                                       fullName: _nameCon.text,
-                                      gender: male,
+                                      gender: gender,
                                       dob: DateFormat('yyyy-MM-dd')
                                           .format(_dateTime));
 

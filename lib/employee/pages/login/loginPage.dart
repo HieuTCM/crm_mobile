@@ -160,14 +160,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Employee Login'),
-          // actions: [
-          //   ElevatedButton(
-          //       onPressed: () {
-          //         Navigator.push(context,
-          //             MaterialPageRoute(builder: (context) => DirectonPage()));
-          //       },
-          //       child: const Text('Switch'))
-          // ],
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DirectonPage()));
+                },
+                child: const Text('Switch'))
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(

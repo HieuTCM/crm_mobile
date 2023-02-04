@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, prefer_final_fields, unused_field
 
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:crm_mobile/employee/models/notification/notificationModel.dart';
 import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
 import 'package:crm_mobile/employee/models/product/product_model.dart';
@@ -18,6 +20,7 @@ import 'package:crm_mobile/employee/providers/product/category_provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
 import 'package:crm_mobile/employee/providers/user/user_Provider.dart';
 import 'package:crm_mobile/main.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,6 +43,27 @@ class _MainPageState extends State<MainPage> {
   String? cateSelectedID;
 
   TextEditingController _searchController = TextEditingController();
+
+  List<Notifications> listNoti = [];
+  Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "10"});
+  int totalRow = 0;
+  int pageNumber = 1;
+  int pageCurrent = 1;
+  int totalpage = 1;
+
+  getListNotifi() async {
+    await notificationProvider.fetchAllNotifications(mapParam).then((value) {
+      setState(() {
+        listNoti = value;
+        waiting = false;
+        totalRow = value[0].totalRow;
+        totalpage = totalRow ~/ 10;
+        if (totalRow % 10 != 0) {
+          totalpage++;
+        }
+      });
+    });
+  }
 
   getUserinfo() async {
     userProviders.fetchUserInfor().then((value) {
@@ -76,6 +100,7 @@ class _MainPageState extends State<MainPage> {
         });
       });
     });
+    getListNotifi();
     super.initState();
   }
 
@@ -174,7 +199,164 @@ class _MainPageState extends State<MainPage> {
                                 child: IconButton(
                                   icon: const Icon(Icons.notifications),
                                   tooltip: 'Notifications',
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    setState(() {
+                                      waiting = true;
+                                    });
+                                    getListNotifi();
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => StatefulBuilder(
+                                                builder: ((context, setState) {
+                                              return AlertDialog(
+                                                  actions: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: const Text(
+                                                              'Page: '),
+                                                        ),
+                                                        SizedBox(
+                                                          child:
+                                                              DropdownButton2(
+                                                            value: pageCurrent,
+                                                            dropdownMaxHeight:
+                                                                300,
+                                                            items: List<int>.generate(
+                                                                    totalpage,
+                                                                    (int index) =>
+                                                                        index +
+                                                                        1,
+                                                                    growable:
+                                                                        true)
+                                                                .map((e) =>
+                                                                    DropdownMenuItem(
+                                                                        value:
+                                                                            e,
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              100,
+                                                                          alignment:
+                                                                              Alignment.center,
+                                                                          child:
+                                                                              Text(e.toString()),
+                                                                        )))
+                                                                .toList(),
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                pageCurrent =
+                                                                    value!;
+                                                                mapParam.update(
+                                                                    'pageNumber',
+                                                                    (value) => value =
+                                                                        pageCurrent
+                                                                            .toString());
+                                                                getListNotifi();
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                  title: const Text(
+                                                      "Notifications"),
+                                                  content: Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.5,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        itemCount:
+                                                            listNoti.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          Notifications noti =
+                                                              listNoti[index];
+                                                          return Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10),
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .blue)),
+                                                            child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            noti
+                                                                                .title,
+                                                                            maxLines:
+                                                                                1,
+                                                                            style:
+                                                                                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            'Create Date: ${noti.createDate}',
+                                                                            style:
+                                                                                const TextStyle(fontSize: 14)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            noti
+                                                                                .content,
+                                                                            style:
+                                                                                TextStyle(fontSize: 14)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ]),
+                                                          );
+                                                        }),
+                                                  ));
+                                            })));
+                                  },
                                 ))),
                       ],
                     ),

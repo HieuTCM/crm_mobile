@@ -43,9 +43,38 @@ class productProviders {
       '/api/v1/Product/product/my-recent-list';
   static const String _searchProduct = '/api/v1/Product/product?';
   static const String _getProductEnum = '/v1/api/Enum/all-product';
+  static const String _getProductStatus = '/v1/api/Enum/product-status';
 
   /*-------------------------------------------------------------*/
   //Fetch_API
+
+  static Future<List<String>> fetchProductStatus() async {
+    List<String> listStatus = [];
+    try {
+      final res = await http.get(Uri.parse(_mainURL + _getProductStatus),
+          headers: _header);
+      if (res.statusCode == 200) {
+        var jsondata = json.decode(res.body);
+        for (var data in jsondata) {
+          productStatus status = productStatus.fromJson(data);
+          listStatus.add(status.name);
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: "Can't get Product Status",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return listStatus;
+  }
+
   static Future<int> fetchNoFarovite(String value) async {
     var noFavorite;
 
@@ -713,18 +742,11 @@ class productProviders {
         int noView = 0;
         List<ProductImgae> listImg = [];
         Product product = Product(
-            category: cate, owner: owner, employeeSold: epm, listImg: listImg);
-        listproduct.add(product);
-      } else {
-        Category cate = Category();
-        Owner owner = Owner();
-        Role role = Role();
-        Employee epm = Employee(role: role);
-        int noFavorite = 0;
-        int noView = 0;
-        List<ProductImgae> listImg = [];
-        Product product = Product(
-            category: cate, owner: owner, employeeSold: epm, listImg: listImg);
+            category: cate,
+            owner: owner,
+            employeeSold: epm,
+            listImg: listImg,
+            totalRow: 1);
         listproduct.add(product);
         Fluttertoast.showToast(
             msg: "Product not found",
@@ -734,6 +756,31 @@ class productProviders {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
+        return listproduct;
+      } else {
+        Category cate = Category();
+        Owner owner = Owner();
+        Role role = Role();
+        Employee epm = Employee(role: role);
+        int noFavorite = 0;
+        int noView = 0;
+        List<ProductImgae> listImg = [];
+        Product product = Product(
+            category: cate,
+            owner: owner,
+            employeeSold: epm,
+            listImg: listImg,
+            totalRow: 1);
+        listproduct.add(product);
+        Fluttertoast.showToast(
+            msg: "Product not found",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        return listproduct;
       }
     } on HttpException catch (e) {
       print(e.toString());

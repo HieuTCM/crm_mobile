@@ -127,3 +127,14 @@ class productEnum {
     ownerPhone = json["ownerPhone"];
   }
 }
+
+class productStatus {
+  late final id;
+  late final name;
+
+  productStatus({this.id, this.name});
+  productStatus.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+  }
+}

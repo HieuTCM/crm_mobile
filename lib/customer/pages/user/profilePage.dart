@@ -124,12 +124,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                     radius: 48, // Image radius
                                     backgroundImage: FileImage(_image),
                                   )),
-                            Center(
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      _pickImage(ImageSource.gallery);
-                                    },
-                                    child: const Text('Upload Image'))),
+                            // Center(
+                            //     child: ElevatedButton(
+                            //         onPressed: () {
+                            //           _pickImage(ImageSource.gallery);
+                            //         },
+                            //         child: const Text('Upload Image'))),
                             const SizedBox(
                               height: 10,
                             ),
@@ -256,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           setState(() {
                                             male = value!;
                                             female = !male;
-                                            gender = true;
+                                            gender = false;
                                           });
                                         })),
                                 const Text(
@@ -274,7 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           setState(() {
                                             female = value!;
                                             male = !female;
-                                            gender = false;
+                                            gender = true;
                                           });
                                         }))
                               ],
@@ -345,7 +345,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             emailAddress: _emailCon.text,
                                             phoneNumber: _phoneCon.text,
                                             fullName: _nameCon.text,
-                                            gender: male,
+                                            gender: gender,
                                             dob: DateFormat('yyyy-MM-dd')
                                                 .format(_dateTime));
 

@@ -207,16 +207,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Customer Login'),
-          // actions: [
-          //   ElevatedButton(
-          //       onPressed: () {
-          //         Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => const DirectonPage()));
-          //       },
-          //       child: const Text('Switch'))
-          // ],
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DirectonPage()));
+                },
+                child: const Text('Switch'))
+          ],
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -320,8 +320,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Row(
                   children: [
-                    const Text('Forget your password ?',
-                        style: TextStyle(color: Colors.blue, fontSize: 16)),
+                    // const Text('Forget your password ?',
+                    //     style: TextStyle(color: Colors.blue, fontSize: 16)),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {

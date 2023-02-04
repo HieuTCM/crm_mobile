@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, unused_field, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unused_local_variable
 
-import 'package:crm_mobile/employee/helpers/shared_prefs.dart';
-import 'package:crm_mobile/employee/models/notification/notificationModel.dart';
+import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
+import 'package:crm_mobile/customer/models/notification/notificationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;

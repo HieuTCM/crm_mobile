@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, camel_case_types, must_be_immutable, use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
 import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/productDetail.dart';
@@ -47,7 +48,7 @@ class _productTabState extends State<productTab> {
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: (widget.product.isSold)
+            colors: (widget.product.isSold || widget.product.isDelete)
                 ? [Colors.grey, Colors.grey, Colors.grey]
                 : [
                     Colors.blue.shade800,
@@ -71,9 +72,9 @@ class _productTabState extends State<productTab> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProductDetail(
+                            user: widget.user,
                             wherecall: widget.wherecall,
                             product: value,
-                            user: widget.user,
                           )));
             });
           },
@@ -95,70 +96,6 @@ class _productTabState extends State<productTab> {
                             ),
                             fit: BoxFit.cover,
                           )),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(6),
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 161, 159, 159)
-                            .withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(50)),
-                    child: IconButton(
-                      icon: FaIcon(
-                        FontAwesomeIcons.heart,
-                        size: 30,
-                        color: (widget.product.isFavorite)
-                            ? Colors.red
-                            : Colors.black,
-                      ),
-                      onPressed: () async {
-                        OverlayLoadingProgress.start(context);
-                        await productProviders
-                            .updFollowProduct(widget.product.id)
-                            .then((value) {
-                          OverlayLoadingProgress.stop(context);
-                          if (value) {
-                            setState(() {
-                              if (widget.wherecall == 'SearchPage') {
-                                widget.getListProductByCategory(
-                                    'MHjdLiT59asdyKu');
-                              } else {
-                                widget.getListProductByCategory(
-                                    widget.product.categoryId);
-                              }
-                            });
-                            (!widget.product.isFavorite)
-                                ? Fluttertoast.showToast(
-                                    msg: "Follow Product Successful",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.green,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0)
-                                : Fluttertoast.showToast(
-                                    msg: " Product Unfollowed",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.green,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Follow Product failed",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
-                        });
-                      },
                     ),
                   ),
                   Positioned(
@@ -199,11 +136,22 @@ class _productTabState extends State<productTab> {
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  width: MediaQuery.of(context).size.width * 0.44,
+                  child: AutoSizeText(
                     widget.product.name,
+                    maxLines: 2,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: AutoSizeText(
+                    widget.product.productStatus,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),
@@ -212,24 +160,51 @@ class _productTabState extends State<productTab> {
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: AutoSizeText(
                     '${f.format(widget.product.price)} VND',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                 ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: MediaQuery.of(context).size.width * 0.44,
+                  child: Text(
+                    (widget.product.isSold)
+                        ? "Is Sold"
+                        : (widget.product.isDelete)
+                            ? 'Is deleted'
+                            : '',
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                ),
               ]),
               const SizedBox(
                 height: 10,
               ),
-              Wrap(children: [
+              Row(children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  alignment: Alignment.centerLeft,
+                  child: AutoSizeText(
+                      widget.product.district + ' ' + widget.product.province,
+                      style: const TextStyle(fontSize: 16)),
+                ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                      widget.product.district + ' ' + widget.product.province),
+                  width: MediaQuery.of(context).size.width * 0.22,
+                  child: AutoSizeText(
+                    maxLines: 1,
+                    'Area: ${widget.product.area} m2',
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ),
               ]),
             ],
