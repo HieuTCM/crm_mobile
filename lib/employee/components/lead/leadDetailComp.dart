@@ -3,6 +3,7 @@
 import 'package:crm_mobile/employee/models/Appoinment/appoinment_Model.dart';
 import 'package:crm_mobile/employee/models/person/leadModel.dart';
 import 'package:crm_mobile/employee/models/task/taskModel.dart';
+import 'package:crm_mobile/employee/pages/lead/leadPage.dart';
 import 'package:crm_mobile/employee/pages/task/listAppointment.dart';
 import 'package:crm_mobile/employee/pages/task/taskPage.dart';
 import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
@@ -46,8 +47,10 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
+        Navigator.pop(context);
+        Navigator.pop(context);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => TaskPage()));
+            context, MaterialPageRoute(builder: (context) => LeadPage()));
       } else {
         Fluttertoast.showToast(
             msg: "Change status failed",
@@ -239,7 +242,7 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
           children: [
             GestureDetector(
                 onTap: () {
-                  (widget.listAppointments.isEmpty)
+                  (widget.listAppointments[0].appointmentStatus == 'NotFound')
                       ? null
                       : Navigator.push(
                           context,
@@ -257,7 +260,7 @@ class _LeadDetailCompState extends State<LeadDetailComp> {
                                   'NotFound')
                               ? 'Number of appointment: 0'
                               : 'Number of appointment:  ${widget.listAppointments.length}  (View more ..)',
-                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                      style: const TextStyle(fontSize: 16, color: Colors.blue),
                     )
                   ],
                 )),

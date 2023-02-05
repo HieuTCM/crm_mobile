@@ -178,6 +178,7 @@ class _ListAppointmentState extends State<ListAppointment> {
                                         height: 10,
                                       ),
                                       TextField(
+                                          autofocus: false,
                                           controller: _nameController,
                                           keyboardType: TextInputType.name,
                                           onChanged: (value) {},
@@ -297,8 +298,6 @@ class _ListAppointmentState extends State<ListAppointment> {
                                                   'Give us your feedback if you want ',
                                               onCancelled: () {},
                                               onSubmitted: (response) async {
-                                                print(
-                                                    'rating: ${response.rating}, comment: ${response.comment}');
                                                 OverlayLoadingProgress.start(
                                                     context);
                                                 Map<String, dynamic>
@@ -328,6 +327,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                                                             Colors.green,
                                                         textColor: Colors.white,
                                                         fontSize: 16.0);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
                                                     Navigator.pushReplacement(
                                                         context,
                                                         MaterialPageRoute(
@@ -336,6 +337,7 @@ class _ListAppointmentState extends State<ListAppointment> {
                                                   } else {
                                                     OverlayLoadingProgress.stop(
                                                         context);
+
                                                     Fluttertoast.showToast(
                                                         msg:
                                                             "Send feedback failed",
@@ -348,6 +350,8 @@ class _ListAppointmentState extends State<ListAppointment> {
                                                             Colors.red,
                                                         textColor: Colors.white,
                                                         fontSize: 16.0);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
                                                   }
                                                 });
                                                 if (response.rating < 3.0) {

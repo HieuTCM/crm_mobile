@@ -249,7 +249,7 @@ class userProviders {
             for (var status in listSta) {
               listStatus.add(status);
               Fluttertoast.showToast(
-                  msg: "Register false",
+                  msg: "Register Failed",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -264,7 +264,7 @@ class userProviders {
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green,
                   textColor: Colors.white,
                   fontSize: 16.0);
             });

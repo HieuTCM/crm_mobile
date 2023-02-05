@@ -132,6 +132,7 @@ class _CustomerPageState extends State<CustomerPage> {
                   padding: const EdgeInsets.only(left: 12),
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextField(
+                    autofocus: false,
                     controller: _searchController,
                     decoration: InputDecoration(
                         hintText: "Search",

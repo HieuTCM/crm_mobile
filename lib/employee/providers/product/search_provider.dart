@@ -50,14 +50,14 @@ class searchProvider {
           throw Exception('Error ${res.statusCode}');
         }
       } else {
-        Fluttertoast.showToast(
-            msg: "Get Provider Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "Get Provider Failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -83,14 +83,14 @@ class searchProvider {
           throw Exception('Error ${res.statusCode}');
         }
       } else {
-        Fluttertoast.showToast(
-            msg: "Get District Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "Get District Failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -117,14 +117,14 @@ class searchProvider {
           throw Exception('Error ${res.statusCode}');
         }
       } else {
-        Fluttertoast.showToast(
-            msg: "Get Sort Type failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "Get Sort Type failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());

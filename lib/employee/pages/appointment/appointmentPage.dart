@@ -119,7 +119,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Appoitment List')),
+      appBar: AppBar(title: const Text('Appointment List')),
       body: Column(
         children: [
           Row(

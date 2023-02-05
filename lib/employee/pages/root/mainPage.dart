@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, camel_case_types, must_be_immutable, file_names, no_leading_underscores_for_local_identifiers, prefer_final_fields, unused_field
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:crm_mobile/employee/helpers/shared_prefs.dart';
 import 'package:crm_mobile/employee/models/notification/notificationModel.dart';
 import 'package:crm_mobile/employee/models/product/category_model.dart';
 import 'package:crm_mobile/employee/models/person/userModel.dart';
@@ -8,6 +9,7 @@ import 'package:crm_mobile/employee/models/product/product_model.dart';
 import 'package:crm_mobile/employee/pages/appointment/appointmentPage.dart';
 import 'package:crm_mobile/employee/pages/customer/customer.dart';
 import 'package:crm_mobile/employee/pages/feedback/feedbackPage.dart';
+import 'package:crm_mobile/employee/pages/kpi/kpiPage.dart';
 import 'package:crm_mobile/employee/pages/lead/leadPage.dart';
 import 'package:crm_mobile/employee/pages/login/loginPage.dart';
 import 'package:crm_mobile/employee/pages/opportunity/opportunityPage.dart';
@@ -88,6 +90,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     getUserinfo();
+
     cateProviders.fetchAllCategory().then((value) {
       setState(() {
         listCate = value;
@@ -169,7 +172,6 @@ class _MainPageState extends State<MainPage> {
                                     GoogleSignIn _googleSignIn = GoogleSignIn();
                                     await _googleSignIn.signOut();
                                     await FirebaseAuth.instance.signOut();
-
                                     await sharedPreferences.clear();
                                     Navigator.pushAndRemoveUntil(
                                         context,
@@ -468,6 +470,21 @@ class _MainPageState extends State<MainPage> {
                                 const Spacer(),
                               ],
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                const Spacer(),
+                                createWidget(
+                                    'KPI',
+                                    const FaIcon(FontAwesomeIcons.user,
+                                        size: 50),
+                                    Colors.blue,
+                                    const KPIPage()),
+                                const Spacer(),
+                              ],
+                            )
                           ]),
                     )
                   ],

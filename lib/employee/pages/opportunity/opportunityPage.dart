@@ -100,6 +100,7 @@ class _OpportunityPageState extends State<OpportunityPage> {
                   padding: const EdgeInsets.only(left: 12),
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextField(
+                    autofocus: false,
                     controller: _searchController,
                     decoration: InputDecoration(
                         hintText: "Search",
@@ -142,7 +143,7 @@ class _OpportunityPageState extends State<OpportunityPage> {
                     : Stack(
                         alignment: Alignment.topCenter,
                         children: [
-                          (listOpportunity.isEmpty)
+                          (listOpportunity[0].id == null)
                               ? const Center(
                                   child: (Text('Opportunity is not found')),
                                 )

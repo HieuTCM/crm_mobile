@@ -24,10 +24,12 @@ class OwnerTab extends StatefulWidget {
 
 class _OwnerTabState extends State<OwnerTab> {
   List<Product> listProduct = [];
+  bool waiting = true;
   getlistProduct(String value) async {
     await productProviders.fetchProductByOwnerID(value).then((value) {
       setState(() {
         listProduct = value;
+        waiting = false;
       });
     });
   }
@@ -166,9 +168,11 @@ class _OwnerTabState extends State<OwnerTab> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        (listProduct.isEmpty)
+                                        (waiting)
                                             ? 'Loading ...'
-                                            : '${listProduct.length}  (View More)',
+                                            : (listProduct.isEmpty)
+                                                ? 'Total Product: 0'
+                                                : '${listProduct.length}  (View More)',
                                         style: const TextStyle(
                                           color: Colors.blue,
                                           fontSize: 20,
@@ -190,9 +194,11 @@ class _OwnerTabState extends State<OwnerTab> {
                   style: const TextStyle(fontSize: 16),
                 ),
                 const Spacer(),
-                Text((listProduct.isEmpty)
+                Text((waiting)
                     ? 'Loading ...'
-                    : 'Total Product: ${listProduct.length}')
+                    : (listProduct.isEmpty)
+                        ? 'Total Product: 0'
+                        : 'Total Product: ${listProduct.length}')
               ],
             ),
             const SizedBox(

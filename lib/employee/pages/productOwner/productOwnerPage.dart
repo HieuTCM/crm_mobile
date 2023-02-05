@@ -66,101 +66,102 @@ class _ProductOwnerPageState extends State<ProductOwnerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search Product Owner'),),
-      body: SingleChildScrollView(
-          child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 12),
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                        hintText: "Search",
-                        prefixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                pageCurrent = 1;
-                                mapParam.update(
-                                    'pageNumber', (value) => value = '1');
-                              });
-                              getListProductOwner(_searchController.text);
-                            },
-                            icon: const Icon(Icons.search, size: 30),
-                            color: Colors.black),
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                pageCurrent = 1;
-                                _searchController.text = '';
-                                mapParam.update(
-                                    'pageNumber', (value) => value = '1');
-                              });
-                              getListProductOwner('');
-                            },
-                            icon:
-                                const Icon(Icons.restart_alt_rounded, size: 30),
-                            color: Colors.black)),
+      appBar: AppBar(
+        title: const Text('Search Product Owner'),
+      ),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          margin: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 12),
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: TextField(
+                      controller: _searchController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                          hintText: "Search",
+                          prefixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  pageCurrent = 1;
+                                  mapParam.update(
+                                      'pageNumber', (value) => value = '1');
+                                });
+                                getListProductOwner(_searchController.text);
+                              },
+                              icon: const Icon(Icons.search, size: 30),
+                              color: Colors.black),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  pageCurrent = 1;
+                                  _searchController.text = '';
+                                  mapParam.update(
+                                      'pageNumber', (value) => value = '1');
+                                });
+                                getListProductOwner('');
+                              },
+                              icon: const Icon(Icons.restart_alt_rounded,
+                                  size: 30),
+                              color: Colors.black)),
+                    ),
                   ),
-                ),
-                const Spacer(),
-                Container(
-                  alignment: Alignment.center,
-                  child: const Text('Page: '),
-                ),
-                SizedBox(
-                  child: DropdownButton2(
-                    value: pageCurrent,
-                    dropdownMaxHeight: 300,
-                    items: List<int>.generate(
-                            totalpage, (int index) => index + 1,
-                            growable: true)
-                        .map((e) => DropdownMenuItem(
-                            value: e,
-                            child: Container(
-                              width: 70,
-                              alignment: Alignment.center,
-                              child: Text(e.toString()),
-                            )))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() async {
-                        pageCurrent = value!;
-                        mapParam.update('pageNumber',
-                            (value) => value = pageCurrent.toString());
-                        await getListProductOwner(_searchController.text);
-                      });
-                    },
+                  const Spacer(),
+                  Container(
+                    alignment: Alignment.center,
+                    child: const Text('Page: '),
                   ),
-                ),
-              ],
-            ),
-            (waiting)
-                ? const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                : (listOwner.isEmpty)
-                    ? const Expanded(
-                        child: Center(child: Text('Product Owner not found')),
-                      )
-                    : listProductOwnerComp(
-                        wherecall: 'SearchPage',
-                        listOwner: listOwner,
-                        user: user,
-                        getListProductByCategory: getListProductOwner,
-                      ),
-            const SizedBox(
-              height: 100,
-            )
-          ],
-        ),
-      )),
+                  SizedBox(
+                    child: DropdownButton2(
+                      value: pageCurrent,
+                      dropdownMaxHeight: 300,
+                      items: List<int>.generate(
+                              totalpage, (int index) => index + 1,
+                              growable: true)
+                          .map((e) => DropdownMenuItem(
+                              value: e,
+                              child: Container(
+                                width: 70,
+                                alignment: Alignment.center,
+                                child: Text(e.toString()),
+                              )))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() async {
+                          pageCurrent = value!;
+                          mapParam.update('pageNumber',
+                              (value) => value = pageCurrent.toString());
+                          await getListProductOwner(_searchController.text);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              (waiting)
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  : (listOwner.isEmpty)
+                      ? const Expanded(
+                          child: Center(child: Text('Product Owner not found')),
+                        )
+                      : listProductOwnerComp(
+                          wherecall: 'SearchPage',
+                          listOwner: listOwner,
+                          user: user,
+                          getListProductByCategory: getListProductOwner,
+                        ),
+              const SizedBox(
+                height: 10,
+              )
+            ],
+          )),
       // bottomNavigationBar: const NavBar(),
     );
   }

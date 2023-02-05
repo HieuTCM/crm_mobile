@@ -229,8 +229,9 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(left: 12),
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.69,
                       child: TextField(
+                        autofocus: false,
                         controller: _searchController,
                         decoration: const InputDecoration(
                             hintText: "Search",
@@ -291,7 +292,10 @@ class _SearchPageState extends State<SearchPage> {
                                     .map((e) => DropdownMenuItem(
                                         value: e,
                                         child: Container(
-                                          width: 120,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
                                           alignment: Alignment.center,
                                           child: Text(e),
                                         )))
@@ -367,6 +371,7 @@ class _SearchPageState extends State<SearchPage> {
                               // padding: const EdgeInsets.only(left: 5),
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextField(
+                                  autofocus: false,
                                   onChanged: (value) {
                                     setState(
                                       () {
@@ -398,6 +403,7 @@ class _SearchPageState extends State<SearchPage> {
                               // padding: const EdgeInsets.only(left: 12),
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextField(
+                                  autofocus: false,
                                   enabled: (_minController.text.isNotEmpty),
                                   onChanged: (value) {
                                     setState(
@@ -438,76 +444,88 @@ class _SearchPageState extends State<SearchPage> {
                         )),
                   ]),
                 ),
-                const Divider(
-                  height: 10,
-                  thickness: 2,
+                SizedBox(
+                  height: 7,
                 ),
-                Row(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text('SortBy: '),
-                    ),
-                    SizedBox(
-                      child: DropdownButton2(
-                        value: SortSelected,
-                        hint: const Text('Sort by '),
-                        dropdownMaxHeight: 300,
-                        items: listSort
-                            .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Container(
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  child: Text(e.name),
-                                )))
-                            .toList(),
-                        onChanged: (value) {
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: const Text('SortBy: '),
+                      ),
+                      SizedBox(
+                        child: DropdownButton2(
+                          value: SortSelected,
+                          hint: const Text('Sort by '),
+                          dropdownMaxHeight: 300,
+                          items: listSort
+                              .map((e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Container(
+                                    width: 100,
+                                    alignment: Alignment.center,
+                                    child: Text(e.name),
+                                  )))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              SortSelected = value;
+                              sort = value!.name;
+                            });
+                          },
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        alignment: Alignment.center,
+                        child: const Text('Type: '),
+                      ),
+                      FlutterSwitch(
+                        showOnOff: true,
+                        activeTextColor: Colors.black,
+                        inactiveTextColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        activeText: 'Asc',
+                        inactiveText: 'Des',
+                        value: issort,
+                        onToggle: (val) {
                           setState(() {
-                            SortSelected = value;
-                            sort = value!.name;
+                            issort = val;
                           });
                         },
                       ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text('Type: '),
-                    ),
-                    FlutterSwitch(
-                      showOnOff: true,
-                      activeTextColor: Colors.black,
-                      inactiveTextColor:
-                          const Color.fromARGB(255, 255, 255, 255),
-                      activeText: 'Asc',
-                      inactiveText: 'Des',
-                      value: issort,
-                      onToggle: (val) {
-                        setState(() {
-                          issort = val;
-                        });
-                      },
-                    ),
-                    const Spacer()
-                  ],
-                ),
+                      const Spacer()
+                    ],
+                  ),
+                )
               ]),
             ),
-            (waiting)
-                ? const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                : (listProduct[0].id == null)
-                    ? const Expanded(
-                        child: Center(child: Text('Product not found')),
-                      )
-                    : listProductComp(
-                        wherecall: 'SearchPage',
-                        listProduct: listProduct,
-                        user: user,
-                        getListProductByCategory: getListProductWith,
-                      ),
+            SizedBox(
+              height: 22,
+            ),
+            const Divider(
+              height: 15,
+              thickness: 2,
+            ),
+            Container(
+              child: (waiting)
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  : (listProduct[0].id == null)
+                      ? const Expanded(
+                          child: Center(child: Text('Product not found')),
+                        )
+                      : listProductComp(
+                          wherecall: 'SearchPage',
+                          listProduct: listProduct,
+                          user: user,
+                          getListProductByCategory: getListProductWith,
+                        ),
+            ),
           ],
         ),
       ),

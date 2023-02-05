@@ -97,13 +97,17 @@ class _OpportunityTabState extends State<OpportunityTab> {
           Row(
             children: [
               const Text(
-                'Listed Price: ',
+                'Deal Value: ',
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: AutoSizeText(
-                    '${f.format(widget.opportunity.listedPrice)}  VND',
+                    (widget.opportunity.lastPrice != 0)
+                        ? '${f.format(widget.opportunity.lastPrice)}  VND'
+                        : (widget.opportunity.negotiationPrice != 0)
+                            ? '${f.format(widget.opportunity.negotiationPrice)}  VND'
+                            : '${f.format(widget.opportunity.listedPrice)}  VND',
                     style: const TextStyle(fontSize: 16)),
               ),
             ],

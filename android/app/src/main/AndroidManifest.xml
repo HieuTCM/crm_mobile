@@ -15,7 +15,7 @@
     </intent>
     </queries>
    <application
-        android:label="Emp DTV "
+        android:label="EMP DTV  "
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"

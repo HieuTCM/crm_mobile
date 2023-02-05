@@ -159,16 +159,16 @@ class _LoginScreenState extends State<LoginScreen> {
     //final isKeyBoard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Employee Login'),
-          actions: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DirectonPage()));
-                },
-                child: const Text('Switch'))
-          ],
-        ),
+            // title: const Text('Employee Login'),
+            // actions: [
+            //   ElevatedButton(
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => DirectonPage()));
+            //       },
+            //       child: const Text('Switch'))
+            // ],
+            ),
         body: Center(
           child: SingleChildScrollView(
               child: Padding(
@@ -205,6 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.center,
                   child: Center(
                       child: TextField(
+                    autofocus: false,
                     controller: phoneController,
                     keyboardType: TextInputType.phone,
                     // obscureText: true,

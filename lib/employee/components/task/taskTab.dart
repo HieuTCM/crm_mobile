@@ -77,7 +77,7 @@ class _TaskTabState extends State<TaskTab> {
             ),
             Row(
               children: [
-                const Text('Number of Task: '),
+                const Text('Number of Lead: '),
                 const SizedBox(
                   width: 10,
                 ),

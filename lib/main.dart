@@ -59,7 +59,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const DirectonPage(),
+      // home: const DirectonPage(),
+      home: const employee.LoginScreen(),
+      // home: const customer.LoginScreen(),
     );
   }
 }

@@ -27,6 +27,7 @@ class feedbackProvider {
 
   //Feedback
   static const String _insFeedback = '/api/v1/Feedback/feedback/add';
+  static const String _getRating = '/api/v1/Feedback/feedback/counter';
   static const String _getAllFeedback = '/api/v1/Feedback/feedback?';
   static const String _getFeedbackbyAppointmentID =
       '/api/v1/Feedback/feedback/appointment/';
@@ -60,14 +61,17 @@ class feedbackProvider {
           }
         }
       } else {
-        Fluttertoast.showToast(
-            msg: "Get feedback Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        Feedbackmodel feedback = Feedbackmodel(totalRow: 1);
+        listFeedback.add(feedback);
+        // Fluttertoast.showToast(
+        //     msg: "Get feedback Failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        return listFeedback;
       }
     } on HttpException catch (e) {
       print(e.toString());
@@ -124,19 +128,49 @@ class feedbackProvider {
           }
         }
       } else {
-        Fluttertoast.showToast(
-            msg: "Get feedback Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "Get feedback Failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
       }
     } on HttpException catch (e) {
       print(e.toString());
     }
 
     return feedback;
+  }
+
+  static Future<Rating> fetchRating() async {
+    Rating rating = Rating();
+    try {
+      final res =
+          await http.get(Uri.parse(_mainURL + _getRating), headers: _header);
+      if (res.statusCode == 200) {
+        if (res.body.isNotEmpty) {
+          var jsondata = json.decode(res.body);
+          var totalRow = jsondata['totalRow'];
+          var ratingdata = jsondata['data'];
+          if (ratingdata is Map) {
+            rating = Rating(
+                rate_1: ratingdata['rate_1'],
+                rate_2: ratingdata['rate_2'],
+                rate_3: ratingdata['rate_3'],
+                rate_4: ratingdata['rate_4'],
+                rate_5: ratingdata['rate_5'],
+                average: ratingdata['average']);
+          }
+        }
+      } else {
+        Rating rating = Rating();
+        return rating;
+      }
+    } on HttpException catch (e) {
+      print(e.toString());
+    }
+    return rating;
   }
 }

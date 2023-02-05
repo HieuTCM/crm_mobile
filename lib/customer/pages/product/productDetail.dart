@@ -7,6 +7,7 @@ import 'package:crm_mobile/customer/models/product/product_model.dart';
 import 'package:crm_mobile/customer/pages/product/followPgae.dart';
 import 'package:crm_mobile/customer/pages/product/recentPage.dart';
 import 'package:crm_mobile/customer/pages/root/mainPage.dart';
+import 'package:crm_mobile/customer/pages/search/search.dart';
 import 'package:crm_mobile/customer/providers/appointment/appointment_provider.dart';
 import 'package:crm_mobile/customer/providers/product/product_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -234,7 +235,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const RecentPage()));
+                                            SearchPage(SearchValue: '')));
                               } else if (widget.wherecall ==
                                   'AppointmentView') {
                                 Navigator.pop(context);
@@ -462,6 +463,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     ],
                                                   ),
                                                   TextField(
+                                                      autofocus: false,
                                                       controller:
                                                           nameRequestController,
                                                       keyboardType:
@@ -507,6 +509,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     height: 10,
                                                   ),
                                                   TextField(
+                                                      autofocus: false,
                                                       controller:
                                                           nameController,
                                                       keyboardType:
@@ -598,6 +601,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                     height: 10,
                                                   ),
                                                   TextField(
+                                                    autofocus: false,
                                                     controller:
                                                         DescriptionController,
                                                     keyboardType:

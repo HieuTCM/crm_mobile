@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crm_mobile/employee/models/opportunity/opportunityModel.dart';
+import 'package:crm_mobile/employee/pages/opportunity/opportunityPage.dart';
 import 'package:crm_mobile/employee/providers/lead/lead_provider.dart';
 import 'package:crm_mobile/employee/providers/opportunity/opportunity_Provider.dart';
 import 'package:crm_mobile/employee/providers/product/product_provider.dart';
@@ -159,6 +160,7 @@ class _opportunityCreatePageState extends State<opportunityCreatePage> {
                     padding: const EdgeInsets.only(left: 12),
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: TextField(
+                      autofocus: false,
                       controller: _nameController,
                       decoration: const InputDecoration(
                         hintText: "Opportunity Name",
@@ -184,6 +186,7 @@ class _opportunityCreatePageState extends State<opportunityCreatePage> {
                 padding: const EdgeInsets.only(left: 12),
                 width: MediaQuery.of(context).size.width,
                 child: TextField(
+                  autofocus: false,
                   controller: _descriptionController,
                   keyboardType: TextInputType.multiline,
                   maxLines: 4,
@@ -468,7 +471,13 @@ class _opportunityCreatePageState extends State<opportunityCreatePage> {
                             description: _descriptionController.text.toString(),
                             leadId: lead.id,
                             productId: pro.id);
-                        OpportunityProviders.insOpportunity(opp);
+                        OpportunityProviders.insOpportunity(opp).then((value) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OpportunityPage()));
+                        });
                       }
                     },
                     child: const Text('Create Opportunity')),
@@ -498,6 +507,7 @@ class _opportunityCreatePageState extends State<opportunityCreatePage> {
             const Text('Search: '),
             Expanded(
               child: TextField(
+                autofocus: false,
                 onChanged: (value) {
                   (styleSearch)
                       ? searchLeadbyName(value, setState)
@@ -587,6 +597,7 @@ class _opportunityCreatePageState extends State<opportunityCreatePage> {
             const Text('Search: '),
             Expanded(
               child: TextField(
+                autofocus: false,
                 onChanged: (value) {
                   (styleSearch)
                       ? searchProbyName(value, setState)

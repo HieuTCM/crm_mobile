@@ -127,7 +127,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
     });
   }
 
-  updOpportunity(String id, int value, String type) async {
+  updOpportunity(String id, double value, String type) async {
     OverlayLoadingProgress.start(context);
     Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = widget.opportunity.id;
@@ -221,7 +221,8 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
-                      (widget.opportunity.opportunityStatus == 'Lost')
+                      (widget.opportunity.opportunityStatus == 'Lost' ||
+                              widget.opportunity.opportunityStatus == 'Won')
                           ? IconButton(
                               onPressed: () {},
                               icon: const Icon(
@@ -261,7 +262,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                           width:
                                                                               300,
                                                                           height:
-                                                                              120,
+                                                                              140,
                                                                           child:
                                                                               Column(
                                                                             children: [
@@ -274,6 +275,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                                 // padding: const EdgeInsets.only(left: 12),
                                                                                 width: MediaQuery.of(context).size.width,
                                                                                 child: TextField(
+                                                                                  autofocus: false,
                                                                                   onChanged: (value) {
                                                                                     setState(
                                                                                       () {
@@ -288,6 +290,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                                   keyboardType: TextInputType.number,
                                                                                   controller: _depositController,
                                                                                   decoration: const InputDecoration(
+                                                                                    errorText: 'The minimum value more than or equal to 10% listed Price',
                                                                                     suffixText: 'VNĐ',
                                                                                     // prefixText: 'VNĐ',
                                                                                     hintText: "Deposit",
@@ -299,7 +302,11 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                                   Spacer(),
                                                                                   ElevatedButton(
                                                                                     onPressed: () {
-                                                                                      (_depositController.text.isEmpty) ? null : updOpportunity(widget.opportunity.id, int.parse(_depositController.text.replaceAll(',', '')), 'deposit');
+                                                                                      (_depositController.text.isEmpty)
+                                                                                          ? null
+                                                                                          : (double.parse(_depositController.text.replaceAll(',', '')) == 0 || double.parse(_depositController.text.replaceAll(',', '')) < widget.opportunity.listedPrice * 0.1)
+                                                                                              ? Fluttertoast.showToast(msg: "The minimum more than or equal to 10% listed Price", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.white, fontSize: 16.0)
+                                                                                              : updOpportunity(widget.opportunity.id, double.parse(_depositController.text.replaceAll(',', '')), 'deposit');
                                                                                     },
                                                                                     child: const Text("Save"),
                                                                                   )
@@ -350,7 +357,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                           width:
                                                                               300,
                                                                           height:
-                                                                              120,
+                                                                              140,
                                                                           child:
                                                                               Column(
                                                                             children: [
@@ -363,6 +370,7 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                                 // padding: const EdgeInsets.only(left: 12),
                                                                                 width: MediaQuery.of(context).size.width,
                                                                                 child: TextField(
+                                                                                  autofocus: false,
                                                                                   onChanged: (value) {
                                                                                     setState(
                                                                                       () {
@@ -388,7 +396,11 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                                                                   const Spacer(),
                                                                                   ElevatedButton(
                                                                                     onPressed: () {
-                                                                                      (_negotiationController.text.isEmpty) ? null : updOpportunity(widget.opportunity.id, int.parse(_negotiationController.text.replaceAll(',', '')), 'negotiationPrice');
+                                                                                      (_negotiationController.text.isEmpty)
+                                                                                          ? null
+                                                                                          : ( double.parse(_negotiationController.text.replaceAll(',', '')) == 0)
+                                                                                              ? Fluttertoast.showToast(msg: "Value more then 0", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.red, textColor: Colors.white, fontSize: 16.0)
+                                                                                              : updOpportunity(widget.opportunity.id, double.parse(_negotiationController.text.replaceAll(',', '')), 'negotiationPrice');
                                                                                     },
                                                                                     child: const Text("Save"),
                                                                                   )
@@ -801,7 +813,8 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                             ],
                           ),
                         ]),
-                  (widget.opportunity.opportunityStatus == 'Lost')
+                  (widget.opportunity.opportunityStatus == 'Lost' ||
+                          widget.opportunity.opportunityStatus == 'Won')
                       ? Center(
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.35,
@@ -810,7 +823,13 @@ class _OpportunityDetailState extends State<OpportunityDetail> {
                                     backgroundColor:
                                         Color.fromARGB(255, 97, 97, 97)),
                                 onPressed: () {},
-                                child: const Text('Opportunity Lost')),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Status ${widget.opportunity.opportunityStatus}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                )),
                           ),
                         )
                       : Row(

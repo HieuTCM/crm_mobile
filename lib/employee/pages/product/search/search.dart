@@ -231,6 +231,7 @@ class _SearchPageState extends State<SearchPage> {
                       padding: const EdgeInsets.only(left: 12),
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: TextField(
+                        autofocus: false,
                         controller: _searchController,
                         decoration: const InputDecoration(
                             hintText: "Search",
@@ -367,6 +368,7 @@ class _SearchPageState extends State<SearchPage> {
                               // padding: const EdgeInsets.only(left: 5),
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextField(
+                                  autofocus: false,
                                   onChanged: (value) {
                                     setState(
                                       () {
@@ -398,6 +400,7 @@ class _SearchPageState extends State<SearchPage> {
                               // padding: const EdgeInsets.only(left: 12),
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextField(
+                                  autofocus: false,
                                   enabled: (_minController.text.isNotEmpty),
                                   onChanged: (value) {
                                     setState(

@@ -87,17 +87,32 @@ class _CustomerTabState extends State<CustomerTab> {
                   ),
                 ),
                 const Spacer(),
-                Text('Gender: ${(widget.customer.gender) ? 'Female' : 'Male'}')
+                Text(
+                  'Gender: ${(widget.customer.gender) ? 'Female' : 'Male'}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                )
               ],
             ),
             const SizedBox(height: 10),
             Row(
               children: [
                 const Text('Phone: '),
-                Text(widget.customer.phone),
+                Text(
+                  widget.customer.phone,
+                  style: const TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
                 const Spacer(),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: AutoSizeText(
                     'Email: ${(widget.customer.email)}',
                     style: const TextStyle(

@@ -3,6 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crm_mobile/customer/components/NavBar/navBar.dart';
 import 'package:crm_mobile/customer/components/product/listProductComponent.dart';
+import 'package:crm_mobile/customer/helpers/shared_prefs.dart';
 import 'package:crm_mobile/customer/models/notification/notificationModel.dart';
 import 'package:crm_mobile/customer/models/product/category_model.dart';
 import 'package:crm_mobile/customer/models/person/userModel.dart';
@@ -50,7 +51,7 @@ class _MainPageState extends State<MainPage> {
     await notificationProvider.fetchAllNotifications(mapParam).then((value) {
       setState(() {
         listNoti = value;
-        waiting = false;
+        // waiting = false;
         totalRow = value[0].totalRow;
         totalpage = totalRow ~/ 10;
         if (totalRow % 10 != 0) {
@@ -163,8 +164,8 @@ class _MainPageState extends State<MainPage> {
                                   GoogleSignIn _googleSignIn = GoogleSignIn();
                                   await _googleSignIn.signOut();
                                   await FirebaseAuth.instance.signOut();
-
                                   await sharedPreferences.clear();
+
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -194,160 +195,174 @@ class _MainPageState extends State<MainPage> {
                                 icon: const Icon(Icons.notifications),
                                 tooltip: 'Notifications',
                                 onPressed: () {
-                                  setState(() {
-                                    waiting = true;
-                                  });
+                                  // setState(() {
+                                  //   waiting = true;
+                                  // });
                                   getListNotifi();
-                                  showDialog(
-                                      context: context,
-                                      builder:
-                                          (context) => StatefulBuilder(builder:
-                                                  ((context, setState) {
-                                                return AlertDialog(
-                                                    actions: [
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: const Text(
-                                                                'Page: '),
-                                                          ),
-                                                          SizedBox(
-                                                            child:
-                                                                DropdownButton2(
-                                                              value:
-                                                                  pageCurrent,
-                                                              dropdownMaxHeight:
-                                                                  300,
-                                                              items: List<int>.generate(
-                                                                      totalpage,
-                                                                      (int index) =>
-                                                                          index +
-                                                                          1,
-                                                                      growable:
-                                                                          true)
-                                                                  .map((e) =>
-                                                                      DropdownMenuItem(
-                                                                          value:
-                                                                              e,
+                                  if (listNoti[0].id == null) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => StatefulBuilder(
+                                                builder: ((context, setState) {
+                                              return AlertDialog(
+                                                content: Text(
+                                                    'Don\'t have any notifications'),
+                                              );
+                                            })));
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => StatefulBuilder(
+                                                builder: ((context, setState) {
+                                              return AlertDialog(
+                                                  actions: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: const Text(
+                                                              'Page: '),
+                                                        ),
+                                                        SizedBox(
+                                                          child:
+                                                              DropdownButton2(
+                                                            value: pageCurrent,
+                                                            dropdownMaxHeight:
+                                                                300,
+                                                            items: List<int>.generate(
+                                                                    totalpage,
+                                                                    (int index) =>
+                                                                        index +
+                                                                        1,
+                                                                    growable:
+                                                                        true)
+                                                                .map((e) =>
+                                                                    DropdownMenuItem(
+                                                                        value:
+                                                                            e,
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              100,
+                                                                          alignment:
+                                                                              Alignment.center,
                                                                           child:
-                                                                              Container(
-                                                                            width:
-                                                                                100,
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            child:
-                                                                                Text(e.toString()),
-                                                                          )))
-                                                                  .toList(),
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState(() {
-                                                                  pageCurrent =
-                                                                      value!;
-                                                                  mapParam.update(
-                                                                      'pageNumber',
-                                                                      (value) =>
-                                                                          value =
-                                                                              pageCurrent.toString());
-                                                                  getListNotifi();
-                                                                });
-                                                              },
-                                                            ),
+                                                                              Text(e.toString()),
+                                                                        )))
+                                                                .toList(),
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                pageCurrent =
+                                                                    value!;
+                                                                mapParam.update(
+                                                                    'pageNumber',
+                                                                    (value) => value =
+                                                                        pageCurrent
+                                                                            .toString());
+                                                                getListNotifi();
+                                                              });
+                                                            },
                                                           ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                    title: const Text(
-                                                        "Notifications"),
-                                                    content: Container(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.5,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      child: ListView.builder(
-                                                          scrollDirection:
-                                                              Axis.vertical,
-                                                          itemCount:
-                                                              listNoti.length,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            Notifications noti =
-                                                                listNoti[index];
-                                                            return Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          10),
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              width:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              12),
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .blue)),
-                                                              child: Column(
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.6,
-                                                                          child: AutoSizeText(
-                                                                              noti.title,
-                                                                              maxLines: 1,
-                                                                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.6,
-                                                                          child: AutoSizeText(
-                                                                              'Create Date: ${noti.createDate}',
-                                                                              style: const TextStyle(fontSize: 14)),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.6,
-                                                                          child: AutoSizeText(
-                                                                              noti.content,
-                                                                              style: TextStyle(fontSize: 14)),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ]),
-                                                            );
-                                                          }),
-                                                    ));
-                                              })));
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                  title: const Text(
+                                                      "Notifications"),
+                                                  content: Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.5,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        itemCount:
+                                                            listNoti.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          Notifications noti =
+                                                              listNoti[index];
+                                                          return Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 10),
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .blue)),
+                                                            child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            noti
+                                                                                .title,
+                                                                            maxLines:
+                                                                                1,
+                                                                            style:
+                                                                                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            'Create Date: ${noti.createDate}',
+                                                                            style:
+                                                                                const TextStyle(fontSize: 14)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.6,
+                                                                        child: AutoSizeText(
+                                                                            noti
+                                                                                .content,
+                                                                            style:
+                                                                                TextStyle(fontSize: 14)),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ]),
+                                                          );
+                                                        }),
+                                                  ));
+                                            })));
+                                  }
                                 },
                               ))),
                     ],

@@ -12,8 +12,10 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
 import 'package:xen_popup_card/xen_card.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class FeedbackPage extends StatefulWidget {
   FeedbackPage({super.key});
@@ -25,7 +27,9 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   List<Feedbackmodel> listFeedback = [];
   bool Waiting = true;
+  bool WaitingRating = true;
   UserObj user = UserObj();
+  Rating rating = Rating();
 
   Map<String, String> mapParam = ({"pageNumber": "1", "pageSize": "6"});
   final TextEditingController _searchController = TextEditingController();
@@ -34,10 +38,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
   int pageNumber = 1;
   int pageCurrent = 1;
   int totalpage = 1;
+  double avenge = 0.0;
+  int totalRating = 0;
+  var f = NumberFormat("#.0#", "en_US");
   getUserinfo() async {
     userProviders.fetchUserInfor().then((value) {
       setState(() {
         user = value;
+      });
+    });
+  }
+
+  getRating() async {
+    feedbackProvider.fetchRating().then((value) {
+      setState(() {
+        rating = value;
+
+        avenge = double.parse(f.format(rating.average));
+        totalRating = rating.rate_1 +
+            rating.rate_2 +
+            rating.rate_3 +
+            rating.rate_4 +
+            rating.rate_5;
+
+        WaitingRating = false;
       });
     });
   }
@@ -69,6 +93,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   void initState() {
     getUserinfo();
+    getRating();
     getLead('');
     super.initState();
   }
@@ -81,9 +106,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Feedback Page')),
-        body: SingleChildScrollView(
-          child: Column(children: [
+        appBar: AppBar(
+          title: const Text('Feedback Page'),
+          actions: [
             Row(
               children: [
                 Container(
@@ -117,6 +142,142 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
               ],
             ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            const SizedBox(
+              height: 10,
+            ),
+            (WaitingRating)
+                ? const SizedBox(
+                    height: 10,
+                  )
+                : Column(
+                    children: [
+                      SizedBox(
+                        height: 160,
+                        child: CircularPercentIndicator(
+                          radius: 70,
+                          lineWidth: 13,
+                          animation: true,
+                          percent: avenge / 5,
+                          center: Text(
+                            '${avenge}/5',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20.0),
+                          ),
+                          footer: const Text(
+                            "Rating",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17.0),
+                          ),
+                          circularStrokeCap: CircularStrokeCap.round,
+                          progressColor: Colors.blue,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Text('5'),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            barRadius: const Radius.circular(12),
+                            lineHeight: 10.0,
+                            animationDuration: 500,
+                            percent: rating.rate_5 / totalRating,
+                            center: Text(''),
+                            progressColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text('4'),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            barRadius: const Radius.circular(12),
+                            lineHeight: 10.0,
+                            animationDuration: 500,
+                            percent: rating.rate_4 / totalRating,
+                            center: Text(''),
+                            progressColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text('3'),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            barRadius: const Radius.circular(12),
+                            lineHeight: 10.0,
+                            animationDuration: 500,
+                            percent: rating.rate_3 / totalRating,
+                            center: Text(''),
+                            progressColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text('2'),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            barRadius: const Radius.circular(12),
+                            lineHeight: 10.0,
+                            animationDuration: 500,
+                            percent: rating.rate_2 / totalRating,
+                            center: Text(''),
+                            progressColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text('1'),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 20,
+                          ),
+                          LinearPercentIndicator(
+                            width: MediaQuery.of(context).size.width - 50,
+                            animation: true,
+                            barRadius: const Radius.circular(12),
+                            lineHeight: 10.0,
+                            animationDuration: 500,
+                            percent: rating.rate_1 / totalRating,
+                            center: Text(''),
+                            progressColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.75,
@@ -125,94 +286,104 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : ListView.builder(
-                      itemCount: listFeedback.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                            onTap: () {
-                              OverlayLoadingProgress.start(context);
-                              appointmentProvider
-                                  .fetchAppointmentsById(
-                                      listFeedback[index].appointmentId)
-                                  .then((value) {
-                                OverlayLoadingProgress.stop(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (builder) => StatefulBuilder(
-                                        builder: ((context, setState) =>
-                                            XenPopupCard(
-                                                gutter: CardGutter(
-                                                    value.appointmentStatus,
-                                                    value),
-                                                body: AppointmentDetail(
-                                                  user: user,
-                                                  appointment: value,
-                                                )))));
-                              });
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.height * 0.25,
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Center(
-                                child: Column(children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      'Rating',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      for (var i = 0;
-                                          i < listFeedback[index].rate;
-                                          i++) ...[
-                                        const Spacer(),
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                          size: 35,
+                  : (listFeedback[0].id == null)
+                      ? const Center(
+                          child: Text('Feedback not found'),
+                        )
+                      : ListView.builder(
+                          itemCount: listFeedback.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  OverlayLoadingProgress.start(context);
+                                  appointmentProvider
+                                      .fetchAppointmentsById(
+                                          listFeedback[index].appointmentId)
+                                      .then((value) {
+                                    OverlayLoadingProgress.stop(context);
+                                    showDialog(
+                                        context: context,
+                                        builder: (builder) => StatefulBuilder(
+                                            builder: ((context, setState) =>
+                                                XenPopupCard(
+                                                    gutter: CardGutter(
+                                                        value.appointmentStatus,
+                                                        value),
+                                                    body: AppointmentDetail(
+                                                      user: user,
+                                                      appointment: value,
+                                                    )))));
+                                  });
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Center(
+                                    child: Column(children: [
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                          'Rating',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17),
                                         ),
-                                        const Spacer()
-                                      ]
-                                    ],
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Spacer(),
+                                          for (var i = 0;
+                                              i < listFeedback[index].rate;
+                                              i++) ...[
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 35,
+                                            ),
+                                            const SizedBox(
+                                              width: 7,
+                                            )
+                                          ],
+                                          const Spacer()
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                          'Message',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Center(
+                                        child: (listFeedback[index]
+                                                .content
+                                                .toString()
+                                                .isEmpty)
+                                            ? const Text('No message')
+                                            : Text(listFeedback[index].content),
+                                      )
+                                    ]),
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      'Message',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Center(
-                                    child: (listFeedback[index]
-                                            .content
-                                            .toString()
-                                            .isEmpty)
-                                        ? const Text('No message')
-                                        : Text(listFeedback[index].content),
-                                  )
-                                ]),
-                              ),
-                            ));
-                      },
-                    ),
+                                ));
+                          },
+                        ),
             )
           ]),
         ));

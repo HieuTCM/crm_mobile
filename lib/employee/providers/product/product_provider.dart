@@ -384,17 +384,17 @@ class productProviders {
         } else {
           throw Exception('Error ${res.statusCode}');
         }
+      } else {
+        //   Fluttertoast.showToast(
+        //       msg: "Error ${res.statusCode.toString()} can't load product",
+        //       toastLength: Toast.LENGTH_SHORT,
+        //       gravity: ToastGravity.BOTTOM,
+        //       timeInSecForIosWeb: 1,
+        //       backgroundColor: Colors.red,
+        //       textColor: Colors.white,
+        //       fontSize: 16.0);
+
       }
-      // else {
-      //   Fluttertoast.showToast(
-      //       msg: "Error ${res.statusCode.toString()} can't load product",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.BOTTOM,
-      //       timeInSecForIosWeb: 1,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16.0);
-      // }
     } on HttpException catch (e) {
       print(e.toString());
     }

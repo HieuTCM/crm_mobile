@@ -100,6 +100,7 @@ class _LeadPageState extends State<LeadPage> {
                   padding: const EdgeInsets.only(left: 12),
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: TextField(
+                    autofocus: false,
                     controller: _searchController,
                     decoration: InputDecoration(
                         hintText: "Search",
@@ -139,16 +140,20 @@ class _LeadPageState extends State<LeadPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : ListView.builder(
-                      itemCount: listLead.length,
-                      itemBuilder: (context, index) {
-                        return LeadTab(
-                          // listTaskDetails: widget.listTaskDetails,
-                          lead: listLead[index],
-                          // TaskDetails: widget.listTaskDetails[index],
-                        );
-                      },
-                    ),
+                  : (listLead[0].id == null)
+                      ? const Center(
+                          child: Text('Lead not Found'),
+                        )
+                      : ListView.builder(
+                          itemCount: listLead.length,
+                          itemBuilder: (context, index) {
+                            return LeadTab(
+                              // listTaskDetails: widget.listTaskDetails,
+                              lead: listLead[index],
+                              // TaskDetails: widget.listTaskDetails[index],
+                            );
+                          },
+                        ),
             )
           ]),
         ));

@@ -184,6 +184,7 @@ class _ListAppointmentState extends State<ListAppointment> {
                                         height: 10,
                                       ),
                                       TextField(
+                                          autofocus: false,
                                           controller: _nameController,
                                           keyboardType: TextInputType.name,
                                           onChanged: (value) {},
@@ -223,6 +224,7 @@ class _ListAppointmentState extends State<ListAppointment> {
                                                 height: 10,
                                               ),
                                               TextField(
+                                                  autofocus: false,
                                                   controller: _nameController,
                                                   keyboardType:
                                                       TextInputType.name,

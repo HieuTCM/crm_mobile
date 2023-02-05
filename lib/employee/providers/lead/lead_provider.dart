@@ -66,10 +66,10 @@ class LeadProvider {
   }
 
   static Future<List<Lead>> fetchLead(Map<String, String> param) async {
+    List<Lead> listLead = [];
     UserObj user = UserObj();
     Role role = Role();
     Employee emp = Employee(role: role);
-    List<Lead> listLead = [];
     Lead lead = Lead(account: user, employee: emp);
     String queryString = Uri(queryParameters: param).query;
     try {
@@ -84,6 +84,18 @@ class LeadProvider {
           lead = Lead.fromJson(data);
           listLead.add(lead);
         }
+      } else {
+        Lead lead = Lead(account: user, employee: emp, totalRow: 1);
+        listLead.add(lead);
+        // Fluttertoast.showToast(
+        //     msg: "Get Lead Failed",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        return listLead;
       }
     } on HttpException catch (e) {
       print(e.toString());
